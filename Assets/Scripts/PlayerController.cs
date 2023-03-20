@@ -12,34 +12,57 @@ public class PlayerController : MonoBehaviour
     InputActions InputActions;
     Navigator Navigator;
 
-    private void Awake()
-    {
-        InputActions = new InputActions();
+    public delegate void CameraControlDelegate(float increment);
+    public event CameraControlDelegate RotateCamera;
+    public event CameraControlDelegate ZoomCamera;
 
-        InputActions.Player.Enable();
-
-        InputActions.Player.Select.performed += OnSelect;
-    }
 
     private void OnEnable()
     {
         Navigator = GetComponent<Navigator>();
+
+        InputActions = new InputActions();
+
+        InputActions.Player.Enable();
+
+
+        InputActions.Player.Select.performed += OnSelect;
+        InputActions.Player.Move.started += OnMove;
+        InputActions.Player.Move.canceled += OnMove;
+
+        InputActions.Player.Scroll.performed += OnScroll;
     }
 
     private void OnDisable()
     {
         InputActions.Player.Select.performed -= OnSelect;
+        InputActions.Player.Move.started -= OnMove;
+        InputActions.Player.Move.canceled -= OnMove;
 
         InputActions.Player.Disable();
     }
 
-    void Start()
+    private void Update()
     {
-        
+        if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit)) return;
+        Navigator.SetPath(hit.point);
     }
 
-    void Update()
+    public void OnScroll(InputAction.CallbackContext context)
     {
+        ZoomCamera?.Invoke(context.ReadValue<float>());
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            RotateCamera?.Invoke(context.ReadValue<Vector2>().x);
+        }
+        else
+        {
+            RotateCamera?.Invoke(0);
+        }
         
     }
 

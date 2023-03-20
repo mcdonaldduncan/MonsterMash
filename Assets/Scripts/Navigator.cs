@@ -9,7 +9,8 @@ public class Navigator : MonoBehaviour
     [SerializeField] GameObject DestinationTrigger;
 
     NavMeshAgent Agent;
-
+    NavMeshPath Path;
+    
     Transform DestinationTransform;
 
     int TriggerID;
@@ -18,9 +19,14 @@ public class Navigator : MonoBehaviour
     public MovementStateDelegate StartMove;
     public MovementStateDelegate StopMove;
 
+    public delegate void PathStateDelegate(Vector3 location);
+    public PathStateDelegate PathProcessed;
+    public PathStateDelegate PathPending;
+
     private void Awake()
     {
         Agent = GetComponent<NavMeshAgent>();
+        Path = new NavMeshPath();
     }
 
     private void OnEnable()
@@ -34,7 +40,7 @@ public class Navigator : MonoBehaviour
     public void MoveToLocation(Vector3 location)
     {
         Agent.SetDestination(location);
-        StartCoroutine(SetTriggerPosition());
+        StartCoroutine(WaitForPathProcessing());
         StartMove?.Invoke();
     }
 
@@ -55,13 +61,13 @@ public class Navigator : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (!(other.gameObject.GetInstanceID() == TriggerID)) return;
         StopMove?.Invoke();
     }
 
-    private IEnumerator SetTriggerPosition()
+    IEnumerator WaitForPathProcessing()
     {
         while (Agent.pathPending)
         {
@@ -69,5 +75,22 @@ public class Navigator : MonoBehaviour
         }
 
         DestinationTransform.position = Agent.destination;
+        PathProcessed?.Invoke(Agent.destination);
+    }
+
+    public void ConfirmPath()
+    {
+        Agent.SetPath(Path);
+        StartCoroutine(WaitForPathProcessing());
+        StartMove?.Invoke();
+    }
+
+
+    public void SetPath(Vector3 location)
+    {
+        if (Agent.CalculatePath(location, Path))
+        {
+            PathPending?.Invoke(Path.corners[Path.corners.Length - 1]);
+        }
     }
 }
