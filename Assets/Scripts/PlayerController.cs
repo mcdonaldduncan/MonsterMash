@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Navigator))]
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour
     public void OnSelect(InputAction.CallbackContext context)
     {
         if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit)) return;
+
 
         Navigator.MoveToLocation(hit.point);
     }
