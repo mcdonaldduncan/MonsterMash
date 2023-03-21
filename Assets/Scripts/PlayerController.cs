@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
 
         InputActions = new InputActions();
 
+        Cursor.visible = false;
+
         InputActions.Player.Enable();
 
 

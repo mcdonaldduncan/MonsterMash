@@ -13,6 +13,9 @@ public class FollowCam : MonoBehaviour
     [SerializeField] float RotationAcceleration;
     [SerializeField] float MaxRotationSpeed;
     [SerializeField] float ZoomAxisDiscrepancy;
+    [SerializeField] float HeightTiltThreshold;
+    [SerializeField] float HeightSupplement;
+    [SerializeField] float MaxHeight;
 
     float PivotRadius;
     float PivotAngle;
@@ -28,11 +31,13 @@ public class FollowCam : MonoBehaviour
 
     float AngleIncrement;
 
+    float CurrentHeight => transform.position.y;
+
     void Start()
     {
         Player = FindObjectOfType<PlayerController>();
         PivotRadius = (PivotPoint - transform.position).magnitude;
-
+        PivotAngle = -Mathf.Acos(transform.position.x / PivotRadius) * Mathf.Rad2Deg;
         HeightOffset = transform.position.y;
         Player.RotateCamera += OnRotateCamera;
         Player.ZoomCamera += OnZoomCamera;
@@ -67,9 +72,14 @@ public class FollowCam : MonoBehaviour
     void OnZoomCamera(float increment)
     {
         if (increment > 0 && PivotRadius <= MinRadius) return;
-        if (increment < 0 && PivotRadius >= MaxRadius) return;
+        if (increment < 0 && (PivotRadius >= MaxRadius || CurrentHeight >= MaxHeight)) return;
 
         PivotRadius -= increment / Mathf.Abs(increment) * ZoomSpeed * Time.deltaTime;
-        HeightOffset -= increment / Mathf.Abs(increment) * ZoomSpeed * ZoomAxisDiscrepancy * Time.deltaTime;
+
+
+        float heightIncrement = PivotRadius > HeightTiltThreshold ? ZoomAxisDiscrepancy + HeightSupplement : ZoomAxisDiscrepancy;
+
+        HeightOffset -= increment / Mathf.Abs(increment) * ZoomSpeed * heightIncrement * Time.deltaTime;
+
     }
 }

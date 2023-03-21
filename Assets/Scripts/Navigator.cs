@@ -80,6 +80,8 @@ public class Navigator : MonoBehaviour
 
     public void ConfirmPath()
     {
+        if (Path == null) return;
+
         Agent.SetPath(Path);
         StartCoroutine(WaitForPathProcessing());
         StartMove?.Invoke();
