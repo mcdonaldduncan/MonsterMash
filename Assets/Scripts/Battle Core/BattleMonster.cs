@@ -67,12 +67,13 @@ public class BattleMonster : MonoBehaviour
 
     void DetermineScaledValues()
     {
-        m_ScaledHealth = 0;
-        m_ScaledAttack = 0;
-        m_ScaledDefense = 0;
-        m_ScaledSpAttack = 0;
-        m_ScaledSpDefense = 0;
-        m_ScaledSkill = 0;
+        // Not sure how I will handle level scaling yet, will need to work up an excel model to finalize
+        m_ScaledHealth = 100;
+        m_ScaledAttack = 10;
+        m_ScaledDefense = 10;
+        m_ScaledSpAttack = 10;
+        m_ScaledSpDefense = 10;
+        m_ScaledSkill = 10;
     }
 
     public void InitializeWorkingValues()
