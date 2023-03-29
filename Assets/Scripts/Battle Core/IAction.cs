@@ -7,6 +7,16 @@ public interface IAction
     public string Name { get; set; }
     public int Cost { get; set; }
 
+    public ActionModifier Modifier { get; set; }
+
     public void Invoke(BattleMonster invoker, BattleMonster target);
 
+}
+
+
+public enum ActionModifier
+{
+    ATK,
+    SPATK,
+    SKL
 }

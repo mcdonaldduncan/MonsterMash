@@ -6,17 +6,12 @@ public class BattleAction : MonoBehaviour, IAction
 {
     [SerializeField] string m_Name;
     [SerializeField] string m_Cost;
+    [SerializeField] ActionModifier m_ActionStat;
 
     public string Name { get; set; }
     public int Cost { get; set; }
+    public ActionModifier Modifier { get; set; }
 
-    public void Invoke(BattleMonster invoker, BattleMonster target)
-    {
-        
-    }
+    public void Invoke(BattleMonster invoker, BattleMonster target) { }
 
-    public virtual void UseEffect()
-    {
-
-    }
 }
