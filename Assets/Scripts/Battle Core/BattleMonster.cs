@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BattleMonster : MonoBehaviour
 {
@@ -20,6 +21,10 @@ public class BattleMonster : MonoBehaviour
     [Header("Base Resorce Pools")]
     [SerializeField] int m_BaseMana;
     [SerializeField] int m_BaseStamina;
+
+    [Header("Base Resorce Regen")]
+    [SerializeField] int m_BaseManaRegen;
+    [SerializeField] int m_BaseStaminaRegen;
     
     [Header("Move Set")]
     [SerializeField] BattleAction[] m_BattleActions;
@@ -33,17 +38,32 @@ public class BattleMonster : MonoBehaviour
     int m_ScaledSkill;
 
     // Working values for battle calculations that can be scaled or changed by combat effects
-    int m_CurrentHealth;
-    int m_CurrentAttack;
-    int m_CurrentDefense;
-    int m_CurrentSpAttack;
-    int m_CurrentSpDefense;
-    int m_CurrentSkill;
+    [NonSerialized] public int CurrentHealth;
+    [NonSerialized] public int CurrentAttack;
+    [NonSerialized] public int CurrentDefense;
+    [NonSerialized] public int CurrentSpAttack;
+    [NonSerialized] public int CurrentSpDefense;
+    [NonSerialized] public int CurrentSkill;
 
     // Working values for resource pools
-    int m_CurrentMana;
-    int m_CurrentStamina;
-    
+    [NonSerialized] public int CurrentMana;
+    [NonSerialized] public int CurrentStamina;
+
+
+    Dictionary<StatType, Action<int>> StatLookup;
+
+    private void Start()
+    {
+        StatLookup = new Dictionary<StatType, Action<int>>()
+        {
+            { StatType.HEALTH, value => CurrentHealth += value },
+            { StatType.ATTACK, value => CurrentAttack += value },
+            { StatType.DEFENSE, value => CurrentDefense += value },
+            { StatType.SPATTACK, value => CurrentSpAttack += value },
+            { StatType.SPDEFENSE, value => CurrentSpDefense += value },
+            { StatType.SKILL, value => CurrentSkill += value }
+        };
+    }
 
     void DetermineScaledValues()
     {
@@ -55,16 +75,39 @@ public class BattleMonster : MonoBehaviour
         m_ScaledSkill = 0;
     }
 
-    void InitializeWorkingValues()
+    public void InitializeWorkingValues()
     {
-        m_CurrentHealth = m_ScaledHealth;
-        m_CurrentAttack = m_ScaledAttack;
-        m_CurrentDefense = m_ScaledDefense;
-        m_CurrentSpAttack = m_ScaledSpAttack;
-        m_CurrentSpDefense = m_ScaledSpDefense;
-        m_CurrentSkill = m_ScaledSkill;
+        CurrentHealth = m_ScaledHealth;
+        CurrentAttack = m_ScaledAttack;
+        CurrentDefense = m_ScaledDefense;
+        CurrentSpAttack = m_ScaledSpAttack;
+        CurrentSpDefense = m_ScaledSpDefense;
+        CurrentSkill = m_ScaledSkill;
 
-        m_CurrentMana = m_BaseMana;
-        m_CurrentStamina = m_BaseStamina;
+        CurrentMana = m_BaseMana;
+        CurrentStamina = m_BaseStamina;
     }
+
+    public void AlterStat(StatType type, int delta)
+    {
+        if (StatLookup.TryGetValue(type, out var modifyAction))
+        {
+            modifyAction(delta);
+        }
+        else
+        {
+            Debug.LogWarning($"Invalid stat type: {type}");
+        }
+    }
+
+}
+
+public enum StatType
+{
+    HEALTH,
+    ATTACK,
+    DEFENSE,
+    SPATTACK,
+    SPDEFENSE,
+    SKILL
 }
