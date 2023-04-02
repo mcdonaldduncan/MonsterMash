@@ -50,6 +50,7 @@ public class BattleMonster : MonoBehaviour
     [NonSerialized] public int CurrentStamina;
 
     // Add Effort Values
+
     // Add Individual Values
 
     Dictionary<StatType, Action<int>> StatLookup;

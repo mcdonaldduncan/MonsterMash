@@ -6,6 +6,7 @@ public interface IAction
 {
     public string Name { get; set; }
     public int Cost { get; set; }
+    public int Power { get; set; }
 
     public ActionModifier Modifier { get; set; }
 
