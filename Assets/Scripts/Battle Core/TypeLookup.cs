@@ -1,18 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TypeLookup : MonoBehaviour
+public class TypeLookup
 {
-    // Start is called before the first frame update
-    void Start()
+    public static Dictionary<ElementType[][], float> Lookup;
+
+
+    public static void Init()
     {
-        
+        Lookup = new Dictionary<ElementType[][], float>();
+
+        foreach (var typeA in Enum.GetNames(typeof(ElementType))
+        {
+
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+}
+
+
+public enum ElementType
+{
+    GRASS,
+    WATER,
+    FIRE,
+    SHADOW
 }

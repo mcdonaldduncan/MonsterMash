@@ -13,7 +13,7 @@ public abstract class BattleAction : MonoBehaviour, IAction
     public int Cost { get; set; }
     public int Power { get; set; }
     public ActionModifier Modifier { get; set; }
-    public ActionType Type { get; set; }
+    public ElementType Type { get; set; }
     
 
     public virtual void Invoke(BattleMonster invoker, BattleMonster target) { }

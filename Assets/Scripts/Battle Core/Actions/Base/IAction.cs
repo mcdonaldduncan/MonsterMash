@@ -10,7 +10,7 @@ public interface IAction
 
     public ActionModifier Modifier { get; set; }
 
-    public ActionType Type { get; set; }
+    public ElementType Type { get; set; }
 
     public void Invoke(BattleMonster invoker, BattleMonster target);
 

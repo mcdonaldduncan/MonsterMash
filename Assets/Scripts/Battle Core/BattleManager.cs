@@ -2,17 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleManager : MonoBehaviour
+public class BattleManager<T, U> : MonoBehaviour where T : BattleMonster where U : BattleMonster
 {
-    // Start is called before the first frame update
+    BattleMonster m_Player;
+    BattleMonster m_Enemy;
+
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void Init(T player, U enemy)
+    {
+        m_Player = player;
+        m_Enemy = enemy;
     }
 }
