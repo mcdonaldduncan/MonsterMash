@@ -10,6 +10,9 @@ public class BattleMonster : MonoBehaviour
     [Range(1, 100)]
     [SerializeField] int m_ExpLevel = 1;
 
+    [Header("Monster Type")]
+    [SerializeField] ElementType m_Type;
+
     [Header("Base Stats")]
     [SerializeField] int m_BaseHealth;
     [SerializeField] int m_BaseAttack;
@@ -30,12 +33,12 @@ public class BattleMonster : MonoBehaviour
     [SerializeField] BattleAction[] m_BattleActions;
 
     // Values determined by base and level
-    int m_ScaledHealth;
-    int m_ScaledAttack;
-    int m_ScaledDefense;
-    int m_ScaledSpAttack;
-    int m_ScaledSpDefense;
-    int m_ScaledSkill;
+    public int ScaledHealth;
+    public int ScaledAttack;
+    public int ScaledDefense;
+    public int ScaledSpAttack;
+    public int ScaledSpDefense;
+    public int ScaledSkill;
 
     // Working values for battle calculations that can be scaled or changed by combat effects
     [NonSerialized] public int CurrentHealth;
@@ -50,16 +53,20 @@ public class BattleMonster : MonoBehaviour
     [NonSerialized] public int CurrentStamina;
 
     public BattleAction[] Actions => m_BattleActions;
+    public ElementType Type => m_Type;
 
     // Add Effort Values
 
     // Add Individual Values
 
-    Dictionary<StatType, Action<int>> StatLookup;
+    Dictionary<StatType, Action<int>> StatModifiers;
+    Dictionary<StatType, Func<int>> CurrentStatAccessors;
+    Dictionary<StatType, Func<int>> MaxStatAccessors;
+    Dictionary<StatType, Func<int>> BaseStatAccessors;
 
     private void Start()
     {
-        StatLookup = new Dictionary<StatType, Action<int>>()
+        StatModifiers = new Dictionary<StatType, Action<int>>()
         {
             { StatType.HEALTH, value => CurrentHealth += value },
             { StatType.ATTACK, value => CurrentAttack += value },
@@ -68,35 +75,41 @@ public class BattleMonster : MonoBehaviour
             { StatType.SPDEFENSE, value => CurrentSpDefense += value },
             { StatType.SKILL, value => CurrentSkill += value }
         };
-    }
 
-    void DetermineScaledValues()
-    {
-        // Not sure how I will handle level scaling yet, will need to work up an excel model to finalize
-        m_ScaledHealth = 100;
-        m_ScaledAttack = 10;
-        m_ScaledDefense = 10;
-        m_ScaledSpAttack = 10;
-        m_ScaledSpDefense = 10;
-        m_ScaledSkill = 10;
-    }
+        CurrentStatAccessors = new Dictionary<StatType, Func<int>>()
+        {
+            { StatType.HEALTH, () => CurrentHealth  },
+            { StatType.ATTACK, () => CurrentAttack },
+            { StatType.DEFENSE, () => CurrentDefense },
+            { StatType.SPATTACK, () => CurrentSpAttack },
+            { StatType.SPDEFENSE, () => CurrentSpDefense },
+            { StatType.SKILL, () => CurrentSkill }
+        };
 
-    public void InitializeWorkingValues()
-    {
-        CurrentHealth = m_ScaledHealth;
-        CurrentAttack = m_ScaledAttack;
-        CurrentDefense = m_ScaledDefense;
-        CurrentSpAttack = m_ScaledSpAttack;
-        CurrentSpDefense = m_ScaledSpDefense;
-        CurrentSkill = m_ScaledSkill;
+        MaxStatAccessors = new Dictionary<StatType, Func<int>>()
+        {
+            { StatType.HEALTH, () => ScaledHealth  },
+            { StatType.ATTACK, () => ScaledAttack },
+            { StatType.DEFENSE, () => ScaledDefense },
+            { StatType.SPATTACK, () => ScaledSpAttack },
+            { StatType.SPDEFENSE, () => ScaledSpDefense },
+            { StatType.SKILL, () => ScaledSkill }
+        };
 
-        CurrentMana = m_BaseMana;
-        CurrentStamina = m_BaseStamina;
+        BaseStatAccessors = new Dictionary<StatType, Func<int>>()
+        {
+            { StatType.HEALTH, () => m_BaseHealth  },
+            { StatType.ATTACK, () => m_BaseAttack },
+            { StatType.DEFENSE, () => m_BaseDefense },
+            { StatType.SPATTACK, () => m_BaseSpAttack },
+            { StatType.SPDEFENSE, () => m_BaseSpDefense },
+            { StatType.SKILL, () => m_BaseSkill }
+        };
     }
 
     public void AlterStat(StatType type, int delta)
     {
-        if (StatLookup.TryGetValue(type, out var modifyAction))
+        if (StatModifiers.TryGetValue(type, out var modifyAction))
         {
             modifyAction(delta);
         }
@@ -104,6 +117,48 @@ public class BattleMonster : MonoBehaviour
         {
             Debug.LogWarning($"Invalid stat type: {type}");
         }
+    }
+
+    public int GetStat(StatType type, TypeModifier modifier)
+    {
+        var accessors = modifier == TypeModifier.CURRENT ? CurrentStatAccessors 
+                        : modifier == TypeModifier.MAX ? MaxStatAccessors 
+                        : BaseStatAccessors;
+
+        if (accessors.TryGetValue(type, out var accessorFunc))
+        {
+            return accessorFunc();
+        }
+        else
+        {
+            Debug.LogWarning($"Invalid stat type: {type}");
+            return -1;
+        }
+    }
+
+
+    public void InitializeWorkingValues()
+    {
+        CurrentHealth = ScaledHealth;
+        CurrentAttack = ScaledAttack;
+        CurrentDefense = ScaledDefense;
+        CurrentSpAttack = ScaledSpAttack;
+        CurrentSpDefense = ScaledSpDefense;
+        CurrentSkill = ScaledSkill;
+
+        CurrentMana = m_BaseMana;
+        CurrentStamina = m_BaseStamina;
+    }
+
+    void DetermineScaledValues()
+    {
+        // Not sure how I will handle level scaling yet, will need to work up an excel model to finalize
+        ScaledHealth = 100;
+        ScaledAttack = 10;
+        ScaledDefense = 10;
+        ScaledSpAttack = 10;
+        ScaledSpDefense = 10;
+        ScaledSkill = 10;
     }
 
 }
@@ -116,4 +171,11 @@ public enum StatType
     SPATTACK,
     SPDEFENSE,
     SKILL
+}
+
+public enum TypeModifier
+{
+    CURRENT,
+    MAX,
+    BASE
 }

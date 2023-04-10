@@ -4,30 +4,30 @@ using UnityEngine;
 
 public interface IAction
 {
-    public string Name { get; set; }
-    public int Cost { get; set; }
-    public int Power { get; set; }
+    public string Name { get; }
+    public int Cost { get; }
+    public int Power { get; }
 
-    public ActionModifier Modifier { get; set; }
+    public StatType Modifier { get; }
 
-    public ElementType Type { get; set; }
+    public ElementType Type { get; }
 
     public void Invoke(BattleMonster invoker, BattleMonster target);
 
 }
 
 
-public enum ActionModifier
-{
-    ATK,
-    SPATK,
-    SKL
-}
+//public enum ActionModifier
+//{
+//    ATK,
+//    SPATK,
+//    SKL
+//}
 
-public enum ActionType
-{
-    GRASS,
-    WATER,
-    FIRE,
-    SHADOW
-}
+//public enum ActionType
+//{
+//    GRASS,
+//    WATER,
+//    FIRE,
+//    SHADOW
+//}

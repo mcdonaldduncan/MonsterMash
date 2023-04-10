@@ -5,17 +5,17 @@ using UnityEngine;
 public abstract class BattleAction : MonoBehaviour, IAction
 {
     [SerializeField] string m_Name;
-    [SerializeField] string m_Cost;
-    [SerializeField] ActionModifier m_ActionModifier;
-    [SerializeField] ActionType m_ActionType;
+    [SerializeField] int m_Cost;
+    [SerializeField] int m_Power;
+    [SerializeField] StatType m_ActionModifier;
+    [SerializeField] ElementType m_ActionType;
 
-    public string Name { get; set; }
-    public int Cost { get; set; }
-    public int Power { get; set; }
-    public ActionModifier Modifier { get; set; }
-    public ElementType Type { get; set; }
+    public string Name => m_Name;
+    public int Cost => m_Cost;
+    public int Power => m_Power;
+    public StatType Modifier => m_ActionModifier;
+    public ElementType Type => m_ActionType;
     
 
     public virtual void Invoke(BattleMonster invoker, BattleMonster target) { }
-
 }

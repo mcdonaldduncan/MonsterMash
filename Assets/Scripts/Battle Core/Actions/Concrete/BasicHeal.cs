@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicHeal : MonoBehaviour
+public class BasicHeal : BattleAction
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void Invoke(BattleMonster invoker, BattleMonster target)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        int healTotal = Power * invoker.CurrentSkill;
+        target.AlterStat(StatType.HEALTH, healTotal);
     }
 }
