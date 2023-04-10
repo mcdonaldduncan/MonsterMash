@@ -49,6 +49,8 @@ public class BattleMonster : MonoBehaviour
     [NonSerialized] public int CurrentMana;
     [NonSerialized] public int CurrentStamina;
 
+    public BattleAction[] Actions => m_BattleActions;
+
     // Add Effort Values
 
     // Add Individual Values
