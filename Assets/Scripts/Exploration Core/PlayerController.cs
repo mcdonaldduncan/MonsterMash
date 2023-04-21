@@ -66,7 +66,6 @@ public class PlayerController : MonoBehaviour
         {
             RotateCamera?.Invoke(0);
         }
-        
     }
 
     public void OnSelect(InputAction.CallbackContext context)
