@@ -38,7 +38,6 @@ public class Navigator : MonoBehaviour
         TriggerID = temp.GetInstanceID();
     }
 
-
     public void MoveToLocation(Vector3 location)
     {
         Agent.SetDestination(location);
@@ -50,7 +49,6 @@ public class Navigator : MonoBehaviour
     {
         MoveToLocation(target.position);
     }
-
 
     public void SetLocation(Vector3 location)
     {
