@@ -8,12 +8,15 @@ public class NavigationVFXController : MonoBehaviour
     [SerializeField] GameObject DestinationVFX;
     [SerializeField] GameObject DestinationClickVFX;
     [SerializeField] GameObject PendingVFX;
+    [SerializeField] GameObject BattleDestinationVFX;
 
     [SerializeField] float PendingDisplayDelay;
 
     GameObject DestinationVFXInstance;
 
     Navigator Navigator;
+
+    bool UseBattleIndicator => Navigator?.IsOnCombatMove ?? false;
 
     private void Start()
     {
@@ -35,7 +38,14 @@ public class NavigationVFXController : MonoBehaviour
 
         _ = PoolManager.Instance.TakeFromPool(DestinationClickVFX, location);
 
-        DestinationVFXInstance = PoolManager.Instance.TakeFromPool(DestinationVFX, location);
+        if (UseBattleIndicator)
+        {
+            DestinationVFXInstance = PoolManager.Instance.TakeFromPool(BattleDestinationVFX, location);
+        }
+        else
+        {
+            DestinationVFXInstance = PoolManager.Instance.TakeFromPool(DestinationVFX, location);
+        }
 
         FlipPendingVFX();
         Invoke(nameof(FlipPendingVFX), PendingDisplayDelay);
@@ -51,5 +61,10 @@ public class NavigationVFXController : MonoBehaviour
     void FlipPendingVFX()
     {
         PendingVFX.SetActive(!PendingVFX.activeSelf);
+    }
+
+    void OnBattleMovePerformed(bool started)
+    {
+
     }
 }

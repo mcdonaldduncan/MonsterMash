@@ -23,6 +23,8 @@ public class Navigator : MonoBehaviour
     public PathStateDelegate PathProcessed;
     public PathStateDelegate PathPending;
 
+    public bool IsOnCombatMove;
+
     private void Awake()
     {
         Agent = GetComponent<NavMeshAgent>();
@@ -60,7 +62,6 @@ public class Navigator : MonoBehaviour
         Agent.Warp(target.position);
     }
 
-
     void OnTriggerEnter(Collider other)
     {
         if (!(other.gameObject.GetInstanceID() == TriggerID)) return;
@@ -94,5 +95,15 @@ public class Navigator : MonoBehaviour
         {
             PathPending?.Invoke(Path.corners[Path.corners.Length - 1]);
         }
+    }
+
+    void SetMoveType(bool combatMove)
+    {
+        IsOnCombatMove = combatMove;
+    }
+
+    public void SubscribeToMoveType(PlayerController player)
+    {
+        player.BattleMovePerformed += SetMoveType;
     }
 }

@@ -14,10 +14,13 @@ public class PlayerController : MonoBehaviour
     public event CameraControlDelegate RotateCamera;
     public event CameraControlDelegate ZoomCamera;
 
+    public delegate void MoveTypeDelegate(bool started);
+    public event MoveTypeDelegate BattleMovePerformed;
 
     private void OnEnable()
     {
         Navigator = GetComponent<Navigator>();
+        Navigator.SubscribeToMoveType(this);
 
         InputActions = new InputActions();
 
@@ -70,7 +73,15 @@ public class PlayerController : MonoBehaviour
     {
         if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit)) return;
 
-
-        Navigator.MoveToLocation(hit.point);
+        if (hit.collider.gameObject.CompareTag("Enemy"))
+        {
+            BattleMovePerformed?.Invoke(true);
+            Navigator.MoveToLocation(hit.collider.gameObject.transform.position);
+        }
+        else
+        {
+            BattleMovePerformed?.Invoke(false);
+            Navigator.MoveToLocation(hit.point);
+        }
     }
 }
