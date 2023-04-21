@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="BattleAction">
+    <Position X="12.25" Y="6.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>EAAABAAAAAAIAEAAAAAAABQQAAAAAAABAQAAAAEgAAA=</HashCode>
+      <FileName>Assets\Scripts\Battle Core\Actions\Base\BattleAction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BasicAttack">
+    <Position X="12.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Battle Core\Actions\Concrete\BasicAttack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasicHeal">
+    <Position X="14.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Battle Core\Actions\Concrete\BasicHeal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AIController">
+    <Position X="24" Y="0.5" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACBEAAAAAAAAABAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Battle Core\AIController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BattleManager&lt;T, U&gt;">
+    <Position X="24" Y="3" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAQAAEAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Battle Core\BattleManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BattleMonster">
+    <Position X="26.5" Y="3" Width="4" />
+    <TypeIdentifier>
+      <HashCode>gACgoBEAIKBABYAIQQEAACYgAEEgAAAAIQAQAgAqMCA=</HashCode>
+      <FileName>Assets\Scripts\Battle Core\BattleMonster.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TypeLookup">
+    <Position X="17.75" Y="3.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAACAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Battle Core\TypeLookup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FollowCam">
+    <Position X="20" Y="5.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>CAQAAIAoACAAhAAAAIAAECAUAQAIABIgAAAQAQIEUAA=</HashCode>
+      <FileName>Assets\Scripts\Exploration Core\Camera\FollowCam.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LocomotionAnimator">
+    <Position X="24.25" Y="9.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABCgAAAAAQAAAAAAAAAAAAAkAAAAAAAQAAAA=</HashCode>
+      <FileName>Assets\Scripts\Exploration Core\Navigation\LocomotionAnimator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NavigationVFXController">
+    <Position X="20.5" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAASBCAAAQAAAQBAAAIAAAAgIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Exploration Core\Navigation\NavigationVFXController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Navigator">
+    <Position X="16.5" Y="6.5" Width="3.25" />
+    <NestedTypes>
+      <Delegate Name="Navigator.MovementStateDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Exploration Core\Navigation\Navigator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Navigator.PathStateDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Exploration Core\Navigation\Navigator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAQAAAgIAIAEAAAAAAAADIAAmQAAAAAAECEA=</HashCode>
+      <FileName>Assets\Scripts\Exploration Core\Navigation\Navigator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerController">
+    <Position X="23.25" Y="5.5" Width="3" />
+    <NestedTypes>
+      <Delegate Name="PlayerController.CameraControlDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Exploration Core\PlayerController.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAQCAAAABAAAAAAAAAAAAAAAAAAAQAQIAAAABAAAKAA=</HashCode>
+      <FileName>Assets\Scripts\Exploration Core\PlayerController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Singleton&lt;T&gt;">
+    <Position X="7.75" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAFAAAAACAAAAAAAABAAAAAAAAAAAAAQAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Shared\Abstract\Singleton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ManualPoolingVFX" BaseTypeListCollapsed="true">
+    <Position X="14.75" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Shared\Pooling\ManualPoolingVFX.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PoolManager">
+    <Position X="5.75" Y="6.5" Width="6.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAABAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Shared\Pooling\PoolManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SelfPoolingVFX" BaseTypeListCollapsed="true">
+    <Position X="17.75" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAgAAAABAIAAAABAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Shared\Pooling\SelfPoolingVFX.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="IAction">
+    <Position X="14.75" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAIAAAAAAAAABQAAAAAAAABAQAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Battle Core\Actions\Base\IAction.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IPoolable">
+    <Position X="14.75" Y="5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Shared\Pooling\IPoolable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="StatType">
+    <Position X="13" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAIAAAAAAAAAAAAAAgAAgAAAAAAAAIAAAEAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Battle Core\BattleMonster.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="TypeModifier">
+    <Position X="13" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Battle Core\BattleMonster.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ElementType">
+    <Position X="13" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAACBAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Battle Core\TypeLookup.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
