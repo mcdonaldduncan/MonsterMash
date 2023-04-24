@@ -15,6 +15,8 @@ public class Navigator : MonoBehaviour
 
     int TriggerID;
 
+    // ToDo Add a bool to Movement State delegate for combat move instead of current ugly wiring
+    // ToDo Add bool to MoveToLocation to pass from PC to animator
     public delegate void MovementStateDelegate();
     public MovementStateDelegate StartMove;
     public MovementStateDelegate StopMove;

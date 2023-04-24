@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
         if (hit.collider.gameObject.CompareTag("Enemy"))
         {
             BattleMovePerformed?.Invoke(true);
-            Navigator.MoveToLocation(hit.collider.gameObject.transform.position);
+            Navigator.MoveToLocation(hit.collider.gameObject.transform);
         }
         else
         {
