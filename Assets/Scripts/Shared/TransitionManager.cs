@@ -12,7 +12,7 @@ public class TransitionManager : Singleton<TransitionManager>
     Dictionary<GameState, TransitionDelegate> m_TransitionActions;
 
     public override void Awake()
-    {
+    { 
         base.Awake();
 
         m_TransitionActions = new Dictionary<GameState, TransitionDelegate>();
@@ -23,26 +23,14 @@ public class TransitionManager : Singleton<TransitionManager>
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void Transition(GameState newState)
     {
-        if (m_GameState != newState)
-        {
-            m_GameState = newState;
-            HandleTransition();
-        }
+        if (m_GameState == newState) return;
+
+        m_GameState = newState;
+        HandleTransition();
     }
+
     public void SubscribeToTransition(GameState gameState, TransitionDelegate method)
     {
         if (m_TransitionActions.ContainsKey(gameState))
@@ -75,24 +63,10 @@ public class TransitionManager : Singleton<TransitionManager>
         }
         else
         {
-            Debug.LogWarning($"Invalid Request");
+            Debug.LogWarning($"Invalid Transition Request");
         }
     }
 
-    private void BattleTransition()
-    {
-        
-    }
-
-    private void ExplorationTransition()
-    {
-
-    }
-
-    private void HomeTransition()
-    {
-
-    }
 }
 
 public enum GameState

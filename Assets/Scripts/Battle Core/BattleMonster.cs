@@ -137,7 +137,7 @@ public class BattleMonster : MonoBehaviour
     }
 
 
-    public void InitializeWorkingValues()
+    void InitializeWorkingValues()
     {
         CurrentHealth = ScaledHealth;
         CurrentAttack = ScaledAttack;

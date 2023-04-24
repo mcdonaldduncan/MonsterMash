@@ -74,13 +74,20 @@ public class PlayerController : MonoBehaviour
 
         if (hit.collider.gameObject.CompareTag("Enemy"))
         {
+            Navigator.StopMove += BattleTransition;
             BattleMovePerformed?.Invoke(true);
             Navigator.MoveToLocation(hit.collider.gameObject.transform);
         }
         else
         {
+            Navigator.StopMove -= BattleTransition;
             BattleMovePerformed?.Invoke(false);
             Navigator.MoveToLocation(hit.point);
         }
+    }
+
+    private void BattleTransition()
+    {
+        TransitionManager.Instance.Transition(GameState.BATTLE);
     }
 }
