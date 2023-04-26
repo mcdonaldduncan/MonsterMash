@@ -16,7 +16,7 @@ public class NavigationVFXController : MonoBehaviour
 
     Navigator Navigator;
 
-    bool UseBattleIndicator => Navigator?.IsOnCombatMove ?? false;
+    bool UseBattleIndicator => Navigator?.OnCombatMove ?? false;
 
     private void Start()
     {
@@ -36,14 +36,13 @@ public class NavigationVFXController : MonoBehaviour
     {
         ReturnVFX();
 
-        _ = PoolManager.Instance.TakeFromPool(DestinationClickVFX, location);
-
         if (UseBattleIndicator)
         {
             DestinationVFXInstance = PoolManager.Instance.TakeFromPool(BattleDestinationVFX, location);
         }
         else
         {
+            _ = PoolManager.Instance.TakeFromPool(DestinationClickVFX, location);
             DestinationVFXInstance = PoolManager.Instance.TakeFromPool(DestinationVFX, location);
         }
 
@@ -63,8 +62,4 @@ public class NavigationVFXController : MonoBehaviour
         PendingVFX.SetActive(!PendingVFX.activeSelf);
     }
 
-    void OnBattleMovePerformed(bool started)
-    {
-
-    }
 }

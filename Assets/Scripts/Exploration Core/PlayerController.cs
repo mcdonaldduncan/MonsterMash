@@ -14,13 +14,12 @@ public class PlayerController : MonoBehaviour
     public event CameraControlDelegate RotateCamera;
     public event CameraControlDelegate ZoomCamera;
 
-    public delegate void MoveTypeDelegate(bool started);
-    public event MoveTypeDelegate BattleMovePerformed;
+    //public delegate void MoveTypeDelegate(bool started);
+    //public event MoveTypeDelegate BattleMovePerformed;
 
     private void OnEnable()
     {
         Navigator = GetComponent<Navigator>();
-        Navigator.SubscribeToMoveType(this);
 
         InputActions = new InputActions();
 
@@ -75,13 +74,11 @@ public class PlayerController : MonoBehaviour
         if (hit.collider.gameObject.CompareTag("Enemy"))
         {
             Navigator.StopMove += BattleTransition;
-            BattleMovePerformed?.Invoke(true);
-            Navigator.MoveToLocation(hit.collider.gameObject.transform);
+            Navigator.MoveToLocation(hit.collider.gameObject.transform, true);
         }
         else
         {
             Navigator.StopMove -= BattleTransition;
-            BattleMovePerformed?.Invoke(false);
             Navigator.MoveToLocation(hit.point);
         }
     }

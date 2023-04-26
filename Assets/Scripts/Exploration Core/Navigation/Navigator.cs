@@ -12,8 +12,12 @@ public class Navigator : MonoBehaviour
     NavMeshPath Path;
     
     Transform DestinationTransform;
+    Transform TargetTransform;
+
+    Coroutine CombatMoveRoutine;
 
     int TriggerID;
+
 
     // ToDo Add a bool to Movement State delegate for combat move instead of current ugly wiring
     // ToDo Add bool to MoveToLocation to pass from PC to animator
@@ -25,7 +29,7 @@ public class Navigator : MonoBehaviour
     public PathStateDelegate PathProcessed;
     public PathStateDelegate PathPending;
 
-    public bool IsOnCombatMove;
+    public bool OnCombatMove;
 
     private void Awake()
     {
@@ -40,16 +44,18 @@ public class Navigator : MonoBehaviour
         TriggerID = temp.GetInstanceID();
     }
 
-    public void MoveToLocation(Vector3 location)
+    public void MoveToLocation(Vector3 location, bool combatMove = false)
     {
+        if (OnCombatMove != combatMove) OnCombatMove = combatMove;
         Agent.SetDestination(location);
         StartCoroutine(WaitForPathProcessing());
         StartMove?.Invoke();
     }
 
-    public void MoveToLocation(Transform target)
+    public void MoveToLocation(Transform target, bool combatMove = false)
     {
-        MoveToLocation(target.position);
+        TargetTransform = target;
+        MoveToLocation(target.position, combatMove);
     }
 
     public void SetLocation(Vector3 location)
@@ -68,6 +74,15 @@ public class Navigator : MonoBehaviour
         StopMove?.Invoke();
     }
 
+    IEnumerator MaintainCombatMove()
+    {
+        while (OnCombatMove)
+        {
+            yield return null;
+            MoveToLocation(TargetTransform.position, true);
+        }
+    }
+
     IEnumerator WaitForPathProcessing()
     {
         while (Agent.pathPending)
@@ -77,6 +92,16 @@ public class Navigator : MonoBehaviour
 
         DestinationTransform.position = Agent.destination;
         PathProcessed?.Invoke(Agent.destination);
+
+        if (OnCombatMove && CombatMoveRoutine == null)
+        {
+            CombatMoveRoutine = StartCoroutine(MaintainCombatMove());
+        }
+        else if (!OnCombatMove && CombatMoveRoutine != null)
+        {
+            StopCoroutine(CombatMoveRoutine);
+            CombatMoveRoutine = null;
+        }
     }
 
     public void ConfirmPath()
@@ -88,7 +113,6 @@ public class Navigator : MonoBehaviour
         StartMove?.Invoke();
     }
 
-
     public void SetPath(Vector3 location)
     {
         if (Agent.CalculatePath(location, Path))
@@ -97,13 +121,4 @@ public class Navigator : MonoBehaviour
         }
     }
 
-    void SetMoveType(bool combatMove)
-    {
-        IsOnCombatMove = combatMove;
-    }
-
-    public void SubscribeToMoveType(PlayerController player)
-    {
-        player.BattleMovePerformed += SetMoveType;
-    }
 }
