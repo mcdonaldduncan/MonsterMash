@@ -41,16 +41,19 @@ public class BattleMonster : MonoBehaviour
     int ScaledSkill;
 
     // Working values for battle calculations that can be scaled or changed by combat effects
-    [NonSerialized] int CurrentHealth;
-    [NonSerialized] int CurrentAttack;
-    [NonSerialized] int CurrentDefense;
-    [NonSerialized] int CurrentSpAttack;
-    [NonSerialized] int CurrentSpDefense;
-    [NonSerialized] int CurrentSkill;
+    int CurrentHealth;
+    int CurrentAttack;
+    int CurrentDefense;
+    int CurrentSpAttack;
+    int CurrentSpDefense;
+    int CurrentSkill;
 
     // Working values for resource pools
-    [NonSerialized] int CurrentMana;
-    [NonSerialized] int CurrentStamina;
+    int CurrentMana;
+    int CurrentStamina;
+
+    int CurrentManaRegen;
+    int CurrentStaminaRegen;
 
     public BattleAction[] Actions => m_BattleActions;
     public ElementType Type => m_Type;
@@ -63,14 +66,17 @@ public class BattleMonster : MonoBehaviour
     Dictionary<StatType, Func<int>> CurrentStatAccessors;
     Dictionary<StatType, Func<int>> MaxStatAccessors;
     Dictionary<StatType, Func<int>> BaseStatAccessors;
+    Dictionary<ResourceType, Action<int>> ResourceModifiers;
     Dictionary<ResourceType, Func<int>> ResourceAccessors;
 
-    private void Start()
+    private void OnEnable()
     {
-        
+        DetermineScaledValues();
+        InitializeWorkingValues();
+        InitializeModifiersAndAccesors();
     }
 
-    public void AlterStat(StatType type, int delta)
+    public void ModifyStat(StatType type, int delta)
     {
         if (StatModifiers.TryGetValue(type, out var modifyAction))
         {
@@ -81,7 +87,6 @@ public class BattleMonster : MonoBehaviour
             Debug.LogWarning($"Invalid stat type: {type}");
         }
     }
-
 
     public int GetStat(StatType type, TypeModifier modifier = TypeModifier.CURRENT)
     {
@@ -98,6 +103,38 @@ public class BattleMonster : MonoBehaviour
             Debug.LogWarning($"Invalid stat type: {type}");
             return -1;
         }
+    }
+
+    public void ModifyResource(ResourceType type, int delta)
+    {
+        if (ResourceModifiers.TryGetValue(type, out var modifyAction))
+        {
+            modifyAction(delta);
+        }
+        else
+        {
+            Debug.LogWarning($"Invalid resource type: {type}");
+        }
+    }
+
+    public int GetResource(ResourceType type)
+    {
+        if (ResourceAccessors.TryGetValue(type, out var accessorFunc))
+        {
+            return accessorFunc();
+        }
+        else
+        {
+            Debug.LogWarning($"Invalid resource type: {type}");
+            return -1;
+        }
+    }
+
+    public void Regen()
+    {
+        // LOL
+        CurrentMana = CurrentMana < m_BaseMana ? CurrentMana + CurrentManaRegen <= m_BaseMana ? CurrentMana + CurrentManaRegen : m_BaseMana : m_BaseMana;
+        CurrentStamina = CurrentStamina < m_BaseStamina ? CurrentStamina + CurrentStaminaRegen <= m_BaseStamina ? CurrentStamina + CurrentStaminaRegen : m_BaseStamina : m_BaseStamina;
     }
 
     #region Initialization Logic
@@ -167,6 +204,12 @@ public class BattleMonster : MonoBehaviour
             { StatType.SPATTACK, () => m_BaseSpAttack },
             { StatType.SPDEFENSE, () => m_BaseSpDefense },
             { StatType.SKILL, () => m_BaseSkill }
+        };
+
+        ResourceModifiers = new Dictionary<ResourceType, Action<int>>()
+        {
+            {ResourceType.MANA, value => CurrentMana += value },
+            {ResourceType.STAM, value => CurrentStamina += value }
         };
 
         ResourceAccessors = new Dictionary<ResourceType, Func<int>>()
