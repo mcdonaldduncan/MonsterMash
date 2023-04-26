@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowCam : MonoBehaviour
+public class FollowCam : MonoBehaviour, IManageable
 {
     [SerializeField] Transform Target;
     [SerializeField] float MaxRadius;
@@ -20,6 +20,7 @@ public class FollowCam : MonoBehaviour
     float PivotRadius;
     float PivotAngle;
     float HeightOffset;
+    float AngleIncrement;
 
     Vector3 Velocity;
 
@@ -29,23 +30,20 @@ public class FollowCam : MonoBehaviour
 
     Vector3 PivotPoint => new Vector3(Target.position.x, HeightOffset, Target.position.z);
 
-    float AngleIncrement;
-
     float CurrentHeight => transform.position.y;
+
+    public bool IsActive { get; set; }
 
     void Start()
     {
         Player = FindObjectOfType<PlayerController>();
-        PivotRadius = (PivotPoint - transform.position).magnitude;
-        PivotAngle = -Mathf.Acos(transform.position.x / PivotRadius) * Mathf.Rad2Deg;
-        HeightOffset = transform.position.y;
-        Player.RotateCamera += OnRotateCamera;
-        Player.ZoomCamera += OnZoomCamera;
+        SetActive(true);
     }
-
 
     void Update()
     {
+        if (!IsActive) return;
+
         PivotAngle += AngleIncrement * Time.deltaTime;
 
         if (AngleIncrement != 0)
@@ -64,6 +62,24 @@ public class FollowCam : MonoBehaviour
         transform.LookAt(Target);
     }
 
+    void Initialize()
+    {
+        PivotRadius = (PivotPoint - transform.position).magnitude;
+        PivotAngle = -Mathf.Acos(transform.position.x / PivotRadius) * Mathf.Rad2Deg;
+        HeightOffset = transform.position.y;
+        Player.RotateCamera += OnRotateCamera;
+        Player.ZoomCamera += OnZoomCamera;
+    }
+
+    void Sleep()
+    {
+        Player.RotateCamera -= OnRotateCamera;
+        Player.ZoomCamera -= OnZoomCamera;
+
+        OnRotateCamera(0);
+        OnZoomCamera(0);
+    }
+
     void OnRotateCamera(float increment)
     {
         AngleIncrement = increment * RotationSpeed;
@@ -80,6 +96,39 @@ public class FollowCam : MonoBehaviour
         float heightIncrement = PivotRadius > HeightTiltThreshold ? ZoomAxisDiscrepancy + HeightSupplement : ZoomAxisDiscrepancy;
 
         HeightOffset -= increment / Mathf.Abs(increment) * ZoomSpeed * heightIncrement * Time.deltaTime;
+    }
 
+    public void SetActive(bool active)
+    {
+        if (IsActive == active) return;
+
+        IsActive = active;
+
+        if (IsActive) Initialize();
+        else Sleep();
+    }
+
+    public void PrepareTransitions()
+    {
+        TransitionManager.Instance.SubscribeToTransition(GameState.EXPLORATION, Enable);
+        TransitionManager.Instance.SubscribeToTransition(GameState.BATTLE, Disable);
+        TransitionManager.Instance.SubscribeToTransition(GameState.HOME, Disable);
+    }
+
+    public void DisableTransitions()
+    {
+        TransitionManager.Instance.UnsubscribeFromTransition(GameState.EXPLORATION, Enable);
+        TransitionManager.Instance.UnsubscribeFromTransition(GameState.BATTLE, Disable);
+        TransitionManager.Instance.UnsubscribeFromTransition(GameState.HOME, Disable);
+    }
+
+    public void Enable()
+    {
+        SetActive(true);
+    }
+
+    public void Disable()
+    {
+        SetActive(false);
     }
 }
