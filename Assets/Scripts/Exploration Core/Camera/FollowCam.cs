@@ -38,7 +38,9 @@ public class FollowCam : MonoBehaviour, IManageable
     {
         Player = FindObjectOfType<PlayerController>();
         SetActive(true);
+        PrepareTransitions();
     }
+
 
     void Update()
     {
@@ -62,23 +64,7 @@ public class FollowCam : MonoBehaviour, IManageable
         transform.LookAt(Target);
     }
 
-    void Initialize()
-    {
-        PivotRadius = (PivotPoint - transform.position).magnitude;
-        PivotAngle = -Mathf.Acos(transform.position.x / PivotRadius) * Mathf.Rad2Deg;
-        HeightOffset = transform.position.y;
-        Player.RotateCamera += OnRotateCamera;
-        Player.ZoomCamera += OnZoomCamera;
-    }
-
-    void Sleep()
-    {
-        Player.RotateCamera -= OnRotateCamera;
-        Player.ZoomCamera -= OnZoomCamera;
-
-        OnRotateCamera(0);
-        OnZoomCamera(0);
-    }
+    
 
     void OnRotateCamera(float increment)
     {
@@ -106,6 +92,24 @@ public class FollowCam : MonoBehaviour, IManageable
 
         if (IsActive) Initialize();
         else Sleep();
+    }
+
+    public void Initialize()
+    {
+        PivotRadius = (PivotPoint - transform.position).magnitude;
+        PivotAngle = -Mathf.Acos(transform.position.x / PivotRadius) * Mathf.Rad2Deg;
+        HeightOffset = transform.position.y;
+        Player.RotateCamera += OnRotateCamera;
+        Player.ZoomCamera += OnZoomCamera;
+    }
+
+    public void Sleep()
+    {
+        Player.RotateCamera -= OnRotateCamera;
+        Player.ZoomCamera -= OnZoomCamera;
+
+        OnRotateCamera(0);
+        OnZoomCamera(0);
     }
 
     public void PrepareTransitions()

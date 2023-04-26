@@ -5,17 +5,16 @@ using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Navigator))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IManageable
 {
     InputActions InputActions;
     Navigator Navigator;
 
+    public bool IsActive { get; set; }
+
     public delegate void CameraControlDelegate(float increment);
     public event CameraControlDelegate RotateCamera;
     public event CameraControlDelegate ZoomCamera;
-
-    //public delegate void MoveTypeDelegate(bool started);
-    //public event MoveTypeDelegate BattleMovePerformed;
 
     private void OnEnable()
     {
@@ -23,29 +22,18 @@ public class PlayerController : MonoBehaviour
 
         InputActions = new InputActions();
 
-        Cursor.visible = false;
-
-        InputActions.Player.Enable();
-
-
-        InputActions.Player.Select.performed += OnSelect;
-        InputActions.Player.Move.started += OnMove;
-        InputActions.Player.Move.canceled += OnMove;
-
-        InputActions.Player.Scroll.performed += OnScroll;
+        SetActive(true); // ToDo remove once home is developed
+        PrepareTransitions();
     }
 
     private void OnDisable()
     {
-        InputActions.Player.Select.performed -= OnSelect;
-        InputActions.Player.Move.started -= OnMove;
-        InputActions.Player.Move.canceled -= OnMove;
-
-        InputActions.Player.Disable();
+        Sleep();
     }
 
     private void Update()
     {
+        if (!IsActive) return;
         if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit)) return;
         Navigator.SetPath(hit.point);
     }
@@ -86,5 +74,64 @@ public class PlayerController : MonoBehaviour
     private void BattleTransition()
     {
         TransitionManager.Instance.Transition(GameState.BATTLE);
+    }
+
+    public void SetActive(bool active)
+    {
+        if (IsActive == active) return;
+
+        IsActive = active;
+
+        if (IsActive) Initialize();
+        else Sleep();
+    }
+
+    public void Initialize()
+    {
+        Cursor.visible = false;
+
+        InputActions.Player.Enable();
+
+
+        InputActions.Player.Select.performed += OnSelect;
+        InputActions.Player.Move.started += OnMove;
+        InputActions.Player.Move.canceled += OnMove;
+
+        InputActions.Player.Scroll.performed += OnScroll;
+    }
+
+    public void Sleep()
+    {
+        Cursor.visible = true;
+
+        InputActions.Player.Select.performed -= OnSelect;
+        InputActions.Player.Move.started -= OnMove;
+        InputActions.Player.Move.canceled -= OnMove;
+
+        InputActions.Player.Disable();
+    }
+
+    public void PrepareTransitions()
+    {
+        TransitionManager.Instance.SubscribeToTransition(GameState.EXPLORATION, Enable);
+        TransitionManager.Instance.SubscribeToTransition(GameState.BATTLE, Disable);
+        TransitionManager.Instance.SubscribeToTransition(GameState.HOME, Disable);
+    }
+
+    public void DisableTransitions()
+    {
+        TransitionManager.Instance.UnsubscribeFromTransition(GameState.EXPLORATION, Enable);
+        TransitionManager.Instance.UnsubscribeFromTransition(GameState.BATTLE, Disable);
+        TransitionManager.Instance.UnsubscribeFromTransition(GameState.HOME, Disable);
+    }
+
+    public void Enable()
+    {
+        SetActive(true);
+    }
+
+    public void Disable()
+    {
+        SetActive(false);
     }
 }

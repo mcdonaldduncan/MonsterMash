@@ -18,16 +18,18 @@ public class Navigator : MonoBehaviour
 
     int TriggerID;
 
+    Vector3 PreviousTargetPos;
 
     // ToDo Add a bool to Movement State delegate for combat move instead of current ugly wiring
     // ToDo Add bool to MoveToLocation to pass from PC to animator
     public delegate void MovementStateDelegate();
-    public MovementStateDelegate StartMove;
-    public MovementStateDelegate StopMove;
+    public event MovementStateDelegate StartMove;
+    public event MovementStateDelegate StopMove;
 
     public delegate void PathStateDelegate(Vector3 location);
-    public PathStateDelegate PathProcessed;
-    public PathStateDelegate PathPending;
+    public event PathStateDelegate PathProcessed;
+    public event PathStateDelegate PathPending;
+    public event PathStateDelegate PathMaintain;
 
     public bool OnCombatMove;
 
@@ -76,10 +78,13 @@ public class Navigator : MonoBehaviour
 
     IEnumerator MaintainCombatMove()
     {
-        while (OnCombatMove)
+        while (OnCombatMove && Vector3.Distance(PreviousTargetPos, TargetTransform.position) >= .5f)
         {
             yield return null;
-            MoveToLocation(TargetTransform.position, true);
+            PreviousTargetPos = TargetTransform.position;
+            Agent.SetDestination(TargetTransform.position);
+            DestinationTransform.position = Agent.destination;
+            PathMaintain?.Invoke(TargetTransform.position);
         }
     }
 

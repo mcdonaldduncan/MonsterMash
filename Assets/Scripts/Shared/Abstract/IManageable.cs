@@ -8,6 +8,10 @@ public interface IManageable
 
     void SetActive(bool active);
 
+    void Initialize();
+
+    void Sleep();
+
     void PrepareTransitions();
 
     void DisableTransitions();

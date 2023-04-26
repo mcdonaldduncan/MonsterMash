@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Navigator))]
-public class NavigationVFXController : MonoBehaviour
+public class NavigationVFXController : MonoBehaviour, IManageable
 {
     [SerializeField] GameObject DestinationVFX;
     [SerializeField] GameObject DestinationClickVFX;
@@ -18,18 +19,24 @@ public class NavigationVFXController : MonoBehaviour
 
     bool UseBattleIndicator => Navigator?.OnCombatMove ?? false;
 
+    public bool IsActive { get; set; }
+
     private void Start()
     {
         Navigator = GetComponent<Navigator>();
 
-        Navigator.PathProcessed += SpawnVFX;
-        Navigator.StopMove += ReturnVFX;
-        Navigator.PathPending += SetIndicatorLocation;
+        SetActive(true);
+        PrepareTransitions();
     }
 
     void SetIndicatorLocation(Vector3 location)
     {
         PendingVFX.transform.position = location;
+    }
+
+    void MaintainBattleIndicator(Vector3 location)
+    {
+        if (UseBattleIndicator && DestinationVFXInstance != null) DestinationVFXInstance.transform.position = location;
     }
 
     void SpawnVFX(Vector3 location)
@@ -62,4 +69,51 @@ public class NavigationVFXController : MonoBehaviour
         PendingVFX.SetActive(!PendingVFX.activeSelf);
     }
 
+    public void SetActive(bool active)
+    {
+        if (IsActive == active) return;
+
+        IsActive = active;
+
+        if (IsActive) Initialize();
+        else Sleep();
+    }
+
+    public void Initialize()
+    {
+        PendingVFX?.SetActive(true);
+
+        Navigator.PathProcessed += SpawnVFX;
+        Navigator.StopMove += ReturnVFX;
+        Navigator.PathPending += SetIndicatorLocation;
+    }
+
+    public void Sleep()
+    {
+        PendingVFX?.SetActive(false);
+    }
+
+    public void PrepareTransitions()
+    {
+        TransitionManager.Instance.SubscribeToTransition(GameState.EXPLORATION, Enable);
+        TransitionManager.Instance.SubscribeToTransition(GameState.BATTLE, Disable);
+        TransitionManager.Instance.SubscribeToTransition(GameState.HOME, Disable);
+    }
+
+    public void DisableTransitions()
+    {
+        TransitionManager.Instance.UnsubscribeFromTransition(GameState.EXPLORATION, Enable);
+        TransitionManager.Instance.UnsubscribeFromTransition(GameState.BATTLE, Disable);
+        TransitionManager.Instance.UnsubscribeFromTransition(GameState.HOME, Disable);
+    }
+
+    public void Enable()
+    {
+        SetActive(true);
+    }
+
+    public void Disable()
+    {
+        SetActive(false);
+    }
 }
