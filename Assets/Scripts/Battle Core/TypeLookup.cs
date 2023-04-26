@@ -7,7 +7,7 @@ public class TypeLookup
 {
     public static Dictionary<(ElementType, ElementType), float> Lookup;
 
-    // This is temporary and all types do even damage, will change to be loaded via file
+    // ToDo Change to load via file
     public static void Init()
     {
         Lookup = new Dictionary<(ElementType, ElementType), float>();
@@ -30,11 +30,3 @@ public class TypeLookup
 
 }
 
-
-public enum ElementType
-{
-    GRASS,
-    WATER,
-    FIRE,
-    SHADOW
-}

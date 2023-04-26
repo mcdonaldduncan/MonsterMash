@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TransitionManager : Singleton<TransitionManager>
 {
@@ -14,7 +15,19 @@ public class TransitionManager : Singleton<TransitionManager>
     public override void Awake()
     { 
         base.Awake();
+        
+        CleanTransitions();
 
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        CleanTransitions();
+    }
+
+    void CleanTransitions()
+    {
         m_TransitionActions = new Dictionary<GameState, TransitionDelegate>();
 
         foreach (GameState state in Enum.GetValues(typeof(GameState)))
@@ -69,9 +82,4 @@ public class TransitionManager : Singleton<TransitionManager>
 
 }
 
-public enum GameState
-{
-    EXPLORATION,
-    BATTLE,
-    HOME
-}
+

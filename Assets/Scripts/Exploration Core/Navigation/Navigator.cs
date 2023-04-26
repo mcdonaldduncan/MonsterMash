@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,7 +32,7 @@ public class Navigator : MonoBehaviour
     public event PathStateDelegate PathPending;
     public event PathStateDelegate PathMaintain;
 
-    public bool OnCombatMove;
+    [NonSerialized] public bool OnCombatMove;
 
     private void Awake()
     {

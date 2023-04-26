@@ -92,7 +92,6 @@ public class PlayerController : MonoBehaviour, IManageable
 
         InputActions.Player.Enable();
 
-
         InputActions.Player.Select.performed += OnSelect;
         InputActions.Player.Move.started += OnMove;
         InputActions.Player.Move.canceled += OnMove;

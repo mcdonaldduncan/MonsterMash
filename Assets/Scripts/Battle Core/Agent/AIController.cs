@@ -25,7 +25,7 @@ public class AIController : MonoBehaviour
         if (m_Monster.Actions.Length == 1) return m_Monster.Actions[0];
 
 
-        if(m_Monster.CurrentHealth > 0)
+        if(m_Monster.GetStat(StatType.HEALTH) > 0)
         {
 
         }
