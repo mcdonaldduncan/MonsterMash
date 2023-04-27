@@ -6,7 +6,21 @@ using UnityEngine.SceneManagement;
 
 public class TransitionManager : Singleton<TransitionManager>
 {
-    [SerializeField] GameState m_GameState;
+    public GameState GameState { get => m_GameState; }
+
+    GameState m_GameState
+    {
+        get
+        {
+            return m_GameState;
+        }
+
+        set
+        {
+            m_GameState = value;
+            HandleTransition();
+        }
+    }
 
     public delegate void TransitionDelegate();
 
@@ -41,7 +55,6 @@ public class TransitionManager : Singleton<TransitionManager>
         if (m_GameState == newState) return;
 
         m_GameState = newState;
-        HandleTransition();
     }
 
     public void SubscribeToTransition(GameState gameState, TransitionDelegate method)

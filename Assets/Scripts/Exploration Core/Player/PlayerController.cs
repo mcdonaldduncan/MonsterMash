@@ -24,11 +24,26 @@ public class PlayerController : MonoBehaviour, IManageable
 
         SetActive(true); // ToDo remove once home is developed
         PrepareTransitions();
+
+        InputActions.Player.Select.performed += OnSelect;
+        InputActions.Player.Move.started += OnMove;
+        InputActions.Player.Move.canceled += OnMove;
+
+        InputActions.Player.Scroll.performed += OnScroll;
     }
 
     private void OnDisable()
     {
         Sleep();
+    }
+
+    private void OnDestroy()
+    {
+        InputActions.Player.Select.performed -= OnSelect;
+        InputActions.Player.Move.started -= OnMove;
+        InputActions.Player.Move.canceled -= OnMove;
+
+        InputActions.Player.Scroll.performed -= OnScroll;
     }
 
     private void Update()
@@ -91,21 +106,11 @@ public class PlayerController : MonoBehaviour, IManageable
         Cursor.visible = false;
 
         InputActions.Player.Enable();
-
-        InputActions.Player.Select.performed += OnSelect;
-        InputActions.Player.Move.started += OnMove;
-        InputActions.Player.Move.canceled += OnMove;
-
-        InputActions.Player.Scroll.performed += OnScroll;
     }
 
     public void Sleep()
     {
         Cursor.visible = true;
-
-        InputActions.Player.Select.performed -= OnSelect;
-        InputActions.Player.Move.started -= OnMove;
-        InputActions.Player.Move.canceled -= OnMove;
 
         InputActions.Player.Disable();
     }

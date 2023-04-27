@@ -21,7 +21,6 @@ public class LocomotionAnimator : MonoBehaviour
         Navigator.StopMove += OnStopMove;
     }
 
-
     public void OnStartMove()
     {
         Animator.SetBool(IsMoving, true);
