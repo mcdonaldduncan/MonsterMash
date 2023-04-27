@@ -208,8 +208,9 @@ public class BattleMonster : MonoBehaviour
 
         ResourceModifiers = new Dictionary<ResourceType, Action<int>>()
         {
-            {ResourceType.MANA, value => CurrentMana += value },
-            {ResourceType.STAM, value => CurrentStamina += value }
+            // Evil laugh
+            {ResourceType.MANA, value => CurrentMana = CurrentMana + value <= m_BaseMana && CurrentMana + value >= 0 ? CurrentMana + value : CurrentMana + value <= 0 ? 0 : m_BaseMana },
+            {ResourceType.STAM, value => CurrentStamina =  CurrentStamina + value <= m_BaseStamina && CurrentStamina + value >= 0 ? CurrentStamina + value : CurrentStamina + value <= 0 ? 0 : m_BaseStamina }
         };
 
         ResourceAccessors = new Dictionary<ResourceType, Func<int>>()
