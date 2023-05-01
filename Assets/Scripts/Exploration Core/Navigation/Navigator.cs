@@ -21,8 +21,6 @@ public class Navigator : MonoBehaviour
 
     Vector3 PreviousTargetPos;
 
-    // ToDo Add a bool to Movement State delegate for combat move instead of current ugly wiring
-    // ToDo Add bool to MoveToLocation to pass from PC to animator
     public delegate void MovementStateDelegate();
     public event MovementStateDelegate StartMove;
     public event MovementStateDelegate StopMove;
