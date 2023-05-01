@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BattleAction : MonoBehaviour, IAction
+public abstract class BattleAction : IAction
 {
     [SerializeField] string m_Name;
     [SerializeField] int m_Cost;

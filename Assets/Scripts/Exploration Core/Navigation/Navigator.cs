@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Rigidbody))]
 public class Navigator : MonoBehaviour
 {
     [SerializeField] GameObject DestinationTrigger;
@@ -71,7 +72,7 @@ public class Navigator : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (!(other.gameObject.GetInstanceID() == TriggerID)) return;
+        if (other.gameObject.GetInstanceID() != TriggerID) return;
         StopMove?.Invoke();
     }
 
