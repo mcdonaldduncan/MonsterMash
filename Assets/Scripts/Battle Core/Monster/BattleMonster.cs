@@ -84,7 +84,7 @@ public class BattleMonster : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Invalid stat type: {type}");
+            Utility.LogWarning($"Invalid stat type: {type}");
         }
     }
 
@@ -100,7 +100,7 @@ public class BattleMonster : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Invalid stat type: {type}");
+            Utility.LogWarning($"Invalid stat type: {type}");
             return -1;
         }
     }
@@ -113,7 +113,7 @@ public class BattleMonster : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Invalid resource type: {type}");
+            Utility.LogWarning($"Invalid resource type: {type}");
         }
     }
 
@@ -125,7 +125,7 @@ public class BattleMonster : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Invalid resource type: {type}");
+            Utility.LogWarning($"Invalid resource type: {type}");
             return -1;
         }
     }

@@ -65,7 +65,7 @@ public class TransitionManager : Singleton<TransitionManager>
         }
         else
         {
-            Debug.LogWarning($"No transition action found for game state: {gameState}");
+            Utility.LogWarning($"No transition action found for game state: {gameState}");
         }
     }
 
@@ -77,7 +77,7 @@ public class TransitionManager : Singleton<TransitionManager>
         }
         else
         {
-            Debug.LogWarning($"No transition action found for game state: {gameState}");
+            Utility.LogWarning($"No transition action found for game state: {gameState}");
         }
     }
 
@@ -89,7 +89,7 @@ public class TransitionManager : Singleton<TransitionManager>
         }
         else
         {
-            Debug.LogWarning($"Invalid Transition Request");
+            Utility.LogWarning($"Invalid Transition Request");
         }
     }
 
