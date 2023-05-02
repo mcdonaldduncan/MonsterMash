@@ -84,7 +84,7 @@ public class BattleMonster : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Invalid stat type: {type}");
+            Utility.LogWarning($"Invalid stat type: {type}");
         }
     }
 
@@ -100,7 +100,7 @@ public class BattleMonster : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Invalid stat type: {type}");
+            Utility.LogWarning($"Invalid stat type: {type}");
             return -1;
         }
     }
@@ -113,7 +113,7 @@ public class BattleMonster : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Invalid resource type: {type}");
+            Utility.LogWarning($"Invalid resource type: {type}");
         }
     }
 
@@ -125,7 +125,7 @@ public class BattleMonster : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Invalid resource type: {type}");
+            Utility.LogWarning($"Invalid resource type: {type}");
             return -1;
         }
     }
@@ -150,17 +150,20 @@ public class BattleMonster : MonoBehaviour
 
         CurrentMana = m_BaseMana;
         CurrentStamina = m_BaseStamina;
+
+        CurrentManaRegen = m_BaseManaRegen;
+        CurrentStaminaRegen = m_BaseStaminaRegen;
     }
 
     void DetermineScaledValues()
     {
         // ToDo Not sure yet how to handle level scaling, work up a model to finalize
-        ScaledHealth = 100;
-        ScaledAttack = 10;
-        ScaledDefense = 10;
-        ScaledSpAttack = 10;
-        ScaledSpDefense = 10;
-        ScaledSkill = 10;
+        ScaledHealth = m_BaseHealth * m_ExpLevel;
+        ScaledAttack = m_BaseAttack * m_ExpLevel;
+        ScaledDefense = m_BaseDefense * m_ExpLevel;
+        ScaledSpAttack = m_BaseSpAttack * m_ExpLevel;
+        ScaledSpDefense = m_BaseSpDefense * m_ExpLevel;
+        ScaledSkill = m_BaseSkill * m_ExpLevel;
     }
 
 

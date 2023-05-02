@@ -39,3 +39,13 @@ public enum ResourceType
     MANA,
     STAM
 }
+
+public enum AgentState
+{
+    WANDER,
+    CHASE,
+    IDLE,
+    SEARCH,
+    FLEE
+
+}

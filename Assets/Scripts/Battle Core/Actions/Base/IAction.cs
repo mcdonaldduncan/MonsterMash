@@ -15,19 +15,3 @@ public interface IAction
     public void Invoke(BattleMonster invoker, BattleMonster target);
 
 }
-
-
-//public enum ActionModifier
-//{
-//    ATK,
-//    SPATK,
-//    SKL
-//}
-
-//public enum ActionType
-//{
-//    GRASS,
-//    WATER,
-//    FIRE,
-//    SHADOW
-//}

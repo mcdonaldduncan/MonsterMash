@@ -64,8 +64,6 @@ public class FollowCam : MonoBehaviour, IManageable
         transform.LookAt(Target);
     }
 
-    
-
     void OnRotateCamera(float increment)
     {
         AngleIncrement = increment * RotationSpeed;
