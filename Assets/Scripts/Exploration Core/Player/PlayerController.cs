@@ -27,7 +27,6 @@ public class PlayerController : MonoBehaviour, IManageable
         InputActions = new InputActions();
 
         SetActive(true); // ToDo remove once home is developed
-        PrepareTransitions();
 
         InputActions.Player.Select.performed += OnSelect;
         InputActions.Player.Move.started += OnMove;
@@ -36,6 +35,10 @@ public class PlayerController : MonoBehaviour, IManageable
         InputActions.Player.Scroll.performed += OnScroll;
     }
 
+    private void Start()
+    {
+        PrepareTransitions();
+    }
 
     private void OnDestroy()
     {
@@ -77,11 +80,11 @@ public class PlayerController : MonoBehaviour, IManageable
         if (Hit.collider.gameObject.CompareTag("Enemy"))
         {
             Navigator.MoveToLocation(Hit.collider.gameObject.transform, true);
-            //Navigator.StopMove += BattleTransition;
+            Navigator.StopMove += BattleTransition;
         }
         else
         {
-            //Navigator.StopMove -= BattleTransition;
+            Navigator.StopMove -= BattleTransition;
             Navigator.MoveToLocation(Hit.point);
         }
     }
@@ -114,7 +117,6 @@ public class PlayerController : MonoBehaviour, IManageable
 
         InputActions.Player.Disable();
 
-        // ToDo Figure out why this is not working
         Navigator.Sleep();
     }
 

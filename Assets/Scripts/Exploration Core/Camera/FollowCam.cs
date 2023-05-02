@@ -42,7 +42,6 @@ public class FollowCam : MonoBehaviour, IManageable
         PrepareTransitions();
     }
 
-
     void Update()
     {
         if (!IsActive) return;

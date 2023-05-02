@@ -80,7 +80,7 @@ public class TransitionManager : Singleton<TransitionManager>
 
     private void HandleTransition()
     {
-        if (m_TransitionActions.TryGetValue(GameState, out TransitionDelegate transition))
+        if (m_TransitionActions.TryGetValue(m_GameState, out TransitionDelegate transition))
         {
             transition?.Invoke();
         }

@@ -49,11 +49,12 @@ public class Navigator : MonoBehaviour
 
     public void MoveToLocation(Vector3 location, bool combatMove = false)
     {
-        if (Agent.isStopped) Agent.isStopped = false;
         if (OnCombatMove != combatMove) OnCombatMove = combatMove;
-        Agent.SetDestination(location);
         if (PathPendingRoutine != null) StopCoroutine(PathPendingRoutine);
+
+        Agent.SetDestination(location);
         PathPendingRoutine = StartCoroutine(WaitForPathProcessing());
+
         StartMove?.Invoke();
     }
 
@@ -129,7 +130,7 @@ public class Navigator : MonoBehaviour
 
     public void Sleep()
     {
-        Agent.isStopped = true;
+        Agent.ResetPath();
         StopMove?.Invoke();
     }
 }
