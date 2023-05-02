@@ -26,8 +26,6 @@ public class AINavigationController : MonoBehaviour
 
     bool shouldWander => Time.time >= m_CurrentWanderInterval + m_LastWanderTime;
 
-    int count;
-    int actual;
 
     void Start()
     {
@@ -40,11 +38,6 @@ public class AINavigationController : MonoBehaviour
         PerformAction();
     }
 
-    //private void Update()
-    //{
-    //    PerformAction();
-    //}
-
     void PerformAction()
     {
         if (m_AgentActions.TryGetValue(m_AgentState, out AgentDecisionDelegate action))
@@ -54,21 +47,6 @@ public class AINavigationController : MonoBehaviour
         else
         {
             Utility.LogWarning($"AgentState {m_AgentState} has no actions defined");
-        }
-    }
-
-    private void LateUpdate()
-    {
-        if (count != 0)
-        {
-            Debug.Log(count);
-            count = 0;
-        }
-
-        if (actual != 0)
-        {
-            Debug.Log(actual);
-            actual = 0;
         }
     }
 
@@ -85,10 +63,8 @@ public class AINavigationController : MonoBehaviour
         while (!shouldWander)
         {
             yield return null;
-            count++;
         }
 
-        actual++;
         m_Navigator.MoveToLocation(RandomPosInSphere(transform.position, m_MaxWanderDistance, NavMesh.AllAreas) ?? m_StartingPosition);
         m_Navigator.StopMove += PerformAction;
 

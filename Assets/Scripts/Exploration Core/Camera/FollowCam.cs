@@ -16,6 +16,7 @@ public class FollowCam : MonoBehaviour, IManageable
     [SerializeField] float HeightTiltThreshold;
     [SerializeField] float HeightSupplement;
     [SerializeField] float MaxHeight;
+    [SerializeField] float MinHeight;
 
     float PivotRadius;
     float PivotAngle;
@@ -71,15 +72,19 @@ public class FollowCam : MonoBehaviour, IManageable
 
     void OnZoomCamera(float increment)
     {
-        if (increment > 0 && PivotRadius <= MinRadius) return;
-        if (increment < 0 && (PivotRadius >= MaxRadius || CurrentHeight >= MaxHeight)) return;
+        if ((increment < 0 && PivotRadius <= MaxRadius) || (increment > 0 && PivotRadius >= MinRadius))
+        {
+            PivotRadius -= increment / Mathf.Abs(increment) * ZoomSpeed * Time.deltaTime;
+        }
 
-        PivotRadius -= increment / Mathf.Abs(increment) * ZoomSpeed * Time.deltaTime;
+        if ((increment > 0 && HeightOffset >= MinHeight) || (increment < 0 && HeightOffset <= MaxHeight))
+        {
+            float heightIncrement = HeightOffset > HeightTiltThreshold ? ZoomAxisDiscrepancy + HeightSupplement : ZoomAxisDiscrepancy;
+            HeightOffset -= increment / Mathf.Abs(increment) * ZoomSpeed * heightIncrement * Time.deltaTime;
+        }
 
-
-        float heightIncrement = PivotRadius > HeightTiltThreshold ? ZoomAxisDiscrepancy + HeightSupplement : ZoomAxisDiscrepancy;
-
-        HeightOffset -= increment / Mathf.Abs(increment) * ZoomSpeed * heightIncrement * Time.deltaTime;
+        HeightOffset = Mathf.Clamp(HeightOffset, MinHeight, MaxHeight);
+        PivotRadius = Mathf.Clamp(PivotRadius, MinRadius, MaxRadius);
     }
 
     public void SetActive(bool active)

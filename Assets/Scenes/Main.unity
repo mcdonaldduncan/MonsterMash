@@ -1269,7 +1269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 1179466086}
-  MaxRadius: 20
+  MaxRadius: 8
   MinRadius: 2
   RotationSpeed: 90
   ZoomSpeed: 60
@@ -1277,9 +1277,10 @@ MonoBehaviour:
   RotationAcceleration: 30
   MaxRotationSpeed: 260
   ZoomAxisDiscrepancy: 0.5
-  HeightTiltThreshold: 6
+  HeightTiltThreshold: 7
   HeightSupplement: 1.5
-  MaxHeight: 20
+  MaxHeight: 10
+  MinHeight: 1.5
 --- !u!54 &330585549
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2160,7 +2161,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!1 &521723958 stripped
 GameObject:
@@ -2743,12 +2744,12 @@ PrefabInstance:
     - target: {fileID: 5366632779147598302, guid: 16073f278bf291241bbeeb493389a4b1,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5366632779147598302, guid: 16073f278bf291241bbeeb493389a4b1,
         type: 3}
       propertyPath: m_TagString
-      value: Enemy
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16073f278bf291241bbeeb493389a4b1, type: 3}
@@ -3777,7 +3778,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1023938175
 Transform:
   m_ObjectHideFlags: 0
@@ -3844,7 +3845,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!136 &1023938179
 CapsuleCollider:
@@ -4812,17 +4813,17 @@ PrefabInstance:
     - target: {fileID: 5366632779147167230, guid: aa32d964ef4496549b4779c42dc7900f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 16.94
+      value: 1.44
       objectReference: {fileID: 0}
     - target: {fileID: 5366632779147167230, guid: aa32d964ef4496549b4779c42dc7900f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0.76
       objectReference: {fileID: 0}
     - target: {fileID: 5366632779147167230, guid: aa32d964ef4496549b4779c42dc7900f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 26.57
+      value: 49.3
       objectReference: {fileID: 0}
     - target: {fileID: 5366632779147167230, guid: aa32d964ef4496549b4779c42dc7900f,
         type: 3}
@@ -4867,7 +4868,7 @@ PrefabInstance:
     - target: {fileID: 5366632779147598302, guid: aa32d964ef4496549b4779c42dc7900f,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5366632779147598302, guid: aa32d964ef4496549b4779c42dc7900f,
         type: 3}
@@ -5179,7 +5180,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!136 &1787450735
 CapsuleCollider:

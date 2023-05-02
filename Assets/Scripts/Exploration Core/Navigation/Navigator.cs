@@ -76,6 +76,14 @@ public class Navigator : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.GetInstanceID() != TriggerID) return;
+
+        if (OnCombatMove && CombatMoveRoutine != null)
+        {
+            OnCombatMove = false;
+            StopCoroutine(CombatMoveRoutine);
+            CombatMoveRoutine = null;
+        }
+
         StopMove?.Invoke();
     }
 

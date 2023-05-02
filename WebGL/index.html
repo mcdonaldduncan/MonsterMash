@@ -9,7 +9,7 @@
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=1080 height=810></canvas>
+      <canvas id="unity-canvas" width=1080 height=620></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -56,13 +56,13 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/Build.loader.js";
+      var loaderUrl = buildUrl + "/WebGL.loader.js";
       var config = {
-        dataUrl: buildUrl + "/Build.data",
-        frameworkUrl: buildUrl + "/Build.framework.js",
-        codeUrl: buildUrl + "/Build.wasm",
+        dataUrl: buildUrl + "/WebGL.data",
+        frameworkUrl: buildUrl + "/WebGL.framework.js",
+        codeUrl: buildUrl + "/WebGL.wasm",
         streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
+        companyName: "DuncanMcD",
         productName: "MonsterMash",
         productVersion: "0.1.0",
         showBanner: unityShowBanner,
@@ -94,7 +94,7 @@
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
 
         canvas.style.width = "1080px";
-        canvas.style.height = "810px";
+        canvas.style.height = "620px";
       }
 
       loadingBar.style.display = "block";

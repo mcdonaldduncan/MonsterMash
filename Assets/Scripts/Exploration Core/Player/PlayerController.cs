@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour, IManageable
     InputActions InputActions;
     Navigator Navigator;
 
+    RaycastHit Hit;
+    Camera MainCamera;
+
     public bool IsActive { get; set; }
 
     public delegate void CameraControlDelegate(float increment);
@@ -18,6 +21,7 @@ public class PlayerController : MonoBehaviour, IManageable
 
     private void OnEnable()
     {
+        MainCamera = Camera.main;
         Navigator = GetComponent<Navigator>();
 
         InputActions = new InputActions();
@@ -45,7 +49,7 @@ public class PlayerController : MonoBehaviour, IManageable
     private void Update()
     {
         if (!IsActive) return;
-        if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit)) return;
+        if (!Physics.Raycast(MainCamera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit)) return;
         Navigator.SetPath(hit.point);
     }
 
@@ -68,17 +72,17 @@ public class PlayerController : MonoBehaviour, IManageable
 
     public void OnSelect(InputAction.CallbackContext context)
     {
-        if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit)) return;
+        if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out Hit)) return;
 
-        if (hit.collider.gameObject.CompareTag("Enemy"))
+        if (Hit.collider.gameObject.CompareTag("Enemy"))
         {
-            Navigator.MoveToLocation(hit.collider.gameObject.transform, true);
-            Navigator.StopMove += BattleTransition;
+            Navigator.MoveToLocation(Hit.collider.gameObject.transform, true);
+            //Navigator.StopMove += BattleTransition;
         }
         else
         {
-            Navigator.StopMove -= BattleTransition;
-            Navigator.MoveToLocation(hit.point);
+            //Navigator.StopMove -= BattleTransition;
+            Navigator.MoveToLocation(Hit.point);
         }
     }
 
