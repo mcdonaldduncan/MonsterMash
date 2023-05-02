@@ -110,6 +110,7 @@ public class PlayerController : MonoBehaviour, IManageable
 
         InputActions.Player.Disable();
 
+        // ToDo Figure out why this is not working
         Navigator.Sleep();
     }
 
