@@ -17,10 +17,9 @@ public class Navigator : MonoBehaviour
     Transform TargetTransform;
 
     Coroutine CombatMoveRoutine;
+    Coroutine PathPendingRoutine;
 
     int TriggerID;
-
-    Vector3 PreviousTargetPos;
 
     public delegate void MovementStateDelegate();
     public event MovementStateDelegate StartMove;
@@ -50,9 +49,11 @@ public class Navigator : MonoBehaviour
 
     public void MoveToLocation(Vector3 location, bool combatMove = false)
     {
+        if (Agent.isStopped) Agent.isStopped = false;
         if (OnCombatMove != combatMove) OnCombatMove = combatMove;
         Agent.SetDestination(location);
-        StartCoroutine(WaitForPathProcessing());
+        if (PathPendingRoutine != null) StopCoroutine(PathPendingRoutine);
+        PathPendingRoutine = StartCoroutine(WaitForPathProcessing());
         StartMove?.Invoke();
     }
 
@@ -83,7 +84,6 @@ public class Navigator : MonoBehaviour
         while (OnCombatMove)
         {
             yield return null;
-            PreviousTargetPos = TargetTransform.position;
             Agent.SetDestination(TargetTransform.position);
             DestinationTransform.position = Agent.destination;
             PathMaintain?.Invoke(TargetTransform.position);
@@ -111,15 +111,6 @@ public class Navigator : MonoBehaviour
         }
     }
 
-    public void ConfirmPath()
-    {
-        if (Path == null) return;
-
-        Agent.SetPath(Path);
-        StartCoroutine(WaitForPathProcessing());
-        StartMove?.Invoke();
-    }
-
     public void SetPath(Vector3 location)
     {
         if (Agent.CalculatePath(location, Path))
@@ -128,4 +119,9 @@ public class Navigator : MonoBehaviour
         }
     }
 
+    public void Sleep()
+    {
+        Agent.isStopped = true;
+        StopMove?.Invoke();
+    }
 }

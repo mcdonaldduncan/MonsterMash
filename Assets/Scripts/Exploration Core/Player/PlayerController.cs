@@ -32,10 +32,6 @@ public class PlayerController : MonoBehaviour, IManageable
         InputActions.Player.Scroll.performed += OnScroll;
     }
 
-    private void OnDisable()
-    {
-        Sleep();
-    }
 
     private void OnDestroy()
     {
@@ -113,6 +109,8 @@ public class PlayerController : MonoBehaviour, IManageable
         Cursor.visible = true;
 
         InputActions.Player.Disable();
+
+        Navigator.Sleep();
     }
 
     public void PrepareTransitions()

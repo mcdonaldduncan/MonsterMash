@@ -15,6 +15,8 @@ public class AINavigationController : MonoBehaviour
 
     Vector3 m_StartingPosition;
 
+    Coroutine m_WanderRoutine;
+
     float m_LastWanderTime;
     float m_CurrentWanderInterval;
 
@@ -24,6 +26,9 @@ public class AINavigationController : MonoBehaviour
 
     bool shouldWander => Time.time >= m_CurrentWanderInterval + m_LastWanderTime;
 
+    int count;
+    int actual;
+
     void Start()
     {
         SetupActions();
@@ -32,13 +37,13 @@ public class AINavigationController : MonoBehaviour
         m_AgentState = m_StartingState;
         m_StartingPosition = transform.position;
 
-        //PerformAction();
-    }
-
-    private void Update()
-    {
         PerformAction();
     }
+
+    //private void Update()
+    //{
+    //    PerformAction();
+    //}
 
     void PerformAction()
     {
@@ -52,14 +57,40 @@ public class AINavigationController : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+        if (count != 0)
+        {
+            Debug.Log(count);
+            count = 0;
+        }
+
+        if (actual != 0)
+        {
+            Debug.Log(actual);
+            actual = 0;
+        }
+    }
+
     #region Action Definitions
 
     void Wander()
     {
-        if (!shouldWander) return;
+        if (m_WanderRoutine != null) StopCoroutine(m_WanderRoutine);
+        m_WanderRoutine = StartCoroutine(WanderRoutine());
+    }
 
+    IEnumerator WanderRoutine()
+    {
+        while (!shouldWander)
+        {
+            yield return null;
+            count++;
+        }
+
+        actual++;
         m_Navigator.MoveToLocation(RandomPosInSphere(transform.position, m_MaxWanderDistance, NavMesh.AllAreas) ?? m_StartingPosition);
-        //m_Navigator.StopMove += PerformAction;
+        m_Navigator.StopMove += PerformAction;
 
         m_LastWanderTime = Time.time;
         m_CurrentWanderInterval = Random.Range(0, m_WanderInterval);

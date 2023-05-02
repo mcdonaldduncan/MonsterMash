@@ -8,7 +8,7 @@ public class TransitionManager : Singleton<TransitionManager>
 {
     GameState m_GameState;
 
-    GameState State
+    public GameState GameState
     {
         get => m_GameState;
 
@@ -49,9 +49,9 @@ public class TransitionManager : Singleton<TransitionManager>
 
     public void Transition(GameState newState)
     {
-        if (State == newState) return;
+        if (GameState == newState) return;
 
-        State = newState;
+        GameState = newState;
     }
 
     public void SubscribeToTransition(GameState gameState, TransitionDelegate method)
@@ -80,7 +80,7 @@ public class TransitionManager : Singleton<TransitionManager>
 
     private void HandleTransition()
     {
-        if (m_TransitionActions.TryGetValue(State, out TransitionDelegate transition))
+        if (m_TransitionActions.TryGetValue(GameState, out TransitionDelegate transition))
         {
             transition?.Invoke();
         }
