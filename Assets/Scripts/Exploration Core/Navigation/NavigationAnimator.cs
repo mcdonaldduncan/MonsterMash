@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Navigator))]
-public class LocomotionAnimator : MonoBehaviour
+public class NavigationAnimator : MonoBehaviour
 {
     Animator Animator;
     Navigator Navigator;

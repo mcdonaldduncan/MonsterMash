@@ -37,6 +37,8 @@ public class Navigator : MonoBehaviour
     {
         Agent = GetComponent<NavMeshAgent>();
         Path = new NavMeshPath();
+
+        GetComponent<Rigidbody>().freezeRotation = true;
     }
 
     private void OnEnable()
@@ -78,7 +80,7 @@ public class Navigator : MonoBehaviour
 
     IEnumerator MaintainCombatMove()
     {
-        while (OnCombatMove && Vector3.Distance(PreviousTargetPos, TargetTransform.position) >= .5f)
+        while (OnCombatMove)
         {
             yield return null;
             PreviousTargetPos = TargetTransform.position;

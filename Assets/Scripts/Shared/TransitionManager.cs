@@ -6,14 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class TransitionManager : Singleton<TransitionManager>
 {
-    public GameState GameState { get => m_GameState; }
+    GameState m_GameState;
 
-    GameState m_GameState
+    GameState State
     {
-        get
-        {
-            return m_GameState;
-        }
+        get => m_GameState;
 
         set
         {
@@ -52,9 +49,9 @@ public class TransitionManager : Singleton<TransitionManager>
 
     public void Transition(GameState newState)
     {
-        if (m_GameState == newState) return;
+        if (State == newState) return;
 
-        m_GameState = newState;
+        State = newState;
     }
 
     public void SubscribeToTransition(GameState gameState, TransitionDelegate method)
@@ -83,7 +80,7 @@ public class TransitionManager : Singleton<TransitionManager>
 
     private void HandleTransition()
     {
-        if (m_TransitionActions.TryGetValue(m_GameState, out TransitionDelegate transition))
+        if (m_TransitionActions.TryGetValue(State, out TransitionDelegate transition))
         {
             transition?.Invoke();
         }

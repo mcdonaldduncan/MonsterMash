@@ -76,8 +76,8 @@ public class PlayerController : MonoBehaviour, IManageable
 
         if (hit.collider.gameObject.CompareTag("Enemy"))
         {
-            Navigator.StopMove += BattleTransition;
             Navigator.MoveToLocation(hit.collider.gameObject.transform, true);
+            Navigator.StopMove += BattleTransition;
         }
         else
         {

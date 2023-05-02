@@ -86,6 +86,7 @@ public class NavigationVFXController : MonoBehaviour, IManageable
         Navigator.PathProcessed += SpawnVFX;
         Navigator.StopMove += ReturnVFX;
         Navigator.PathPending += SetIndicatorLocation;
+        Navigator.PathMaintain += MaintainBattleIndicator;
     }
 
     public void Sleep()
