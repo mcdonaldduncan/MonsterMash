@@ -5,39 +5,41 @@ using UnityEngine;
 public class FollowCam : MonoBehaviour, IManageable
 {
     [SerializeField] Transform Target;
-    [SerializeField] float MaxRadius;
-    [SerializeField] float MinRadius;
-    [SerializeField] float RotationSpeed;
-    [SerializeField] float ZoomSpeed;
-    [SerializeField] float SmoothTime;
-    [SerializeField] float RotationAcceleration;
-    [SerializeField] float MaxRotationSpeed;
-    [SerializeField] float ZoomAxisDiscrepancy;
-    [SerializeField] float HeightTiltThreshold;
-    [SerializeField] float HeightSupplement;
-    [SerializeField] float MaxHeight;
-    [SerializeField] float MinHeight;
+    [SerializeField] float m_MaxRadius;
+    [SerializeField] float m_MinRadius;
+    [SerializeField] float m_RotationSpeed;
+    [SerializeField] float m_ZoomSpeed;
+    [SerializeField] float m_SmoothTime;
+    [SerializeField] float m_RotationAcceleration;
+    [SerializeField] float m_MaxRotationSpeed;
+    [SerializeField] float m_ZoomAxisDiscrepancy;
+    [SerializeField] float m_HeightTiltThreshold;
+    [SerializeField] float m_HeightSupplement;
+    [SerializeField] float m_MaxHeight;
+    [SerializeField] float m_MinHeight;
 
-    float PivotRadius;
-    float PivotAngle;
-    float HeightOffset;
-    float AngleIncrement;
+    float m_PivotRadius;
+    float m_PivotAngle;
+    float m_HeightOffset;
+    float m_AngleIncrement;
 
-    Vector3 Velocity;
+    Vector3 m_Velocity;
 
-    Vector3 IntermediaryPosition;
+    Vector3 m_IntermediaryPosition;
 
-    PlayerController Player;
+    PlayerController m_Player;
+    Transform m_Transform;
 
-    Vector3 PivotPoint => new Vector3(Target.position.x, HeightOffset, Target.position.z);
+    Vector3 pivotPoint => new Vector3(Target.position.x, m_HeightOffset, Target.position.z);
 
-    float CurrentHeight => transform.position.y;
+    float currentHeight => transform.position.y;
 
     public bool IsActive { get; set; }
 
     void Start()
     {
-        Player = FindObjectOfType<PlayerController>();
+        m_Transform = transform;
+        m_Player = FindObjectOfType<PlayerController>();
         SetActive(true);
         PrepareTransitions();
     }
@@ -46,44 +48,44 @@ public class FollowCam : MonoBehaviour, IManageable
     {
         if (!IsActive) return;
 
-        PivotAngle += AngleIncrement * Time.deltaTime;
+        m_PivotAngle += m_AngleIncrement * Time.deltaTime;
 
-        if (AngleIncrement != 0)
+        if (m_AngleIncrement != 0)
         {
-            if (Mathf.Abs(AngleIncrement) < MaxRotationSpeed)
-                AngleIncrement += AngleIncrement > 0 ? RotationAcceleration * Time.deltaTime : -RotationAcceleration * Time.deltaTime;
+            if (Mathf.Abs(m_AngleIncrement) < m_MaxRotationSpeed)
+                m_AngleIncrement += m_AngleIncrement > 0 ? m_RotationAcceleration * Time.deltaTime : -m_RotationAcceleration * Time.deltaTime;
         }
 
-        float posX = Mathf.Cos(Mathf.Deg2Rad * PivotAngle) * PivotRadius;
-        float posZ = Mathf.Sin(Mathf.Deg2Rad * PivotAngle) * PivotRadius;
+        float posX = Mathf.Cos(Mathf.Deg2Rad * m_PivotAngle) * m_PivotRadius;
+        float posZ = Mathf.Sin(Mathf.Deg2Rad * m_PivotAngle) * m_PivotRadius;
 
-        IntermediaryPosition = new Vector3(posX, 0, posZ) + PivotPoint;
+        m_IntermediaryPosition = new Vector3(posX, 0, posZ) + pivotPoint;
 
-        transform.position = Vector3.SmoothDamp(transform.position, IntermediaryPosition, ref Velocity, SmoothTime);
+        m_Transform.position = Vector3.SmoothDamp(m_Transform.position, m_IntermediaryPosition, ref m_Velocity, m_SmoothTime);
 
-        transform.LookAt(Target);
+        m_Transform.LookAt(Target);
     }
 
     void OnRotateCamera(float increment)
     {
-        AngleIncrement = increment * RotationSpeed;
+        m_AngleIncrement = increment * m_RotationSpeed;
     }
 
     void OnZoomCamera(float increment)
     {
-        if ((increment < 0 && PivotRadius <= MaxRadius) || (increment > 0 && PivotRadius >= MinRadius))
+        if ((increment < 0 && m_PivotRadius <= m_MaxRadius) || (increment > 0 && m_PivotRadius >= m_MinRadius))
         {
-            PivotRadius -= increment / Mathf.Abs(increment) * ZoomSpeed * Time.deltaTime;
+            m_PivotRadius -= increment / Mathf.Abs(increment) * m_ZoomSpeed * Time.deltaTime;
         }
 
-        if ((increment > 0 && HeightOffset >= MinHeight) || (increment < 0 && HeightOffset <= MaxHeight))
+        if ((increment > 0 && m_HeightOffset >= m_MinHeight) || (increment < 0 && m_HeightOffset <= m_MaxHeight))
         {
-            float heightIncrement = HeightOffset > HeightTiltThreshold ? ZoomAxisDiscrepancy + HeightSupplement : ZoomAxisDiscrepancy;
-            HeightOffset -= increment / Mathf.Abs(increment) * ZoomSpeed * heightIncrement * Time.deltaTime;
+            float heightIncrement = m_HeightOffset > m_HeightTiltThreshold ? m_ZoomAxisDiscrepancy + m_HeightSupplement : m_ZoomAxisDiscrepancy;
+            m_HeightOffset -= increment / Mathf.Abs(increment) * m_ZoomSpeed * heightIncrement * Time.deltaTime;
         }
 
-        HeightOffset = Mathf.Clamp(HeightOffset, MinHeight, MaxHeight);
-        PivotRadius = Mathf.Clamp(PivotRadius, MinRadius, MaxRadius);
+        m_HeightOffset = Mathf.Clamp(m_HeightOffset, m_MinHeight, m_MaxHeight);
+        m_PivotRadius = Mathf.Clamp(m_PivotRadius, m_MinRadius, m_MaxRadius);
     }
 
     public void SetActive(bool active)
@@ -98,17 +100,17 @@ public class FollowCam : MonoBehaviour, IManageable
 
     public void Initialize()
     {
-        PivotRadius = (PivotPoint - transform.position).magnitude;
-        PivotAngle = -Mathf.Acos(transform.position.x / PivotRadius) * Mathf.Rad2Deg;
-        HeightOffset = transform.position.y;
-        Player.RotateCamera += OnRotateCamera;
-        Player.ZoomCamera += OnZoomCamera;
+        m_PivotRadius = (pivotPoint - transform.position).magnitude;
+        m_PivotAngle = -Mathf.Acos(transform.position.x / m_PivotRadius) * Mathf.Rad2Deg;
+        m_HeightOffset = transform.position.y;
+        m_Player.RotateCamera += OnRotateCamera;
+        m_Player.ZoomCamera += OnZoomCamera;
     }
 
     public void Sleep()
     {
-        Player.RotateCamera -= OnRotateCamera;
-        Player.ZoomCamera -= OnZoomCamera;
+        m_Player.RotateCamera -= OnRotateCamera;
+        m_Player.ZoomCamera -= OnZoomCamera;
 
         OnRotateCamera(0);
         OnZoomCamera(0);

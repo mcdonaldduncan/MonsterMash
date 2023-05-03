@@ -11,11 +11,11 @@ public class AINavigationController : MonoBehaviour
     [SerializeField] float m_MaxWanderDistance;
 
     Navigator m_Navigator;
+    Coroutine m_WanderRoutine;
+
     AgentState m_AgentState;
 
     Vector3 m_StartingPosition;
-
-    Coroutine m_WanderRoutine;
 
     float m_LastWanderTime;
     float m_CurrentWanderInterval;
@@ -25,7 +25,6 @@ public class AINavigationController : MonoBehaviour
     Dictionary<AgentState, AgentDecisionDelegate> m_AgentActions;
 
     bool shouldWander => Time.time >= m_CurrentWanderInterval + m_LastWanderTime;
-
 
     void Start()
     {

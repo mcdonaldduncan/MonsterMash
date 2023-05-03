@@ -10,16 +10,16 @@ public class Navigator : MonoBehaviour
 {
     [SerializeField] GameObject DestinationTrigger;
 
-    NavMeshAgent Agent;
-    NavMeshPath Path;
+    NavMeshAgent m_Agent;
+    NavMeshPath m_Path;
     
-    Transform DestinationTransform;
-    Transform TargetTransform;
+    Transform m_DestinationTransform;
+    Transform m_TargetTransform;
 
-    Coroutine CombatMoveRoutine;
-    Coroutine PathPendingRoutine;
+    Coroutine m_CombatMoveRoutine;
+    Coroutine m_PathPendingRoutine;
 
-    int TriggerID;
+    int m_TriggerID;
 
     public delegate void MovementStateDelegate();
     public event MovementStateDelegate StartMove;
@@ -34,8 +34,8 @@ public class Navigator : MonoBehaviour
 
     private void Awake()
     {
-        Agent = GetComponent<NavMeshAgent>();
-        Path = new NavMeshPath();
+        m_Agent = GetComponent<NavMeshAgent>();
+        m_Path = new NavMeshPath();
 
         GetComponent<Rigidbody>().freezeRotation = true;
     }
@@ -43,46 +43,46 @@ public class Navigator : MonoBehaviour
     private void OnEnable()
     {
         GameObject temp = Instantiate(DestinationTrigger, transform.position, Quaternion.identity);
-        DestinationTransform = temp.transform;
-        TriggerID = temp.GetInstanceID();
+        m_DestinationTransform = temp.transform;
+        m_TriggerID = temp.GetInstanceID();
     }
 
     public void MoveToLocation(Vector3 location, bool combatMove = false)
     {
         if (OnCombatMove != combatMove) OnCombatMove = combatMove;
-        if (PathPendingRoutine != null) StopCoroutine(PathPendingRoutine);
+        if (m_PathPendingRoutine != null) StopCoroutine(m_PathPendingRoutine);
 
-        Agent.SetDestination(location);
-        PathPendingRoutine = StartCoroutine(WaitForPathProcessing());
+        m_Agent.SetDestination(location);
+        m_PathPendingRoutine = StartCoroutine(WaitForPathProcessing());
 
         StartMove?.Invoke();
     }
 
     public void MoveToLocation(Transform target, bool combatMove = false)
     {
-        TargetTransform = target;
+        m_TargetTransform = target;
         MoveToLocation(target.position, combatMove);
     }
 
     public void SetLocation(Vector3 location)
     {
-        Agent.Warp(location);
+        m_Agent.Warp(location);
     }
 
     public void SetLocation(Transform target)
     {
-        Agent.Warp(target.position);
+        m_Agent.Warp(target.position);
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetInstanceID() != TriggerID) return;
+        if (other.gameObject.GetInstanceID() != m_TriggerID) return;
 
-        if (OnCombatMove && CombatMoveRoutine != null)
+        if (OnCombatMove && m_CombatMoveRoutine != null)
         {
             OnCombatMove = false;
-            StopCoroutine(CombatMoveRoutine);
-            CombatMoveRoutine = null;
+            StopCoroutine(m_CombatMoveRoutine);
+            m_CombatMoveRoutine = null;
         }
 
         StopMove?.Invoke();
@@ -93,44 +93,44 @@ public class Navigator : MonoBehaviour
         while (OnCombatMove)
         {
             yield return null;
-            Agent.SetDestination(TargetTransform.position);
-            DestinationTransform.position = Agent.destination;
-            PathMaintain?.Invoke(TargetTransform.position);
+            m_Agent.SetDestination(m_TargetTransform.position);
+            m_DestinationTransform.position = m_Agent.destination;
+            PathMaintain?.Invoke(m_TargetTransform.position);
         }
     }
 
     IEnumerator WaitForPathProcessing()
     {
-        while (Agent.pathPending)
+        while (m_Agent.pathPending)
         {
             yield return null;
         }
 
-        DestinationTransform.position = Agent.destination;
-        PathProcessed?.Invoke(Agent.destination);
+        m_DestinationTransform.position = m_Agent.destination;
+        PathProcessed?.Invoke(m_Agent.destination);
 
-        if (OnCombatMove && CombatMoveRoutine == null)
+        if (OnCombatMove && m_CombatMoveRoutine == null)
         {
-            CombatMoveRoutine = StartCoroutine(MaintainCombatMove());
+            m_CombatMoveRoutine = StartCoroutine(MaintainCombatMove());
         }
-        else if (!OnCombatMove && CombatMoveRoutine != null)
+        else if (!OnCombatMove && m_CombatMoveRoutine != null)
         {
-            StopCoroutine(CombatMoveRoutine);
-            CombatMoveRoutine = null;
+            StopCoroutine(m_CombatMoveRoutine);
+            m_CombatMoveRoutine = null;
         }
     }
 
     public void SetPath(Vector3 location)
     {
-        if (Agent.CalculatePath(location, Path))
+        if (m_Agent.CalculatePath(location, m_Path))
         {
-            PathPending?.Invoke(Path.corners[Path.corners.Length - 1]);
+            PathPending?.Invoke(m_Path.corners[m_Path.corners.Length - 1]);
         }
     }
 
     public void Sleep()
     {
-        Agent.ResetPath();
+        m_Agent.ResetPath();
         StopMove?.Invoke();
     }
 }

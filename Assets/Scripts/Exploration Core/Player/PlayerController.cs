@@ -7,11 +7,11 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Navigator))]
 public class PlayerController : MonoBehaviour, IManageable
 {
-    InputActions InputActions;
-    Navigator Navigator;
+    InputActions m_InputActions;
+    Navigator m_Navigator;
 
-    RaycastHit Hit;
-    Camera MainCamera;
+    RaycastHit m_Hit;
+    Camera m_Camera;
 
     public bool IsActive { get; set; }
 
@@ -21,18 +21,18 @@ public class PlayerController : MonoBehaviour, IManageable
 
     private void OnEnable()
     {
-        MainCamera = Camera.main;
-        Navigator = GetComponent<Navigator>();
+        m_Camera = Camera.main;
+        m_Navigator = GetComponent<Navigator>();
 
-        InputActions = new InputActions();
+        m_InputActions = new InputActions();
 
         SetActive(true); // ToDo remove once home is developed
 
-        InputActions.Player.Select.performed += OnSelect;
-        InputActions.Player.Move.started += OnMove;
-        InputActions.Player.Move.canceled += OnMove;
+        m_InputActions.Player.Select.performed += OnSelect;
+        m_InputActions.Player.Move.started += OnMove;
+        m_InputActions.Player.Move.canceled += OnMove;
 
-        InputActions.Player.Scroll.performed += OnScroll;
+        m_InputActions.Player.Scroll.performed += OnScroll;
     }
 
     private void Start()
@@ -42,18 +42,18 @@ public class PlayerController : MonoBehaviour, IManageable
 
     private void OnDestroy()
     {
-        InputActions.Player.Select.performed -= OnSelect;
-        InputActions.Player.Move.started -= OnMove;
-        InputActions.Player.Move.canceled -= OnMove;
+        m_InputActions.Player.Select.performed -= OnSelect;
+        m_InputActions.Player.Move.started -= OnMove;
+        m_InputActions.Player.Move.canceled -= OnMove;
 
-        InputActions.Player.Scroll.performed -= OnScroll;
+        m_InputActions.Player.Scroll.performed -= OnScroll;
     }
 
     private void Update()
     {
         if (!IsActive) return;
-        if (!Physics.Raycast(MainCamera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit)) return;
-        Navigator.SetPath(hit.point);
+        if (!Physics.Raycast(m_Camera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit)) return;
+        m_Navigator.SetPath(hit.point);
     }
 
     public void OnScroll(InputAction.CallbackContext context)
@@ -75,17 +75,17 @@ public class PlayerController : MonoBehaviour, IManageable
 
     public void OnSelect(InputAction.CallbackContext context)
     {
-        if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out Hit)) return;
+        if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out m_Hit)) return;
 
-        if (Hit.collider.gameObject.CompareTag("Enemy"))
+        if (m_Hit.collider.gameObject.CompareTag("Enemy"))
         {
-            Navigator.MoveToLocation(Hit.collider.gameObject.transform, true);
-            Navigator.StopMove += BattleTransition;
+            m_Navigator.MoveToLocation(m_Hit.collider.gameObject.transform, true);
+            m_Navigator.StopMove += BattleTransition;
         }
         else
         {
-            Navigator.StopMove -= BattleTransition;
-            Navigator.MoveToLocation(Hit.point);
+            m_Navigator.StopMove -= BattleTransition;
+            m_Navigator.MoveToLocation(m_Hit.point);
         }
     }
 
@@ -108,16 +108,16 @@ public class PlayerController : MonoBehaviour, IManageable
     {
         Cursor.visible = false;
 
-        InputActions.Player.Enable();
+        m_InputActions.Player.Enable();
     }
 
     public void Sleep()
     {
         Cursor.visible = true;
 
-        InputActions.Player.Disable();
+        m_InputActions.Player.Disable();
 
-        Navigator.Sleep();
+        m_Navigator.Sleep();
     }
 
     public void PrepareTransitions()
