@@ -30,7 +30,7 @@ public class FollowCam : MonoBehaviour, IManageable
     PlayerController m_Player;
     Transform m_Transform;
 
-    Vector3 pivotPoint => new Vector3(Target.position.x, m_HeightOffset, Target.position.z);
+    Vector3 pivotPoint => new Vector3(Target.position.x, Target.position.y + m_HeightOffset, Target.position.z);
 
     float currentHeight => transform.position.y;
 

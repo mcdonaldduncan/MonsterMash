@@ -1270,18 +1270,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 1179466086}
-  m_MaxRadius: 10
+  m_MaxRadius: 11
   m_MinRadius: 2
-  m_RotationSpeed: 180
-  m_ZoomSpeed: 120
+  m_RotationSpeed: 160
+  m_ZoomSpeed: 80
   m_SmoothTime: 0.5
   m_RotationAcceleration: 30
   m_MaxRotationSpeed: 120
-  m_ZoomAxisDiscrepancy: 0.5
+  m_ZoomAxisDiscrepancy: 1
   m_HeightTiltThreshold: 5
   m_HeightSupplement: 1.5
   m_MaxHeight: 10
-  m_MinHeight: 2
+  m_MinHeight: 0
 --- !u!54 &330585549
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1323,7 +1323,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 2c60ef9f91b304c18a8c813af10a82e1, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 1
   Mute: 0

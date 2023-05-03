@@ -15,7 +15,6 @@ public abstract class BattleAction : IAction
     public int Power => m_Power;
     public StatType Modifier => m_ActionModifier;
     public ElementType Type => m_ActionType;
-    
 
     public virtual void Invoke(BattleMonster invoker, BattleMonster target) { }
 }

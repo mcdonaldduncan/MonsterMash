@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour, IManageable
 
     private void BattleTransition()
     {
-        TransitionManager.Instance.Transition(GameState.BATTLE);
+        //TransitionManager.Instance.Transition(GameState.BATTLE);
     }
 
     public void SetActive(bool active)
