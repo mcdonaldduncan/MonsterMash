@@ -64,8 +64,9 @@ public class AINavigationController : MonoBehaviour
             yield return null;
         }
 
-        m_Navigator.MoveToLocation(RandomPosInSphere(transform.position, m_MaxWanderDistance, NavMesh.AllAreas) ?? m_StartingPosition);
         m_Navigator.StopMove += PerformAction;
+        m_Navigator.MoveToLocation(RandomPosInSphere(transform.position, m_MaxWanderDistance, NavMesh.AllAreas) ?? m_StartingPosition);
+        
 
         m_LastWanderTime = Time.time;
         m_CurrentWanderInterval = Random.Range(0, m_WanderInterval);

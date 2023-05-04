@@ -10,7 +10,6 @@ public class NavigationAnimator : MonoBehaviour
     Navigator Navigator;
 
     const string IsMoving = "IsMoving";
-    const string IsAttacking = "IsAttacking";
 
     void Start()
     {

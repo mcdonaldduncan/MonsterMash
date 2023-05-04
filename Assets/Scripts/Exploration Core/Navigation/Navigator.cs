@@ -12,8 +12,10 @@ public class Navigator : MonoBehaviour
 
     NavMeshAgent m_Agent;
     NavMeshPath m_Path;
-    
-    Transform m_DestinationTransform;
+
+    GameObject m_DestinationTrigger;
+
+    Transform m_DestinationTriggerTransform;
     Transform m_TargetTransform;
 
     Coroutine m_CombatMoveRoutine;
@@ -42,9 +44,9 @@ public class Navigator : MonoBehaviour
 
     private void OnEnable()
     {
-        GameObject temp = Instantiate(DestinationTrigger, transform.position, Quaternion.identity);
-        m_DestinationTransform = temp.transform;
-        m_TriggerID = temp.GetInstanceID();
+        m_DestinationTrigger = Instantiate(DestinationTrigger, transform.position, Quaternion.identity);
+        m_DestinationTriggerTransform = m_DestinationTrigger.transform;
+        m_TriggerID = m_DestinationTrigger.GetInstanceID();
     }
 
     public void MoveToLocation(Vector3 location, bool combatMove = false)
@@ -52,10 +54,11 @@ public class Navigator : MonoBehaviour
         if (OnCombatMove != combatMove) OnCombatMove = combatMove;
         if (m_PathPendingRoutine != null) StopCoroutine(m_PathPendingRoutine);
 
-        m_Agent.SetDestination(location);
-        m_PathPendingRoutine = StartCoroutine(WaitForPathProcessing());
 
         StartMove?.Invoke();
+        m_DestinationTrigger.SetActive(false);
+        m_Agent.SetDestination(location);
+        m_PathPendingRoutine = StartCoroutine(WaitForPathProcessing());
     }
 
     public void MoveToLocation(Transform target, bool combatMove = false)
@@ -94,7 +97,7 @@ public class Navigator : MonoBehaviour
         {
             yield return null;
             m_Agent.SetDestination(m_TargetTransform.position);
-            m_DestinationTransform.position = m_Agent.destination;
+            m_DestinationTriggerTransform.position = m_Agent.destination;
             PathMaintain?.Invoke(m_TargetTransform.position);
         }
     }
@@ -106,7 +109,8 @@ public class Navigator : MonoBehaviour
             yield return null;
         }
 
-        m_DestinationTransform.position = m_Agent.destination;
+        m_DestinationTriggerTransform.position = m_Agent.destination;
+        m_DestinationTrigger.SetActive(true);
         PathProcessed?.Invoke(m_Agent.destination);
 
         if (OnCombatMove && m_CombatMoveRoutine == null)
