@@ -5,8 +5,10 @@ using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Navigator))]
+[RequireComponent(typeof(BattleMonster))]
 public class PlayerController : MonoBehaviour, IManageable
 {
+    BattleMonster m_BattleMonster;
     InputActions m_InputActions;
     Navigator m_Navigator;
 
@@ -23,6 +25,7 @@ public class PlayerController : MonoBehaviour, IManageable
     {
         m_Camera = Camera.main;
         m_Navigator = GetComponent<Navigator>();
+        m_BattleMonster = GetComponent<BattleMonster>();
 
         m_InputActions = new InputActions();
 
@@ -79,6 +82,8 @@ public class PlayerController : MonoBehaviour, IManageable
 
         if (m_Hit.collider.gameObject.CompareTag("Enemy"))
         {
+            BattleManager.Instance.Init(m_BattleMonster, m_Hit.collider.gameObject.GetComponent<BattleMonster>());
+
             m_Navigator.MoveToLocation(m_Hit.collider.gameObject.transform, true);
             m_Navigator.StopMove += BattleTransition;
         }
@@ -91,7 +96,7 @@ public class PlayerController : MonoBehaviour, IManageable
 
     private void BattleTransition()
     {
-        //TransitionManager.Instance.Transition(GameState.BATTLE);
+        TransitionManager.Instance.Transition(GameState.BATTLE);
     }
 
     public void SetActive(bool active)
@@ -100,36 +105,39 @@ public class PlayerController : MonoBehaviour, IManageable
 
         IsActive = active;
 
-        if (IsActive) Initialize();
+        if (IsActive) Wake();
         else Sleep();
     }
 
-    public void Initialize()
+    public void Wake()
     {
         Cursor.visible = false;
 
         m_InputActions.Player.Enable();
+
+        m_InputActions.Player.Select.performed += OnSelect;
     }
 
     public void Sleep()
     {
         Cursor.visible = true;
 
-        m_InputActions.Player.Disable();
+        m_InputActions.Player.Select.performed -= OnSelect;
+        //m_InputActions.Player.Disable();
 
         m_Navigator.Sleep();
     }
 
     public void PrepareTransitions()
     {
-        TransitionManager.Instance.SubscribeToTransition(GameState.EXPLORATION, Enable);
+        TransitionManager.Instance.SubscribeToTransition(GameState.EXPLORATIONACTUAL, Enable);
         TransitionManager.Instance.SubscribeToTransition(GameState.BATTLE, Disable);
         TransitionManager.Instance.SubscribeToTransition(GameState.HOME, Disable);
     }
 
     public void DisableTransitions()
     {
-        TransitionManager.Instance.UnsubscribeFromTransition(GameState.EXPLORATION, Enable);
+        TransitionManager.Instance.UnsubscribeFromTransition(GameState.EXPLORATIONACTUAL, Enable);
         TransitionManager.Instance.UnsubscribeFromTransition(GameState.BATTLE, Disable);
         TransitionManager.Instance.UnsubscribeFromTransition(GameState.HOME, Disable);
     }

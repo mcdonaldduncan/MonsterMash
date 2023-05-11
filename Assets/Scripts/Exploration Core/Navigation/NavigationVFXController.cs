@@ -75,11 +75,11 @@ public class NavigationVFXController : MonoBehaviour, IManageable
 
         IsActive = active;
 
-        if (IsActive) Initialize();
+        if (IsActive) Wake();
         else Sleep();
     }
 
-    public void Initialize()
+    public void Wake()
     {
         PendingVFX?.SetActive(true);
 
@@ -96,14 +96,14 @@ public class NavigationVFXController : MonoBehaviour, IManageable
 
     public void PrepareTransitions()
     {
-        TransitionManager.Instance.SubscribeToTransition(GameState.EXPLORATION, Enable);
+        TransitionManager.Instance.SubscribeToTransition(GameState.EXPLORATIONACTUAL, Enable);
         TransitionManager.Instance.SubscribeToTransition(GameState.BATTLE, Disable);
         TransitionManager.Instance.SubscribeToTransition(GameState.HOME, Disable);
     }
 
     public void DisableTransitions()
     {
-        TransitionManager.Instance.UnsubscribeFromTransition(GameState.EXPLORATION, Enable);
+        TransitionManager.Instance.UnsubscribeFromTransition(GameState.EXPLORATIONACTUAL, Enable);
         TransitionManager.Instance.UnsubscribeFromTransition(GameState.BATTLE, Disable);
         TransitionManager.Instance.UnsubscribeFromTransition(GameState.HOME, Disable);
     }

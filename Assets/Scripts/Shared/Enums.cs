@@ -5,8 +5,11 @@ using UnityEngine;
 public enum GameState
 {
     EXPLORATION,
+    EXPLORATIONACTUAL,
     BATTLE,
-    HOME
+    BATTLEACTUAL,
+    HOME,
+    HOMEACTUAL
 }
 
 public enum ElementType
@@ -14,7 +17,8 @@ public enum ElementType
     GRASS,
     WATER,
     FIRE,
-    SHADOW
+    SHADOW,
+    NEUTRAL
 }
 
 public enum StatType

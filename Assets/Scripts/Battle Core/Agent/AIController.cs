@@ -6,7 +6,7 @@ using UnityEngine;
 public class AIController : MonoBehaviour
 {
     BattleMonster m_Monster;
-    BattleManager<BattleMonster, BattleMonster> m_CurrentManager;
+    //BattleManager<BattleMonster, BattleMonster> m_CurrentManager;
 
     // Default action if monster does not have actions (Think flail)
     BattleAction m_DefaultAction;

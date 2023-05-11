@@ -8,7 +8,7 @@ public interface IManageable
 
     void SetActive(bool active);
 
-    void Initialize();
+    void Wake();
 
     void Sleep();
 

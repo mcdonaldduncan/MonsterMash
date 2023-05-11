@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - Canvas
+  - Fade
+  - TargetGroup
   layers:
   - Default
   - TransparentFX

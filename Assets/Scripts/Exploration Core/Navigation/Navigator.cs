@@ -134,6 +134,7 @@ public class Navigator : MonoBehaviour
 
     public void Sleep()
     {
+        if (m_PathPendingRoutine != null) StopCoroutine(m_PathPendingRoutine);
         m_Agent.ResetPath();
         StopMove?.Invoke();
     }

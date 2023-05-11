@@ -41,7 +41,7 @@ public class FollowCam : MonoBehaviour, IManageable
         m_Transform = transform;
         m_Player = FindObjectOfType<PlayerController>();
         SetActive(true);
-        PrepareTransitions();
+        //PrepareTransitions();
     }
 
     void Update()
@@ -94,11 +94,11 @@ public class FollowCam : MonoBehaviour, IManageable
 
         IsActive = active;
 
-        if (IsActive) Initialize();
+        if (IsActive) Wake();
         else Sleep();
     }
 
-    public void Initialize()
+    public void Wake()
     {
         m_PivotRadius = (pivotPoint - transform.position).magnitude;
         m_PivotAngle = -Mathf.Acos(transform.position.x / m_PivotRadius) * Mathf.Rad2Deg;

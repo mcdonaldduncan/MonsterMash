@@ -26,6 +26,8 @@ public class AINavigationController : MonoBehaviour
 
     bool shouldWander => Time.time >= m_CurrentWanderInterval + m_LastWanderTime;
 
+    public bool IsActive { get; set; }
+
     void Start()
     {
         SetupActions();
@@ -34,11 +36,20 @@ public class AINavigationController : MonoBehaviour
         m_AgentState = m_StartingState;
         m_StartingPosition = transform.position;
 
-        PerformAction();
+        SetActive(true);
+    }
+
+    
+
+    public void SetPosition(Vector3 position)
+    {
+        m_Navigator.SetLocation(position);
     }
 
     void PerformAction()
     {
+        if (!IsActive) return;
+
         if (m_AgentActions.TryGetValue(m_AgentState, out AgentDecisionDelegate action))
         {
             action?.Invoke();
@@ -97,4 +108,26 @@ public class AINavigationController : MonoBehaviour
     }
 
     #endregion
+
+    public void SetActive(bool active)
+    {
+        if (IsActive == active) return;
+
+        IsActive = active;
+
+        if (IsActive) Wake();
+        else Sleep();
+    }
+
+    void Sleep()
+    {
+        if (m_WanderRoutine != null) StopCoroutine(m_WanderRoutine);
+        m_Navigator.Sleep();
+    }
+
+    void Wake()
+    {
+        PerformAction();
+    }
+
 }

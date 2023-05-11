@@ -27,8 +27,8 @@ public class BattleMonster : MonoBehaviour
     [Header("Base Resorce Regen")]
     [SerializeField] int m_BaseManaRegen;
     [SerializeField] int m_BaseStaminaRegen;
-    
-    [Header("Move Set")]
+
+    [Header("")]
     [SerializeField] BattleAction[] m_BattleActions;
 
     // Values determined by base and level

@@ -10,8 +10,10 @@ public interface IAction
 
     public StatType Modifier { get; }
 
+    public ResourceType ResourceType { get; }
+
     public ElementType Type { get; }
 
-    public void Invoke(BattleMonster invoker, BattleMonster target);
+    public void InvokeAction(BattleMonster invoker, BattleMonster target);
 
 }
