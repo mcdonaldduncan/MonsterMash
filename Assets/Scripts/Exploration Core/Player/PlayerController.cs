@@ -78,6 +78,7 @@ public class PlayerController : MonoBehaviour, IManageable
 
     public void OnSelect(InputAction.CallbackContext context)
     {
+        if (!IsActive) return;
         if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out m_Hit)) return;
 
         if (m_Hit.collider.gameObject.CompareTag("Enemy"))
@@ -86,12 +87,12 @@ public class PlayerController : MonoBehaviour, IManageable
 
             m_Navigator.MoveToLocation(m_Hit.collider.gameObject.transform, true);
             m_Navigator.StopMove += BattleTransition;
+
+            return;
         }
-        else
-        {
-            m_Navigator.StopMove -= BattleTransition;
-            m_Navigator.MoveToLocation(m_Hit.point);
-        }
+
+        m_Navigator.StopMove -= BattleTransition;
+        m_Navigator.MoveToLocation(m_Hit.point);
     }
 
     private void BattleTransition()
@@ -120,9 +121,9 @@ public class PlayerController : MonoBehaviour, IManageable
 
     public void Sleep()
     {
-        Cursor.visible = true;
-
         m_InputActions.Player.Select.performed -= OnSelect;
+        Cursor.visible = true;
+        
         //m_InputActions.Player.Disable();
 
         m_Navigator.Sleep();

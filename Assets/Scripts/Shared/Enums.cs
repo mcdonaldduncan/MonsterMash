@@ -53,3 +53,12 @@ public enum AgentState
     FLEE
 
 }
+
+public enum BattleState
+{
+    PLAYER,
+    TRANSITION,
+    ENEMY,
+    DEFEAT,
+    VICTORY
+}

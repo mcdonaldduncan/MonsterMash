@@ -8,7 +8,7 @@ public class BattleManager : Singleton<BattleManager>
     public BattleMonster Player;
     public BattleMonster Enemy;
 
-    Vector3 m_CameraOffset;
+    //Vector3 m_CameraOffset;
 
     float min = 3f;
     float max = 4f;
