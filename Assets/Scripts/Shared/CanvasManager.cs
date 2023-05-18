@@ -9,22 +9,24 @@ public class CanvasManager : MonoBehaviour
 {
     [SerializeField] GameObject m_ActionPanel;
     [SerializeField] GameObject m_RunButton;
+    [SerializeField] GameObject m_IndividualCanvas;
 
     [SerializeField] Image m_FadeImage;
     [SerializeField] float m_FadeRate;
     [SerializeField] float m_CutDuration;
 
     Button[] m_ActionButtons;
+    BattleMonster m_CurrentMonster;
+    Coroutine m_FadeCoroutine;
 
     float m_FadeAlpha;
-
-    Coroutine m_FadeCoroutine;
 
     private void OnEnable()
     {
         m_ActionButtons = m_ActionPanel.GetComponentsInChildren<Button>(true);
         m_ActionPanel.SetActive(false);
         m_RunButton.SetActive(false);
+        m_IndividualCanvas.SetActive(false);
     }
 
     private void Start()
@@ -38,7 +40,7 @@ public class CanvasManager : MonoBehaviour
     public void SetupButtons(BattleMonster player, BattleMonster target)
     {
         var actions = player.Actions;
-        for (int i = 0; i < m_ActionButtons.Length; i++)
+        for (var i = 0; i < m_ActionButtons.Length; i++)
         {
             if (i >= actions.Length)
             {
@@ -47,7 +49,7 @@ public class CanvasManager : MonoBehaviour
                 continue;
             }
 
-            int actionIndex = i;
+            var actionIndex = i;
 
             m_ActionButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = actions[i].Name;
             m_ActionButtons[i].onClick.AddListener(delegate { actions[actionIndex].InvokeAction(player, target); });
@@ -121,5 +123,18 @@ public class CanvasManager : MonoBehaviour
     public void ExitBattle()
     {
         TransitionManager.Instance.Transition(GameState.EXPLORATION);
+    }
+
+
+    private void Update()
+    {
+        
+    }
+
+
+
+    public void RefreshICTimer(BattleMonster monster)
+    {
+
     }
 }

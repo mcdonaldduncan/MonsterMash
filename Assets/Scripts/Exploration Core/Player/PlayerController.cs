@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(BattleMonster))]
 public class PlayerController : MonoBehaviour, IManageable
 {
+    CanvasManager m_CanvasManager;
     BattleMonster m_BattleMonster;
     InputActions m_InputActions;
     Navigator m_Navigator;
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour, IManageable
     private void OnEnable()
     {
         m_Camera = Camera.main;
+        m_CanvasManager = FindObjectOfType<CanvasManager>();
         m_Navigator = GetComponent<Navigator>();
         m_BattleMonster = GetComponent<BattleMonster>();
 
@@ -55,8 +57,11 @@ public class PlayerController : MonoBehaviour, IManageable
     private void Update()
     {
         if (!IsActive) return;
-        if (!Physics.Raycast(m_Camera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit)) return;
-        m_Navigator.SetPath(hit.point);
+        if (!Physics.Raycast(m_Camera.ScreenPointToRay(Input.mousePosition), out m_Hit)) return;
+        m_Navigator.SetPath(m_Hit.point);
+
+        if (!m_Hit.collider.gameObject.CompareTag("Enemy")) return;
+        m_CanvasManager.RefreshICTimer();
     }
 
     public void OnScroll(InputAction.CallbackContext context)

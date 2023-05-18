@@ -1,15 +1,12 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// Total Lines 5/10/23 - 1755
 public class TransitionManager : Singleton<TransitionManager>
 {
     GameState m_GameState;
 
-    public GameState GameState
+    GameState GameState
     {
         get => m_GameState;
 

@@ -8,6 +8,7 @@ TagManager:
   - Canvas
   - Fade
   - TargetGroup
+  - IC
   layers:
   - Default
   - TransparentFX
