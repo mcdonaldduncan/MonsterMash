@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour, IManageable
     private void Update()
     {
         if (!IsActive) return;
+
         if (!Physics.Raycast(m_Camera.ScreenPointToRay(Input.mousePosition), out m_Hit)) return;
         m_Navigator.SetPath(m_Hit.point);
 
