@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour, IManageable
         m_Navigator.SetPath(m_Hit.point);
 
         if (!m_Hit.collider.gameObject.CompareTag("Enemy")) return;
-        m_CanvasManager.RefreshICTimer();
+        m_CanvasManager.RefreshICTimer(m_Hit.collider.gameObject.GetComponent<BattleMonster>());
     }
 
     public void OnScroll(InputAction.CallbackContext context)

@@ -137,4 +137,26 @@ public class CanvasManager : MonoBehaviour
     {
 
     }
+
+    // Slime game code
+    // ToDo repurpose for healthbar
+    //public void ScaleHealth()
+    //{
+    //    float healthBarZ = (float)Health / (float)startingHealth;
+
+    //    healthBar.transform.localScale = new Vector3(healthScale.x, healthScale.y, healthBarZ);
+
+    //    if (Health <= (float)startingHealth / 3f)
+    //    {
+    //        healthRend.material = lowHealth;
+    //    }
+    //    else if (Health <= (float)startingHealth / 3f * 2f)
+    //    {
+    //        healthRend.material = medHealth;
+    //    }
+    //    else
+    //    {
+    //        healthRend.material = highHealth;
+    //    }
+    //}
 }
