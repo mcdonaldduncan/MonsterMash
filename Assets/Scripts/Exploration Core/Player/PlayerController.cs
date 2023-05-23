@@ -130,8 +130,6 @@ public class PlayerController : MonoBehaviour, IManageable
         m_InputActions.Player.Select.performed -= OnSelect;
         Cursor.visible = true;
         
-        //m_InputActions.Player.Disable();
-
         m_Navigator.Sleep();
     }
 
