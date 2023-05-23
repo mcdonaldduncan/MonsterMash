@@ -34,7 +34,7 @@ public enum StatType
 public enum TypeModifier
 {
     CURRENT,
-    MAX,
+    INITIAL,
     BASE
 }
 
@@ -51,7 +51,6 @@ public enum AgentState
     IDLE,
     SEARCH,
     FLEE
-
 }
 
 public enum BattleState

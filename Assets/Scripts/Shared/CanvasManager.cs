@@ -14,10 +14,14 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] Image m_FadeImage;
     [SerializeField] float m_FadeRate;
     [SerializeField] float m_CutDuration;
+    [SerializeField] float m_ICHeightOffset;
+
 
     Button[] m_ActionButtons;
     BattleMonster m_CurrentMonster;
     Coroutine m_FadeCoroutine;
+
+    Dictionary<Collider, BattleMonster> m_MonsterLookup;
 
     float m_FadeAlpha;
 
@@ -27,6 +31,8 @@ public class CanvasManager : MonoBehaviour
         m_ActionPanel.SetActive(false);
         m_RunButton.SetActive(false);
         m_IndividualCanvas.SetActive(false);
+
+        SetupMonsterLookup();
     }
 
     private void Start()
@@ -120,6 +126,26 @@ public class CanvasManager : MonoBehaviour
         }
     }
 
+    void SetupMonsterLookup()
+    {
+        m_MonsterLookup = new Dictionary<Collider, BattleMonster>();
+
+        var monsters = FindObjectsOfType<BattleMonster>();
+
+        foreach (var monster in monsters)
+        {
+            var col = monster.GetComponent<Collider>();
+
+            if (col == null)
+            {
+                Utility.LogError("Collider not found with BattleMonster");
+                continue;
+            }
+
+            m_MonsterLookup.Add(col, monster);
+        }
+    }
+
     public void ExitBattle()
     {
         TransitionManager.Instance.Transition(GameState.EXPLORATION);
@@ -133,8 +159,16 @@ public class CanvasManager : MonoBehaviour
 
 
 
-    public void RefreshICTimer(BattleMonster monster)
+    public void RefreshICTimer(Collider col)
     {
+        if (!m_MonsterLookup.TryGetValue(col, out m_CurrentMonster)) return;
+
+
+        m_IndividualCanvas.transform.SetParent(m_CurrentMonster.transform, false);
+        m_IndividualCanvas.transform.localPosition = Vector3.up * m_ICHeightOffset;
+
+
+        m_IndividualCanvas.SetActive(true);
 
     }
 

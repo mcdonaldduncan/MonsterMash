@@ -2678,8 +2678,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1179466086}
-  - {fileID: 1146711253}
   - {fileID: 8792861017857988255}
+  - {fileID: 1146711253}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2798,6 +2798,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d74ce4b48e1248b4c9cb03e613649cb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_MonsterName: Snek
   m_ExpLevel: 1
   m_Type: 0
   m_BaseHealth: 100
@@ -4602,6 +4603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d74ce4b48e1248b4c9cb03e613649cb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_MonsterName: Fire Snek
   m_ExpLevel: 1
   m_Type: 2
   m_BaseHealth: 100
@@ -5831,6 +5833,7 @@ MonoBehaviour:
   m_FadeImage: {fileID: 1337890646}
   m_FadeRate: 0.5
   m_CutDuration: 0.5
+  m_ICHeightOffset: 0.8
 --- !u!4 &1486213477
 Transform:
   m_ObjectHideFlags: 0
@@ -7041,6 +7044,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d74ce4b48e1248b4c9cb03e613649cb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_MonsterName: Toxic Snek
   m_ExpLevel: 1
   m_Type: 0
   m_BaseHealth: 100
@@ -8211,6 +8215,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: HealthCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 1266822291953648795, guid: 3b8bafa3ee5bfbe4495887c19fc14abc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b8bafa3ee5bfbe4495887c19fc14abc, type: 3}
 --- !u!224 &8792861017857988255 stripped
@@ -8445,7 +8454,7 @@ PrefabInstance:
     - target: {fileID: 9138164200043836086, guid: d0eb4be3145de374c9605fec7ce75ad3,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9138164200043836086, guid: d0eb4be3145de374c9605fec7ce75ad3,
         type: 3}
@@ -8471,11 +8480,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: IndividualCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 9138164200043836090, guid: d0eb4be3145de374c9605fec7ce75ad3,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0eb4be3145de374c9605fec7ce75ad3, type: 3}

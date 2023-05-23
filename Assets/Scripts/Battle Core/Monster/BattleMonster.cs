@@ -5,6 +5,9 @@ using System;
 
 public class BattleMonster : MonoBehaviour
 {
+    [Header("Name")]
+    [SerializeField] string m_MonsterName;
+
     [Header("Monster Level")]
     [Range(1, 100)]
     [SerializeField] int m_ExpLevel = 1;
@@ -56,6 +59,7 @@ public class BattleMonster : MonoBehaviour
 
     public BattleAction[] Actions => m_BattleActions;
     public ElementType Type => m_Type;
+    public string Name => m_MonsterName;
 
     // ToDo Add Effort Values
 
@@ -63,7 +67,7 @@ public class BattleMonster : MonoBehaviour
 
     Dictionary<StatType, Action<int>> StatModifiers;
     Dictionary<StatType, Func<int>> CurrentStatAccessors;
-    Dictionary<StatType, Func<int>> MaxStatAccessors;
+    Dictionary<StatType, Func<int>> InitialStatAccessors;
     Dictionary<StatType, Func<int>> BaseStatAccessors;
     Dictionary<ResourceType, Action<int>> ResourceModifiers;
     Dictionary<ResourceType, Func<int>> ResourceAccessors;
@@ -90,7 +94,7 @@ public class BattleMonster : MonoBehaviour
     public int GetStat(StatType type, TypeModifier modifier = TypeModifier.CURRENT)
     {
         var accessors = modifier == TypeModifier.CURRENT ? CurrentStatAccessors 
-                        : modifier == TypeModifier.MAX ? MaxStatAccessors 
+                        : modifier == TypeModifier.INITIAL ? InitialStatAccessors 
                         : BaseStatAccessors;
 
         if (accessors.TryGetValue(type, out var accessorFunc))
@@ -187,7 +191,7 @@ public class BattleMonster : MonoBehaviour
             { StatType.SKILL, () => CurrentSkill }
         };
 
-        MaxStatAccessors = new Dictionary<StatType, Func<int>>()
+        InitialStatAccessors = new Dictionary<StatType, Func<int>>()
         {
             { StatType.HEALTH, () => ScaledHealth  },
             { StatType.ATTACK, () => ScaledAttack },

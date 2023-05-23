@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9138164200043836084}
   - component: {fileID: 9138164200043836085}
   - component: {fileID: 9138164200043836081}
+  - component: {fileID: 4382726339030790467}
   m_Layer: 5
   m_Name: IndividualCanvas
   m_TagString: IC
@@ -27,7 +28,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9138164200043836090}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
@@ -40,7 +41,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.8}
+  m_AnchoredPosition: {x: 0, y: 0.7999878}
   m_SizeDelta: {x: 200, y: 159.9816}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &9138164200043836087
@@ -116,6 +117,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bec971f2feed80e4abe823c761c82fe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4382726339030790467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9138164200043836090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68ec8626b8df0064787dc20318fba42a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Health: {fileID: 9138164202095595322}
+  m_MonsterName: {fileID: 9138164202133871823}
+  m_Attack: {fileID: 9138164200082025109}
+  m_Defense: {fileID: 9138164200914757221}
+  m_SpAtk: {fileID: 9138164200601968268}
+  m_SpDef: {fileID: 9138164200544034743}
+  m_Skill: {fileID: 9138164200101225664}
 --- !u!1 &9138164200082025115
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,7 +148,7 @@ GameObject:
   - component: {fileID: 9138164200082025108}
   - component: {fileID: 9138164200082025109}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: AtkText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -263,7 +283,7 @@ GameObject:
   - component: {fileID: 9138164200101225667}
   - component: {fileID: 9138164200101225664}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: SklText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -398,7 +418,7 @@ GameObject:
   - component: {fileID: 9138164200544034742}
   - component: {fileID: 9138164200544034743}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: SpDText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -533,7 +553,7 @@ GameObject:
   - component: {fileID: 9138164200601968271}
   - component: {fileID: 9138164200601968268}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: SpAText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -714,7 +734,7 @@ GameObject:
   - component: {fileID: 9138164200914757220}
   - component: {fileID: 9138164200914757221}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: DefText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
