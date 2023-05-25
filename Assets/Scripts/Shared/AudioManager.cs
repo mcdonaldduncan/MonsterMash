@@ -47,5 +47,4 @@ public class AudioManager : MonoBehaviour
         if (BattleRoutine != null) StopCoroutine(BattleRoutine);
         BattleRoutine = StartCoroutine(FadeAudio(Battle, battle));
     }
-
 }

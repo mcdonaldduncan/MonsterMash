@@ -15,7 +15,6 @@ public class IndividualCanvas : MonoBehaviour
     [SerializeField] TextMeshProUGUI m_SpDef;
     [SerializeField] TextMeshProUGUI m_Skill;
 
-
     Image m_HealthFill;
 
     private void OnEnable()

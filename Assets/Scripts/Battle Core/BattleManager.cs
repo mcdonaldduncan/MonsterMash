@@ -8,8 +8,6 @@ public class BattleManager : Singleton<BattleManager>
     public BattleMonster Player;
     public BattleMonster Enemy;
 
-    //Vector3 m_CameraOffset;
-
     float min = 3f;
     float max = 4f;
 
@@ -51,8 +49,6 @@ public class BattleManager : Singleton<BattleManager>
         if (Enemy == null) return;
 
         Enemy.GetComponent<AINavigationController>().SetActive(false);
-
-        //CameraManager.Instance.SetTargets(m_Player.transform, m_Enemy.transform);
     }
 
     void OnBattleActual()
@@ -63,11 +59,6 @@ public class BattleManager : Singleton<BattleManager>
 
         Player.transform.LookAt(Enemy.transform);
         Enemy.transform.LookAt(Player.transform);
-
-        //m_CameraOffset = m_Player.transform.up + m_Player.transform.right - m_Player.transform.forward;
-
-        //CameraManager.Instance.SetPosition(m_Player.transform.position + m_CameraOffset.normalized * 2f);
-        //Utility.Log(Vector3.Distance(m_Player.transform.position, Camera.main.transform.position).ToString());
     }
 
     void OnExplorationActual()

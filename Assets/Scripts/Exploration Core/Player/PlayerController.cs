@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour, IManageable
 
     RaycastHit m_Hit;
     Camera m_Camera;
-
+    
     public bool IsActive { get; set; }
 
     public delegate void CameraControlDelegate(float increment);
