@@ -157,8 +157,6 @@ public class CanvasManager : MonoBehaviour
         
     }
 
-
-
     public void RefreshICTimer(Collider col)
     {
         if (!m_MonsterLookup.TryGetValue(col, out m_CurrentMonster)) return;
