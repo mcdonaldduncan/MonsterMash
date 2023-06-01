@@ -13,6 +13,7 @@ public class BattleManager : Singleton<BattleManager>
 
     float sampleDistance = 0;
 
+
     private void Start()
     {
         TypeLookup.Init();
