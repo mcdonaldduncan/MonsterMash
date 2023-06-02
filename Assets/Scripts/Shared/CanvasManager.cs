@@ -170,7 +170,6 @@ public class CanvasManager : MonoBehaviour
 
     }
 
-    // Slime game code
     // ToDo repurpose for healthbar
     //public void ScaleHealth()
     //{
