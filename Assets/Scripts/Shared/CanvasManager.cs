@@ -161,13 +161,10 @@ public class CanvasManager : MonoBehaviour
     {
         if (!m_MonsterLookup.TryGetValue(col, out m_CurrentMonster)) return;
 
-
         m_IndividualCanvas.transform.SetParent(m_CurrentMonster.transform, false);
         m_IndividualCanvas.transform.localPosition = Vector3.up * m_ICHeightOffset;
 
-
         m_IndividualCanvas.SetActive(true);
-
     }
 
     // ToDo repurpose for healthbar
