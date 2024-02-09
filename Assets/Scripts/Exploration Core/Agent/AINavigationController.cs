@@ -39,8 +39,6 @@ public class AINavigationController : MonoBehaviour
         SetActive(true);
     }
 
-    
-
     public void SetPosition(Vector3 position)
     {
         m_Navigator.SetLocation(position);
