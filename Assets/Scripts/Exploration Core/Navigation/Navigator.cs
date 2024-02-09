@@ -54,7 +54,6 @@ public class Navigator : MonoBehaviour
         if (OnCombatMove != combatMove) OnCombatMove = combatMove;
         if (m_PathPendingRoutine != null) StopCoroutine(m_PathPendingRoutine);
 
-
         StartMove?.Invoke();
         m_DestinationTrigger.SetActive(false);
         m_Agent.SetDestination(location);
