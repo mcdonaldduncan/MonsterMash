@@ -126,7 +126,7 @@ public class Navigator : MonoBehaviour
     {
         if (m_Agent.CalculatePath(location, m_Path))
         {
-            PathPending?.Invoke(m_Path.corners[m_Path.corners.Length - 1]);
+            PathPending?.Invoke(m_Path.corners[^1]);
         }
     }
 

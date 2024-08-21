@@ -15,7 +15,8 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] float m_FadeRate;
     [SerializeField] float m_CutDuration;
     [SerializeField] float m_ICHeightOffset;
-
+    [SerializeField] float m_ICTimerStart;
+    [SerializeField] float m_ICTimerDuration;
 
     Button[] m_ActionButtons;
     BattleMonster m_CurrentMonster;
@@ -24,6 +25,8 @@ public class CanvasManager : MonoBehaviour
     Dictionary<Collider, BattleMonster> m_MonsterLookup;
 
     float m_FadeAlpha;
+
+    bool m_ShouldICDisable => Time.time > m_ICTimerStart + m_ICTimerDuration;
 
     private void OnEnable()
     {
@@ -126,6 +129,16 @@ public class CanvasManager : MonoBehaviour
         }
     }
 
+    IEnumerator WatchIndividualCanvasTimer()
+    {
+        while (m_ShouldICDisable)
+        {
+            yield return null;
+        }
+
+        m_IndividualCanvas.SetActive(false);
+    }
+
     void SetupMonsterLookup()
     {
         m_MonsterLookup = new Dictionary<Collider, BattleMonster>();
@@ -151,20 +164,15 @@ public class CanvasManager : MonoBehaviour
         TransitionManager.Instance.Transition(GameState.EXPLORATION);
     }
 
-
-    private void Update()
-    {
-        
-    }
-
     public void RefreshICTimer(Collider col)
     {
         if (!m_MonsterLookup.TryGetValue(col, out m_CurrentMonster)) return;
 
         m_IndividualCanvas.transform.SetParent(m_CurrentMonster.transform, false);
         m_IndividualCanvas.transform.localPosition = Vector3.up * m_ICHeightOffset;
+        m_ICTimerStart = Time.time;
 
-        m_IndividualCanvas.SetActive(true);
+        if (!m_IndividualCanvas.activeSelf) m_IndividualCanvas.SetActive(true);
     }
 
     // ToDo repurpose for healthbar
