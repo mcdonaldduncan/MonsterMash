@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
-public class TransitionManager : Singleton<TransitionManager>
+public class TransitionController : Singleton<TransitionController>
 {
     GameState m_GameState;
 

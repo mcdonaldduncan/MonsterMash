@@ -18,10 +18,10 @@ public class BattleManager : Singleton<BattleManager>
     {
         TypeLookup.Init();
 
-        TransitionManager.Instance.SubscribeToTransition(GameState.BATTLE, OnBattle);
-        TransitionManager.Instance.SubscribeToTransition(GameState.BATTLEACTUAL, OnBattleActual);
+        TransitionController.Instance.SubscribeToTransition(GameState.BATTLE, OnBattle);
+        TransitionController.Instance.SubscribeToTransition(GameState.BATTLEACTUAL, OnBattleActual);
 
-        TransitionManager.Instance.SubscribeToTransition(GameState.EXPLORATIONACTUAL, OnExplorationActual);
+        TransitionController.Instance.SubscribeToTransition(GameState.EXPLORATIONACTUAL, OnExplorationActual);
     }
 
     public void Init(BattleMonster player, BattleMonster enemy)

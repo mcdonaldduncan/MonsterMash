@@ -96,16 +96,16 @@ public class NavigationVFXController : MonoBehaviour, IManageable
 
     public void PrepareTransitions()
     {
-        TransitionManager.Instance.SubscribeToTransition(GameState.EXPLORATIONACTUAL, Enable);
-        TransitionManager.Instance.SubscribeToTransition(GameState.BATTLE, Disable);
-        TransitionManager.Instance.SubscribeToTransition(GameState.HOME, Disable);
+        TransitionController.Instance.SubscribeToTransition(GameState.EXPLORATIONACTUAL, Enable);
+        TransitionController.Instance.SubscribeToTransition(GameState.BATTLE, Disable);
+        TransitionController.Instance.SubscribeToTransition(GameState.HOME, Disable);
     }
 
     public void DisableTransitions()
     {
-        TransitionManager.Instance.UnsubscribeFromTransition(GameState.EXPLORATIONACTUAL, Enable);
-        TransitionManager.Instance.UnsubscribeFromTransition(GameState.BATTLE, Disable);
-        TransitionManager.Instance.UnsubscribeFromTransition(GameState.HOME, Disable);
+        TransitionController.Instance.UnsubscribeFromTransition(GameState.EXPLORATIONACTUAL, Enable);
+        TransitionController.Instance.UnsubscribeFromTransition(GameState.BATTLE, Disable);
+        TransitionController.Instance.UnsubscribeFromTransition(GameState.HOME, Disable);
     }
 
     public void Enable()

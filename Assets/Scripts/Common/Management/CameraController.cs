@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraManager : Singleton<CameraManager>
+public class CameraController : Singleton<CameraController>
 {
     Camera m_Camera;
     CinemachineBrain m_Brain;

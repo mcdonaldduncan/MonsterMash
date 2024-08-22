@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CanvasManager : MonoBehaviour
+public class CanvasController : MonoBehaviour
 {
     [SerializeField] GameObject m_ActionPanel;
     [SerializeField] GameObject m_RunButton;
@@ -15,18 +15,19 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] float m_FadeRate;
     [SerializeField] float m_CutDuration;
     [SerializeField] float m_ICHeightOffset;
-    [SerializeField] float m_ICTimerStart;
     [SerializeField] float m_ICTimerDuration;
 
     Button[] m_ActionButtons;
     BattleMonster m_CurrentMonster;
     Coroutine m_FadeCoroutine;
+    Coroutine m_ICTimerCoroutine;
 
     Dictionary<Collider, BattleMonster> m_MonsterLookup;
 
     float m_FadeAlpha;
+    float m_ICTimerStart;
 
-    bool m_ShouldICDisable => Time.time > m_ICTimerStart + m_ICTimerDuration;
+    bool ShouldICDisable => Time.time > m_ICTimerStart + m_ICTimerDuration;
 
     private void OnEnable()
     {
@@ -40,10 +41,10 @@ public class CanvasManager : MonoBehaviour
 
     private void Start()
     {
-        TransitionManager.Instance.SubscribeToTransition(GameState.BATTLE, OnBattle);
-        TransitionManager.Instance.SubscribeToTransition(GameState.BATTLEACTUAL, OnBattleActual);
-        TransitionManager.Instance.SubscribeToTransition(GameState.EXPLORATION, OnExploration);
-        TransitionManager.Instance.SubscribeToTransition(GameState.EXPLORATIONACTUAL, OnExplorationActual);
+        TransitionController.Instance.SubscribeToTransition(GameState.BATTLE, OnBattle);
+        TransitionController.Instance.SubscribeToTransition(GameState.BATTLEACTUAL, OnBattleActual);
+        TransitionController.Instance.SubscribeToTransition(GameState.EXPLORATION, OnExploration);
+        TransitionController.Instance.SubscribeToTransition(GameState.EXPLORATIONACTUAL, OnExplorationActual);
     }
 
     public void SetupButtons(BattleMonster player, BattleMonster target)
@@ -113,7 +114,7 @@ public class CanvasManager : MonoBehaviour
             yield return null;
         }
 
-        TransitionManager.Instance.Transition(state);
+        TransitionController.Instance.Transition(state);
     }
 
     IEnumerator RunDeFadeTransition()
@@ -127,16 +128,6 @@ public class CanvasManager : MonoBehaviour
 
             yield return null;
         }
-    }
-
-    IEnumerator WatchIndividualCanvasTimer()
-    {
-        while (m_ShouldICDisable)
-        {
-            yield return null;
-        }
-
-        m_IndividualCanvas.SetActive(false);
     }
 
     void SetupMonsterLookup()
@@ -161,7 +152,7 @@ public class CanvasManager : MonoBehaviour
 
     public void ExitBattle()
     {
-        TransitionManager.Instance.Transition(GameState.EXPLORATION);
+        TransitionController.Instance.Transition(GameState.EXPLORATION);
     }
 
     public void RefreshICTimer(Collider col)
@@ -172,8 +163,23 @@ public class CanvasManager : MonoBehaviour
         m_IndividualCanvas.transform.localPosition = Vector3.up * m_ICHeightOffset;
         m_ICTimerStart = Time.time;
 
+        m_ICTimerCoroutine ??= StartCoroutine(WatchIndividualCanvasTimer());
+        
         if (!m_IndividualCanvas.activeSelf) m_IndividualCanvas.SetActive(true);
     }
+
+    // Might be a performance hit on gc
+    IEnumerator WatchIndividualCanvasTimer()
+    {
+        while (!ShouldICDisable)
+        {
+            yield return null;
+        }
+
+        m_IndividualCanvas.SetActive(false);
+        m_ICTimerCoroutine = null;
+    }
+
 
     // ToDo repurpose for healthbar
     //public void ScaleHealth()

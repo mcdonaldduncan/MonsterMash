@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+public class AudioController : MonoBehaviour
 {
     [SerializeField] AudioSource Exploration;
     [SerializeField] AudioSource Battle;
@@ -16,8 +16,8 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        TransitionManager.Instance.SubscribeToTransition(GameState.EXPLORATION, OnExploration);
-        TransitionManager.Instance.SubscribeToTransition(GameState.BATTLE, OnBattle);
+        TransitionController.Instance.SubscribeToTransition(GameState.EXPLORATION, OnExploration);
+        TransitionController.Instance.SubscribeToTransition(GameState.BATTLE, OnBattle);
     }
 
     IEnumerator FadeAudio(AudioSource source, float desired)

@@ -118,16 +118,16 @@ public class FollowCam : MonoBehaviour, IManageable
 
     public void PrepareTransitions()
     {
-        TransitionManager.Instance.SubscribeToTransition(GameState.EXPLORATION, Enable);
-        TransitionManager.Instance.SubscribeToTransition(GameState.BATTLE, Disable);
-        TransitionManager.Instance.SubscribeToTransition(GameState.HOME, Disable);
+        TransitionController.Instance.SubscribeToTransition(GameState.EXPLORATION, Enable);
+        TransitionController.Instance.SubscribeToTransition(GameState.BATTLE, Disable);
+        TransitionController.Instance.SubscribeToTransition(GameState.HOME, Disable);
     }
 
     public void DisableTransitions()
     {
-        TransitionManager.Instance.UnsubscribeFromTransition(GameState.EXPLORATION, Enable);
-        TransitionManager.Instance.UnsubscribeFromTransition(GameState.BATTLE, Disable);
-        TransitionManager.Instance.UnsubscribeFromTransition(GameState.HOME, Disable);
+        TransitionController.Instance.UnsubscribeFromTransition(GameState.EXPLORATION, Enable);
+        TransitionController.Instance.UnsubscribeFromTransition(GameState.BATTLE, Disable);
+        TransitionController.Instance.UnsubscribeFromTransition(GameState.HOME, Disable);
     }
 
     public void Enable()
