@@ -11,18 +11,24 @@ public class CanvasController : MonoBehaviour
     [SerializeField] GameObject m_RunButton;
     [SerializeField] GameObject m_IndividualCanvas;
 
+    [SerializeField] TextMeshProUGUI m_ICName;
+
     [SerializeField] Image m_FadeImage;
+
     [SerializeField] float m_FadeRate;
     [SerializeField] float m_CutDuration;
     [SerializeField] float m_ICHeightOffset;
     [SerializeField] float m_ICTimerDuration;
 
-    Button[] m_ActionButtons;
     BattleMonster m_CurrentMonster;
+
     Coroutine m_FadeCoroutine;
     Coroutine m_ICTimerCoroutine;
 
     Dictionary<Collider, BattleMonster> m_MonsterLookup;
+
+    Button[] m_ActionButtons;
+    StatDisplay[] m_StatDisplays;
 
     float m_FadeAlpha;
     float m_ICTimerStart;
@@ -36,6 +42,9 @@ public class CanvasController : MonoBehaviour
         m_RunButton.SetActive(false);
         m_IndividualCanvas.SetActive(false);
 
+        m_IndividualCanvas.transform.localPosition = Vector3.up * m_ICHeightOffset;
+
+        SetupStatDisplay();
         SetupMonsterLookup();
     }
 
@@ -47,7 +56,7 @@ public class CanvasController : MonoBehaviour
         TransitionController.Instance.SubscribeToTransition(GameState.EXPLORATIONACTUAL, OnExplorationActual);
     }
 
-    public void SetupButtons(BattleMonster player, BattleMonster target)
+    private void SetupButtons(BattleMonster player, BattleMonster target)
     {
         var actions = player.Actions;
         for (var i = 0; i < m_ActionButtons.Length; i++)
@@ -64,6 +73,11 @@ public class CanvasController : MonoBehaviour
             m_ActionButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = actions[i].Name;
             m_ActionButtons[i].onClick.AddListener(delegate { actions[actionIndex].InvokeAction(player, target); });
         }
+    }
+
+    private void SetupStatDisplay()
+    {
+        m_StatDisplays = m_IndividualCanvas.GetComponentsInChildren<StatDisplay>(true);
     }
 
     private void OnBattle()
@@ -83,7 +97,7 @@ public class CanvasController : MonoBehaviour
         m_ActionPanel.SetActive(true);
         m_RunButton.SetActive(true);
 
-        SetupButtons(BattleManager.Instance.Player, BattleManager.Instance.Enemy);
+        SetupButtons(BattleController.Instance.Player, BattleController.Instance.Enemy);
 
         Invoke(nameof(InvokeableFade), m_CutDuration);
     }
@@ -157,10 +171,23 @@ public class CanvasController : MonoBehaviour
 
     public void RefreshICTimer(Collider col)
     {
-        if (!m_MonsterLookup.TryGetValue(col, out m_CurrentMonster)) return;
+        if (!m_MonsterLookup.TryGetValue(col, out var battleMonster)) return;
 
-        m_IndividualCanvas.transform.SetParent(m_CurrentMonster.transform, false);
-        m_IndividualCanvas.transform.localPosition = Vector3.up * m_ICHeightOffset;
+        if (m_CurrentMonster == null || battleMonster.Id != m_CurrentMonster.Id)
+        {
+            //ToDo: Add a sprite to show type
+
+            m_CurrentMonster = battleMonster;
+            m_IndividualCanvas.transform.SetParent(m_CurrentMonster.transform, false);
+            
+            m_ICName.text = m_CurrentMonster.Name;
+
+            foreach (var statDisplay in m_StatDisplays)
+            {
+                statDisplay.SetText(m_CurrentMonster);
+            }
+        }
+
         m_ICTimerStart = Time.time;
 
         m_ICTimerCoroutine ??= StartCoroutine(WatchIndividualCanvasTimer());

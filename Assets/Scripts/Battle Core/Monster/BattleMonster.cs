@@ -61,6 +61,8 @@ public class BattleMonster : MonoBehaviour
     public ElementType Type => m_Type;
     public string Name => m_MonsterName;
 
+    public int Id;
+
     // ToDo Add Effort Values
 
     // ToDo Add Individual Values
@@ -71,6 +73,11 @@ public class BattleMonster : MonoBehaviour
     Dictionary<StatType, Func<int>> BaseStatAccessors;
     Dictionary<ResourceType, Action<int>> ResourceModifiers;
     Dictionary<ResourceType, Func<int>> ResourceAccessors;
+
+    private void Awake()
+    {
+        Id = IdHelper.GetNextID();
+    }
 
     private void OnEnable()
     {
@@ -135,7 +142,6 @@ public class BattleMonster : MonoBehaviour
 
     public void Regen()
     {
-        // LOL
         CurrentMana = CurrentMana < m_BaseMana ? CurrentMana + CurrentManaRegen <= m_BaseMana ? CurrentMana + CurrentManaRegen : m_BaseMana : m_BaseMana;
         CurrentStamina = CurrentStamina < m_BaseStamina ? CurrentStamina + CurrentStaminaRegen <= m_BaseStamina ? CurrentStamina + CurrentStaminaRegen : m_BaseStamina : m_BaseStamina;
     }
@@ -213,7 +219,7 @@ public class BattleMonster : MonoBehaviour
 
         ResourceModifiers = new Dictionary<ResourceType, Action<int>>()
         {
-            // Evil laugh
+            // lmao
             {ResourceType.MANA, value => CurrentMana = CurrentMana + value <= m_BaseMana && CurrentMana + value >= 0 ? CurrentMana + value : CurrentMana + value >= m_BaseMana ? m_BaseMana : 0 },
             {ResourceType.STAM, value => CurrentStamina =  CurrentStamina + value <= m_BaseStamina && CurrentStamina + value >= 0 ? CurrentStamina + value : CurrentStamina + value >= m_BaseStamina ? m_BaseStamina : 0 }
         };
@@ -224,6 +230,5 @@ public class BattleMonster : MonoBehaviour
             {ResourceType.STAM, () => CurrentStamina }
         };
     }
-
     #endregion
 }

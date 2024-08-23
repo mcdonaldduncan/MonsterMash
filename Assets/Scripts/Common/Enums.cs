@@ -1,15 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public enum GameState
 {
+    HOME,
+    HOMEACTUAL,
     EXPLORATION,
     EXPLORATIONACTUAL,
     BATTLE,
-    BATTLEACTUAL,
-    HOME,
-    HOMEACTUAL
+    BATTLEACTUAL
 }
 
 public enum ElementType

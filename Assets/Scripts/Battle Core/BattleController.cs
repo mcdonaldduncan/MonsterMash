@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BattleManager : Singleton<BattleManager>
+public class BattleController : Singleton<BattleController>
 {
     public BattleMonster Player;
     public BattleMonster Enemy;
@@ -12,7 +12,6 @@ public class BattleManager : Singleton<BattleManager>
     float max = 4f;
 
     float sampleDistance = 0;
-
 
     private void Start()
     {

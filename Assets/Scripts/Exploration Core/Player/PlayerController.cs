@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour, IManageable
 
         if (m_Hit.collider.gameObject.CompareTag("Enemy"))
         {
-            BattleManager.Instance.Init(m_BattleMonster, m_Hit.collider.gameObject.GetComponent<BattleMonster>());
+            BattleController.Instance.Init(m_BattleMonster, m_Hit.collider.gameObject.GetComponent<BattleMonster>());
 
             m_Navigator.MoveToLocation(m_Hit.collider.gameObject.transform, true);
             m_Navigator.StopMove += BattleTransition;
