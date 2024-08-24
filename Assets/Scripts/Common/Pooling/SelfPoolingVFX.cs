@@ -15,7 +15,8 @@ public class SelfPoolingVFX : MonoBehaviour, IPoolable
     {
         if (IsInitialized) return;
 
-        if (m_ParticleSystem == null)
+        // ToDo: Probably dont need to hold a ref to the particleSystem, component is required so just run it all in one line?
+        if (m_ParticleSystem == null) // invert?
         {
             m_ParticleSystem = GetComponent<ParticleSystem>();
         }

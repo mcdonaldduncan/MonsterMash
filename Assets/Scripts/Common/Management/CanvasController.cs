@@ -9,8 +9,7 @@ public class CanvasController : MonoBehaviour
 {
     [SerializeField] GameObject m_ActionPanel;
     [SerializeField] GameObject m_RunButton;
-
-    [SerializeField] IndividualCanvas m_IndividualCanvas;
+    [SerializeField] GameObject m_IndividualCanvas;
 
     [SerializeField] TextMeshProUGUI m_ICName;
 
@@ -29,10 +28,13 @@ public class CanvasController : MonoBehaviour
     Dictionary<Collider, BattleMonster> m_MonsterLookup;
 
     Button[] m_ActionButtons;
-    StatDisplay[] m_StatDisplays;
+    readonly StatDisplay[] m_StatDisplays;
 
     float m_FadeAlpha;
     float m_ICTimerStart;
+
+    public delegate void CanvasControlDelegate(BattleMonster monster);
+    public event CanvasControlDelegate SetDisplayMonster;
 
     bool ShouldICDisable => Time.time > m_ICTimerStart + m_ICTimerDuration;
 
@@ -111,7 +113,7 @@ public class CanvasController : MonoBehaviour
         m_FadeCoroutine = StartCoroutine(RunDeFadeTransition());
     }
 
-    IEnumerator RunFadeTransition(GameState state)
+    private IEnumerator RunFadeTransition(GameState state)
     {
         while (m_FadeAlpha < 1f)
         {
@@ -126,7 +128,7 @@ public class CanvasController : MonoBehaviour
         TransitionController.Instance.Transition(state);
     }
 
-    IEnumerator RunDeFadeTransition()
+    private IEnumerator RunDeFadeTransition()
     {
         while (m_FadeAlpha > 0f)
         {
@@ -139,7 +141,7 @@ public class CanvasController : MonoBehaviour
         }
     }
 
-    void SetupMonsterLookup()
+    private void SetupMonsterLookup()
     {
         m_MonsterLookup = new Dictionary<Collider, BattleMonster>();
 
@@ -147,9 +149,7 @@ public class CanvasController : MonoBehaviour
 
         foreach (var monster in monsters)
         {
-            var col = monster.GetComponent<Collider>();
-
-            if (col == null)
+            if (!monster.TryGetComponent<Collider>(out var col))
             {
                 Utility.LogError("Collider not found with BattleMonster");
                 continue;
@@ -170,54 +170,32 @@ public class CanvasController : MonoBehaviour
 
         if (m_CurrentMonster == null || battleMonster.Id != m_CurrentMonster.Id)
         {
-            //ToDo: Add a sprite to show type
+            //ToDo: Add a sprite to display type
 
             m_CurrentMonster = battleMonster;
             m_IndividualCanvas.transform.SetParent(m_CurrentMonster.transform, false);
             
             m_ICName.text = m_CurrentMonster.Name;
 
-            m_IndividualCanvas.SetDisplayMonster(m_CurrentMonster);
+            SetDisplayMonster?.Invoke(m_CurrentMonster);
         }
 
         m_ICTimerStart = Time.time;
 
         m_ICTimerCoroutine ??= StartCoroutine(WatchIndividualCanvasTimer());
         
-        if (!m_IndividualCanvas.gameObject.activeSelf) m_IndividualCanvas.gameObject.SetActive(true);
+        if (!m_IndividualCanvas.activeSelf) m_IndividualCanvas.SetActive(true);
     }
 
     // Might be a performance hit on gc
-    IEnumerator WatchIndividualCanvasTimer()
+    private IEnumerator WatchIndividualCanvasTimer()
     {
         while (!ShouldICDisable)
         {
             yield return null;
         }
 
-        m_IndividualCanvas.gameObject.SetActive(false);
+        m_IndividualCanvas.SetActive(false);
         m_ICTimerCoroutine = null;
     }
-
-
-    // ToDo repurpose for healthbar
-    //public void ScaleHealth()
-    //{
-    //    float healthBarZ = (float)Health / (float)startingHealth;
-
-    //    healthBar.transform.localScale = new Vector3(healthScale.x, healthScale.y, healthBarZ);
-
-    //    if (Health <= (float)startingHealth / 3f)
-    //    {
-    //        healthRend.material = lowHealth;
-    //    }
-    //    else if (Health <= (float)startingHealth / 3f * 2f)
-    //    {
-    //        healthRend.material = medHealth;
-    //    }
-    //    else
-    //    {
-    //        healthRend.material = highHealth;
-    //    }
-    //}
 }

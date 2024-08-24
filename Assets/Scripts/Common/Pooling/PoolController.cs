@@ -1,14 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PoolController : Singleton<PoolController>
 {
-    private Dictionary<GameObject, Queue<GameObject>> m_Pool;
+    Dictionary<GameObject, Queue<GameObject>> m_Pool;
 
-
-    void OnEnable()
+    private void OnEnable()
     {
         m_Pool = new Dictionary<GameObject, Queue<GameObject>>();
     }
@@ -31,8 +28,7 @@ public class PoolController : Singleton<PoolController>
         else
         {
             GameObject obj = Instantiate(prefab, startLocation, Quaternion.identity);
-            IPoolable poolable = obj.GetComponent<IPoolable>();
-            if (poolable == null)
+            if (!obj.TryGetComponent<IPoolable>(out var poolable))
             {
                 Debug.LogError("Prefab " + prefab.name + " is not poolable and cannot be used.");
                 return null;
@@ -53,16 +49,14 @@ public class PoolController : Singleton<PoolController>
         {
             GameObject obj = m_Pool[prefab].Dequeue();
             if (obj == null) return TakeFromPool(prefab, startLocation, startRotation);
-            obj.transform.position = startLocation;
-            obj.transform.rotation = startRotation;
+            obj.transform.SetPositionAndRotation(startLocation, startRotation);
             obj.SetActive(true);
             return obj;
         }
         else
         {
             GameObject obj = Instantiate(prefab, startLocation, startRotation);
-            IPoolable poolable = obj.GetComponent<IPoolable>();
-            if (poolable == null)
+            if (!obj.TryGetComponent<IPoolable>(out var poolable))
             {
                 Debug.LogError("Prefab " + prefab.name + " is not poolable and cannot be used.");
                 return null;
@@ -72,11 +66,9 @@ public class PoolController : Singleton<PoolController>
         }
     }
 
-
     public void ReturnToPool(GameObject obj)
     {
-        IPoolable poolItem = obj.GetComponent<IPoolable>();
-        if (poolItem == null)
+        if (!obj.TryGetComponent<IPoolable>(out var poolItem))
         {
             Debug.LogError("Object " + obj.name + " was not created from the object pool and cannot be returned.");
             return;

@@ -24,11 +24,11 @@ public class AINavigationController : MonoBehaviour
 
     Dictionary<AgentState, AgentDecisionDelegate> m_AgentActions;
 
-    bool shouldWander => Time.time >= m_CurrentWanderInterval + m_LastWanderTime;
+    bool ShouldWander => Time.time >= m_CurrentWanderInterval + m_LastWanderTime;
 
     public bool IsActive { get; set; }
 
-    void Start()
+    private void Start()
     {
         SetupActions();
 
@@ -44,7 +44,7 @@ public class AINavigationController : MonoBehaviour
         m_Navigator.SetLocation(position);
     }
 
-    void PerformAction()
+    private void PerformAction()
     {
         if (!IsActive) return;
 
@@ -60,15 +60,15 @@ public class AINavigationController : MonoBehaviour
 
     #region Action Definitions
 
-    void Wander()
+    private void Wander()
     {
         if (m_WanderRoutine != null) StopCoroutine(m_WanderRoutine);
         m_WanderRoutine = StartCoroutine(WanderRoutine());
     }
 
-    IEnumerator WanderRoutine()
+    private IEnumerator WanderRoutine()
     {
-        while (!shouldWander)
+        while (!ShouldWander)
         {
             yield return null;
         }
@@ -81,7 +81,7 @@ public class AINavigationController : MonoBehaviour
         m_CurrentWanderInterval = Random.Range(0, m_WanderInterval);
     }
 
-    Vector3? RandomPosInSphere(Vector3 origin, float distance, LayerMask layerMask)
+    private Vector3? RandomPosInSphere(Vector3 origin, float distance, LayerMask layerMask)
     {
         Vector3 randomPosition = Random.insideUnitSphere * distance;
         if (NavMesh.SamplePosition(randomPosition + origin, out NavMeshHit navHit, distance, layerMask))
@@ -98,11 +98,12 @@ public class AINavigationController : MonoBehaviour
 
     #region Action Setup
 
-    void SetupActions()
+    private void SetupActions()
     {
-        m_AgentActions = new Dictionary<AgentState, AgentDecisionDelegate>();
-
-        m_AgentActions.Add(AgentState.WANDER, Wander);
+        m_AgentActions = new Dictionary<AgentState, AgentDecisionDelegate>
+        {
+            { AgentState.WANDER, Wander }
+        };
     }
 
     #endregion
@@ -117,15 +118,14 @@ public class AINavigationController : MonoBehaviour
         else Sleep();
     }
 
-    void Sleep()
+    private void Sleep()
     {
         if (m_WanderRoutine != null) StopCoroutine(m_WanderRoutine);
         m_Navigator.Sleep();
     }
 
-    void Wake()
+    private void Wake()
     {
         PerformAction();
     }
-
 }

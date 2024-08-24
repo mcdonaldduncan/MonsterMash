@@ -20,7 +20,7 @@ public class AudioController : MonoBehaviour
         TransitionController.Instance.SubscribeToTransition(GameState.BATTLE, OnBattle);
     }
 
-    IEnumerator FadeAudio(AudioSource source, float desired)
+    private IEnumerator FadeAudio(AudioSource source, float desired)
     {
         while (source.volume != desired)
         {
@@ -29,17 +29,17 @@ public class AudioController : MonoBehaviour
         }
     }
 
-    void OnExploration()
+    private void OnExploration()
     {
         Transition(volume, 0);
     }
 
-    void OnBattle()
+    private void OnBattle()
     {
         Transition(0, volume);
     }
 
-    void Transition(float explore, float battle)
+    private void Transition(float explore, float battle)
     {
         if (ExploreRoutine != null) StopCoroutine(ExploreRoutine);
         ExploreRoutine = StartCoroutine(FadeAudio(Exploration, explore));

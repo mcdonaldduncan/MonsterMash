@@ -36,15 +36,15 @@ public class FollowCam : MonoBehaviour, IManageable
 
     public bool IsActive { get; set; }
 
-    void Start()
+    private void Start()
     {
         m_Transform = transform;
         m_Player = FindObjectOfType<PlayerController>();
         SetActive(true);
-        //PrepareTransitions();
+        //PrepareTransitions(); - Using this cam in all game states at the moment, will change later
     }
 
-    void Update()
+    private void Update()
     {
         if (!IsActive) return;
 
@@ -66,12 +66,12 @@ public class FollowCam : MonoBehaviour, IManageable
         m_Transform.LookAt(Target);
     }
 
-    void OnRotateCamera(float increment)
+    private void OnRotateCamera(float increment)
     {
         m_AngleIncrement = increment * m_RotationSpeed;
     }
 
-    void OnZoomCamera(float increment)
+    private void OnZoomCamera(float increment)
     {
         if ((increment < 0 && m_PivotRadius <= m_MaxRadius) || (increment > 0 && m_PivotRadius >= m_MinRadius))
         {

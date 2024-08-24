@@ -14,7 +14,7 @@ public class AIController : MonoBehaviour
     private void OnEnable()
     {
         m_Monster = GetComponent<BattleMonster>();
-        m_DefaultAction = new BasicAttack();
+        m_DefaultAction = ScriptableObject.CreateInstance<BasicAttack>();
     }
 
     private BattleAction BestMove()

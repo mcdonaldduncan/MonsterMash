@@ -1562,7 +1562,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Stat: 2
-  m_Text: {fileID: 0}
 --- !u!1 &248429796
 GameObject:
   m_ObjectHideFlags: 0
@@ -3363,7 +3362,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Stat: 5
-  m_Text: {fileID: 0}
 --- !u!1 &573659844
 GameObject:
   m_ObjectHideFlags: 0
@@ -5178,7 +5176,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Stat: 3
-  m_Text: {fileID: 0}
 --- !u!1001 &1019434817
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6994,7 +6991,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ActionPanel: {fileID: 293226854}
   m_RunButton: {fileID: 1653083516}
-  m_IndividualCanvas: {fileID: 4756880441566447438}
+  m_IndividualCanvas: {fileID: 99746999}
   m_ICName: {fileID: 2019470018}
   m_FadeImage: {fileID: 1337890646}
   m_FadeRate: 0.5
@@ -7218,7 +7215,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Stat: 4
-  m_Text: {fileID: 0}
 --- !u!1001 &1601463510
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7847,7 +7843,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Stat: 1
-  m_Text: {fileID: 0}
 --- !u!1 &1681218471
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,8 +7,13 @@ public class BasicAttack : BattleAction
 {
     public override void InvokeAction(BattleMonster invoker, BattleMonster target)
     {
-        var damageTotal = Power * invoker.GetStat(Modifier);
-        damageTotal = Mathf.RoundToInt(damageTotal * TypeLookup.GetEfficacy(Type, target.Type));
-        target.ModifyStat(StatType.HEALTH, -damageTotal);
+        var damageTotal = Power 
+            * invoker.GetStat(Modifier)
+            * (invoker.Type != Type ? 1f : 1.5f)
+            * TypeLookup.GetEfficacy(Type, target.Type); // Not final at all
+
+        // ToDo: Still need to decide how to handle negation from defenses
+        
+        target.ModifyStat(StatType.HEALTH, -Mathf.RoundToInt(damageTotal));
     }
 }

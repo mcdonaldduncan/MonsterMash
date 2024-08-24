@@ -7,9 +7,9 @@ using UnityEngine;
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class StatDisplay : MonoBehaviour
 {
-    [SerializeField] public StatType Stat;
+    [SerializeField] StatType Stat;
 
-    public TextMeshProUGUI m_Text;
+    TextMeshProUGUI m_Text;
 
     public void Initialize()
     {

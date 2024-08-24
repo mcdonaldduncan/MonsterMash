@@ -8,8 +8,8 @@ public class BattleController : Singleton<BattleController>
     public BattleMonster Player;
     public BattleMonster Enemy;
 
-    float min = 3f;
-    float max = 4f;
+    readonly float min = 3f;
+    readonly float max = 4f;
 
     float sampleDistance = 0;
 
@@ -31,10 +31,9 @@ public class BattleController : Singleton<BattleController>
 
     Vector3 CalculateEnemyPos()
     {
-        NavMeshHit hit;
         var newPoint = Player.transform.position + new Vector3(Random.Range(min, max), 0, Random.Range(min, max));
-        
-        if (!NavMesh.SamplePosition(newPoint, out hit, 1f + sampleDistance, NavMesh.AllAreas))
+
+        if (!NavMesh.SamplePosition(newPoint, out NavMeshHit hit, 1f + sampleDistance, NavMesh.AllAreas))
         {
             sampleDistance++;
             return CalculateEnemyPos();

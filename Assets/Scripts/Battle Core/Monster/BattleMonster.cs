@@ -148,7 +148,7 @@ public class BattleMonster : MonoBehaviour
 
     #region Initialization Logic
 
-    void DetermineScaledValues()
+    private void DetermineScaledValues()
     {
         // ToDo Temporary logic, not sure yet how to handle level scaling, work up a model to finalize
         ScaledHealth = m_BaseHealth * m_ExpLevel;
@@ -159,7 +159,7 @@ public class BattleMonster : MonoBehaviour
         ScaledSkill = m_BaseSkill * m_ExpLevel;
     }
 
-    void InitializeWorkingValues()
+    private void InitializeWorkingValues()
     {
         CurrentHealth = ScaledHealth;
         CurrentAttack = ScaledAttack;
@@ -175,7 +175,7 @@ public class BattleMonster : MonoBehaviour
         CurrentStaminaRegen = m_BaseStaminaRegen;
     }
 
-    void InitializeModifiersAndAccesors()
+    private void InitializeModifiersAndAccesors()
     {
         StatModifiers = new Dictionary<StatType, Action<int>>()
         {

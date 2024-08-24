@@ -30,12 +30,12 @@ public class TransitionController : Singleton<TransitionController>
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         CleanTransitions();
     }
 
-    void CleanTransitions()
+    private void CleanTransitions()
     {
         m_TransitionActions = new Dictionary<GameState, TransitionDelegate>();
 
