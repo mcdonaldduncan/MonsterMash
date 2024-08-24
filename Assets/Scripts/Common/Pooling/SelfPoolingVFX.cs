@@ -28,7 +28,7 @@ public class SelfPoolingVFX : MonoBehaviour, IPoolable
 
     private void OnDisable()
     {
-        if (PoolManager.Instance == null || gameObject == null) return;
-        PoolManager.Instance.ReturnToPool(gameObject);
+        if (PoolController.Instance == null || gameObject == null) return;
+        PoolController.Instance.ReturnToPool(gameObject);
     }
 }

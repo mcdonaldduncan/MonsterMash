@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PoolManager : Singleton<PoolManager>
+public class PoolController : Singleton<PoolController>
 {
     private Dictionary<GameObject, Queue<GameObject>> m_Pool;
 

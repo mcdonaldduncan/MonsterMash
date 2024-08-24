@@ -45,12 +45,12 @@ public class NavigationVFXController : MonoBehaviour, IManageable
 
         if (UseBattleIndicator)
         {
-            DestinationVFXInstance = PoolManager.Instance.TakeFromPool(BattleDestinationVFX, location);
+            DestinationVFXInstance = PoolController.Instance.TakeFromPool(BattleDestinationVFX, location);
         }
         else
         {
-            _ = PoolManager.Instance.TakeFromPool(DestinationClickVFX, location);
-            DestinationVFXInstance = PoolManager.Instance.TakeFromPool(DestinationVFX, location);
+            _ = PoolController.Instance.TakeFromPool(DestinationClickVFX, location);
+            DestinationVFXInstance = PoolController.Instance.TakeFromPool(DestinationVFX, location);
         }
 
         FlipPendingVFX();
@@ -61,7 +61,7 @@ public class NavigationVFXController : MonoBehaviour, IManageable
     {
         if (DestinationVFXInstance == null || !DestinationVFXInstance.activeSelf) return;
 
-        PoolManager.Instance.ReturnToPool(DestinationVFXInstance);
+        PoolController.Instance.ReturnToPool(DestinationVFXInstance);
     }
 
     void FlipPendingVFX()

@@ -9,7 +9,8 @@ public class CanvasController : MonoBehaviour
 {
     [SerializeField] GameObject m_ActionPanel;
     [SerializeField] GameObject m_RunButton;
-    [SerializeField] GameObject m_IndividualCanvas;
+
+    [SerializeField] IndividualCanvas m_IndividualCanvas;
 
     [SerializeField] TextMeshProUGUI m_ICName;
 
@@ -38,14 +39,13 @@ public class CanvasController : MonoBehaviour
     private void OnEnable()
     {
         m_ActionButtons = m_ActionPanel.GetComponentsInChildren<Button>(true);
+
         m_ActionPanel.SetActive(false);
         m_RunButton.SetActive(false);
-        m_IndividualCanvas.SetActive(false);
+
+        SetupMonsterLookup();
 
         m_IndividualCanvas.transform.localPosition = Vector3.up * m_ICHeightOffset;
-
-        SetupStatDisplay();
-        SetupMonsterLookup();
     }
 
     private void Start()
@@ -73,11 +73,6 @@ public class CanvasController : MonoBehaviour
             m_ActionButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = actions[i].Name;
             m_ActionButtons[i].onClick.AddListener(delegate { actions[actionIndex].InvokeAction(player, target); });
         }
-    }
-
-    private void SetupStatDisplay()
-    {
-        m_StatDisplays = m_IndividualCanvas.GetComponentsInChildren<StatDisplay>(true);
     }
 
     private void OnBattle()
@@ -182,17 +177,14 @@ public class CanvasController : MonoBehaviour
             
             m_ICName.text = m_CurrentMonster.Name;
 
-            foreach (var statDisplay in m_StatDisplays)
-            {
-                statDisplay.SetText(m_CurrentMonster);
-            }
+            m_IndividualCanvas.SetDisplayMonster(m_CurrentMonster);
         }
 
         m_ICTimerStart = Time.time;
 
         m_ICTimerCoroutine ??= StartCoroutine(WatchIndividualCanvasTimer());
         
-        if (!m_IndividualCanvas.activeSelf) m_IndividualCanvas.SetActive(true);
+        if (!m_IndividualCanvas.gameObject.activeSelf) m_IndividualCanvas.gameObject.SetActive(true);
     }
 
     // Might be a performance hit on gc
@@ -203,7 +195,7 @@ public class CanvasController : MonoBehaviour
             yield return null;
         }
 
-        m_IndividualCanvas.SetActive(false);
+        m_IndividualCanvas.gameObject.SetActive(false);
         m_ICTimerCoroutine = null;
     }
 

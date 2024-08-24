@@ -87,7 +87,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &9138164200043836085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,12 +130,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Health: {fileID: 9138164202095595322}
-  m_MonsterName: {fileID: 9138164202133871823}
-  m_Attack: {fileID: 9138164200082025109}
-  m_Defense: {fileID: 9138164200914757221}
-  m_SpAtk: {fileID: 9138164200601968268}
-  m_SpDef: {fileID: 9138164200544034743}
-  m_Skill: {fileID: 9138164200101225664}
 --- !u!1 &9138164200082025115
 GameObject:
   m_ObjectHideFlags: 0

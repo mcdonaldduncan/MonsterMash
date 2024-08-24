@@ -8,29 +8,28 @@ public class IndividualCanvas : MonoBehaviour
 {
     [SerializeField] GameObject m_Health;
 
-    [SerializeField] TextMeshProUGUI m_MonsterName;
-    [SerializeField] TextMeshProUGUI m_Attack;
-    [SerializeField] TextMeshProUGUI m_Defense;
-    [SerializeField] TextMeshProUGUI m_SpAtk;
-    [SerializeField] TextMeshProUGUI m_SpDef;
-    [SerializeField] TextMeshProUGUI m_Skill;
+    StatDisplay[] m_StatDisplays;
 
     Image m_HealthFill;
 
-    private void OnEnable()
+    private void Start()
     {
         m_HealthFill = m_Health.GetComponent<Image>();
+        m_StatDisplays = GetComponentsInChildren<StatDisplay>(true);
+
+        foreach (var statDisplay in m_StatDisplays)
+        {
+            statDisplay.Initialize();
+        }
+
+        gameObject.SetActive(false);
     }
 
     public void SetDisplayMonster(BattleMonster monster)
     {
-        m_MonsterName.text =  monster.Name;
-        m_Attack.text = monster.GetStat(StatType.ATTACK, TypeModifier.INITIAL).ToString();
-        m_Defense.text = monster.GetStat(StatType.DEFENSE, TypeModifier.INITIAL).ToString();
-        m_SpAtk.text = monster.GetStat(StatType.SPATTACK, TypeModifier.INITIAL).ToString();
-        m_SpDef.text = monster.GetStat(StatType.SPDEFENSE, TypeModifier.INITIAL).ToString();
-        m_Skill.text = monster.GetStat(StatType.SKILL, TypeModifier.INITIAL).ToString();
+        foreach (var statDisplay in m_StatDisplays)
+        {
+            statDisplay.SetText(monster);
+        }
     }
-
-
 }

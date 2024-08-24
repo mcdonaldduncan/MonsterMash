@@ -7,17 +7,23 @@ using UnityEngine;
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class StatDisplay : MonoBehaviour
 {
-    [SerializeField] StatType m_Stat;
+    [SerializeField] public StatType Stat;
 
-    TextMeshProUGUI m_Text;
+    public TextMeshProUGUI m_Text;
 
-    void Awake()
+    public void Initialize()
     {
+        if (m_Text != null) return;
         m_Text = GetComponent<TextMeshProUGUI>();
     }
 
     public void SetText(BattleMonster battleMonster)
     {
-        m_Text.text = $"{Enum.GetName(typeof(StatType), m_Stat)}: {battleMonster.GetStat(m_Stat)}";
+        if (m_Text == null)
+        {
+            m_Text = GetComponent<TextMeshProUGUI>();
+        }
+
+        m_Text.text = $"{Enum.GetName(typeof(StatType), Stat)}: {battleMonster.GetStat(Stat)}";
     }
 }
