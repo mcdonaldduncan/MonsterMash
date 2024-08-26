@@ -23,11 +23,11 @@ public class BattleMonster : MonoBehaviour
     [SerializeField] int m_BaseSpDefense;
     [SerializeField] int m_BaseSkill;
 
-    [Header("Base Resorce Pools")]
+    [Header("Base Resource Pools")]
     [SerializeField] int m_BaseMana;
     [SerializeField] int m_BaseStamina;
 
-    [Header("Base Resorce Regen")]
+    [Header("Base Resource Regen")]
     [SerializeField] int m_BaseManaRegen;
     [SerializeField] int m_BaseStaminaRegen;
 
@@ -61,7 +61,7 @@ public class BattleMonster : MonoBehaviour
     public ElementType Type => m_Type;
     public string Name => m_MonsterName;
 
-    public int Id;
+    [NonSerialized] public int Id;
 
     // ToDo Add Effort Values
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,18 +7,17 @@ using UnityEngine.UI;
 
 public class IndividualCanvas : MonoBehaviour
 {
-    [SerializeField] GameObject m_Health;
+    [SerializeField] Image m_Health;
+    [Header("Health Colors - Place in ascending order")]
+    [SerializeField] Color32[] m_Colors;
 
     CanvasController m_CanvasController;
 
     StatDisplay[] m_StatDisplays;
 
-    Image m_HealthFill;
-
     private void Start()
     {
         m_CanvasController = FindObjectOfType<CanvasController>();
-        m_HealthFill = m_Health.GetComponent<Image>();
         m_StatDisplays = GetComponentsInChildren<StatDisplay>(true);
 
         foreach (var statDisplay in m_StatDisplays)
@@ -35,30 +35,27 @@ public class IndividualCanvas : MonoBehaviour
 
     public void OnSetDisplayMonster(BattleMonster monster)
     {
+        ScaleHealth(monster);
+
         foreach (var statDisplay in m_StatDisplays)
         {
             statDisplay.SetText(monster);
         }
     }
 
-    // ToDo repurpose for healthbar, from my game potionPanic
-    //public void ScaleHealth()
-    //{
-    //    float healthBarZ = (float)Health / (float)startingHealth;
+    public void ScaleHealth(BattleMonster monster)
+    {
+        float currentHealth = monster.GetStat(StatType.HEALTH);
+        float initialHealth = monster.GetStat(StatType.HEALTH, TypeModifier.INITIAL);
 
-    //    healthBar.transform.localScale = new Vector3(healthScale.x, healthScale.y, healthBarZ);
+        var healthScale = currentHealth / initialHealth;
 
-    //    if (Health <= (float)startingHealth / 3f)
-    //    {
-    //        healthRend.material = lowHealth;
-    //    }
-    //    else if (Health <= (float)startingHealth / 3f * 2f)
-    //    {
-    //        healthRend.material = medHealth;
-    //    }
-    //    else
-    //    {
-    //        healthRend.material = highHealth;
-    //    }
-    //}
+        m_Health.rectTransform.localScale = new Vector3(healthScale, 1, 1);
+
+        if (m_Colors.Length <= 1) return;
+
+        var relativeHealth = currentHealth / (initialHealth / m_Colors.Length);
+
+        m_Health.color = m_Colors[Math.Max(Mathf.FloorToInt(relativeHealth) - 1, 0)];
+    }
 }
