@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour, IManageable
     public event CameraControlDelegate RotateCamera;
     public event CameraControlDelegate ZoomCamera;
 
+    public delegate void ConsoleControlDelegate();
+    public event ConsoleControlDelegate Submit;
+
     private void OnEnable()
     {
         m_Camera = Camera.main;
@@ -41,6 +44,8 @@ public class PlayerController : MonoBehaviour, IManageable
         m_InputActions.Player.Move.canceled += OnMove;
 
         m_InputActions.Player.Scroll.performed += OnScroll;
+
+        m_InputActions.Player.Submit.performed += OnSubmit;
     }
 
     private void Start()
@@ -159,4 +164,11 @@ public class PlayerController : MonoBehaviour, IManageable
     {
         SetActive(false);
     }
+
+    #region Debug Console
+    private void OnSubmit(InputAction.CallbackContext context)
+    {
+        Submit?.Invoke();
+    }
+    #endregion
 }

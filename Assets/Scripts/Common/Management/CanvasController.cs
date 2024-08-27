@@ -35,6 +35,7 @@ public class CanvasController : MonoBehaviour
 
     public delegate void CanvasControlDelegate(BattleMonster monster);
     public event CanvasControlDelegate SetDisplayMonster;
+    public event CanvasControlDelegate RefreshHealth;
 
     bool ShouldICDisable => Time.time > m_ICTimerStart + m_ICTimerDuration;
 
@@ -179,6 +180,8 @@ public class CanvasController : MonoBehaviour
 
             SetDisplayMonster?.Invoke(m_CurrentMonster);
         }
+
+        RefreshHealth?.Invoke(m_CurrentMonster); // come up with something better than this, kinda defeats the purpose of above efficiency
 
         m_ICTimerStart = Time.time;
 

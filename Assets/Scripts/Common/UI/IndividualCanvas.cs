@@ -28,6 +28,7 @@ public class IndividualCanvas : MonoBehaviour
         if (m_CanvasController != null)
         {
             m_CanvasController.SetDisplayMonster += OnSetDisplayMonster;
+            m_CanvasController.RefreshHealth += ScaleHealth;
         }
 
         gameObject.SetActive(false);

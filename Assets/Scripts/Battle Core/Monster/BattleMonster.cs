@@ -179,12 +179,12 @@ public class BattleMonster : MonoBehaviour
     {
         StatModifiers = new Dictionary<StatType, Action<int>>()
         {
-            { StatType.HEALTH, value => CurrentHealth += value },
-            { StatType.ATTACK, value => CurrentAttack += value },
-            { StatType.DEFENSE, value => CurrentDefense += value },
-            { StatType.SPATTACK, value => CurrentSpAttack += value },
-            { StatType.SPDEFENSE, value => CurrentSpDefense += value },
-            { StatType.SKILL, value => CurrentSkill += value }
+            { StatType.HEALTH, value => CurrentHealth = Math.Clamp(CurrentHealth + value, 0, ScaledHealth) },
+            { StatType.ATTACK, value => CurrentAttack = Math.Clamp(CurrentAttack + value, 0, ScaledAttack) },
+            { StatType.DEFENSE, value => CurrentDefense = Math.Clamp(CurrentDefense + value, 0, ScaledDefense) },
+            { StatType.SPATTACK, value => CurrentSpAttack = Math.Clamp(CurrentSpAttack + value, 0, ScaledSpAttack) },
+            { StatType.SPDEFENSE, value => CurrentSpDefense = Math.Clamp(CurrentSpDefense + value, 0, ScaledSpDefense) },
+            { StatType.SKILL, value => CurrentSkill = Math.Clamp(CurrentSkill + value, 0, ScaledSkill) }
         };
 
         CurrentStatAccessors = new Dictionary<StatType, Func<int>>()
