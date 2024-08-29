@@ -30,11 +30,10 @@ public class FollowCam : MonoBehaviour, IManageable
     PlayerController m_Player;
     Transform m_Transform;
 
-    Vector3 pivotPoint => new Vector3(Target.position.x, Target.position.y + m_HeightOffset, Target.position.z);
-
-    float currentHeight => transform.position.y;
+    Vector3 PivotPoint => new Vector3(Target.position.x, Target.position.y + m_HeightOffset, Target.position.z);
 
     public bool IsActive { get; set; }
+    public bool IsTargetMoving { get; set; }
 
     private void Start()
     {
@@ -55,11 +54,18 @@ public class FollowCam : MonoBehaviour, IManageable
             if (Mathf.Abs(m_AngleIncrement) < m_MaxRotationSpeed)
                 m_AngleIncrement += m_AngleIncrement > 0 ? m_RotationAcceleration * Time.deltaTime : -m_RotationAcceleration * Time.deltaTime;
         }
+        else if (IsTargetMoving)
+        {
+            Vector3 directionToTarget = Target.position - m_IntermediaryPosition;
+            float desiredAngle = Mathf.Atan2(directionToTarget.z, directionToTarget.x) * Mathf.Rad2Deg + 180f;
+            if (desiredAngle < 0) desiredAngle += 360f;
+            m_PivotAngle = Mathf.MoveTowardsAngle(m_PivotAngle, desiredAngle, m_RotationSpeed * Time.deltaTime);
+        }
 
         float posX = Mathf.Cos(Mathf.Deg2Rad * m_PivotAngle) * m_PivotRadius;
         float posZ = Mathf.Sin(Mathf.Deg2Rad * m_PivotAngle) * m_PivotRadius;
 
-        m_IntermediaryPosition = new Vector3(posX, 0, posZ) + pivotPoint;
+        m_IntermediaryPosition = new Vector3(posX, 0, posZ) + PivotPoint;
 
         m_Transform.position = Vector3.SmoothDamp(m_Transform.position, m_IntermediaryPosition, ref m_Velocity, m_SmoothTime);
 
@@ -100,17 +106,19 @@ public class FollowCam : MonoBehaviour, IManageable
 
     public void Wake()
     {
-        m_PivotRadius = (pivotPoint - transform.position).magnitude;
+        m_PivotRadius = (PivotPoint - transform.position).magnitude;
         m_PivotAngle = -Mathf.Acos(transform.position.x / m_PivotRadius) * Mathf.Rad2Deg;
         m_HeightOffset = transform.position.y;
         m_Player.RotateCamera += OnRotateCamera;
         m_Player.ZoomCamera += OnZoomCamera;
+        m_Player.SetMoving += OnSetMoving;
     }
 
     public void Sleep()
     {
         m_Player.RotateCamera -= OnRotateCamera;
         m_Player.ZoomCamera -= OnZoomCamera;
+        m_Player.SetMoving -= OnSetMoving; // make sure this doesnt continue movement after sleep
 
         OnRotateCamera(0);
         OnZoomCamera(0);
@@ -138,5 +146,10 @@ public class FollowCam : MonoBehaviour, IManageable
     public void Disable()
     {
         SetActive(false);
+    }
+
+    private void OnSetMoving(bool newState)
+    {
+        IsTargetMoving = newState;
     }
 }

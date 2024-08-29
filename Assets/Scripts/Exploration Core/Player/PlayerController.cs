@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour, IManageable
     public event CameraControlDelegate RotateCamera;
     public event CameraControlDelegate ZoomCamera;
 
+    public delegate void CameraInformationDelegate(bool moveState);
+    public event CameraInformationDelegate SetMoving;
+
     public delegate void ConsoleControlDelegate();
     public event ConsoleControlDelegate Submit;
 
@@ -95,18 +98,31 @@ public class PlayerController : MonoBehaviour, IManageable
         if (!IsActive) return;
         if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out m_Hit)) return;
 
+        
+
         if (m_Hit.collider.gameObject.CompareTag("Enemy"))
         {
             BattleController.Instance.Init(m_BattleMonster, m_Hit.collider.gameObject.GetComponent<BattleMonster>());
 
             m_Navigator.MoveToLocation(m_Hit.collider.gameObject.transform, true);
+            m_Navigator.StopMove += SetMovementStateFalse;
             m_Navigator.StopMove += BattleTransition;
+
+            SetMoving?.Invoke(true);
 
             return;
         }
 
+        m_Navigator.StopMove += SetMovementStateFalse;
         m_Navigator.StopMove -= BattleTransition;
         m_Navigator.MoveToLocation(m_Hit.point);
+
+        SetMoving?.Invoke(true);
+    }
+
+    private void SetMovementStateFalse()
+    {
+        SetMoving?.Invoke(false);
     }
 
     private void BattleTransition()
