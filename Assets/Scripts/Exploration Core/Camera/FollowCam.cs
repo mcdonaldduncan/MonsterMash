@@ -7,6 +7,7 @@ public class FollowCam : MonoBehaviour, IManageable
     [SerializeField] Transform Target;
     [SerializeField] float m_MaxRadius;
     [SerializeField] float m_MinRadius;
+    [SerializeField] float m_StartRadius;
     [SerializeField] float m_RotationSpeed;
     [SerializeField] float m_ZoomSpeed;
     [SerializeField] float m_SmoothTime;
@@ -17,6 +18,7 @@ public class FollowCam : MonoBehaviour, IManageable
     [SerializeField] float m_HeightSupplement;
     [SerializeField] float m_MaxHeight;
     [SerializeField] float m_MinHeight;
+    [SerializeField] float m_StartHeight;
 
     float m_PivotRadius;
     float m_PivotAngle;
@@ -30,7 +32,7 @@ public class FollowCam : MonoBehaviour, IManageable
     PlayerController m_Player;
     Transform m_Transform;
 
-    Vector3 PivotPoint => new Vector3(Target.position.x, Target.position.y + m_HeightOffset, Target.position.z);
+    Vector3 PivotPoint => new(Target.position.x, Target.position.y + m_HeightOffset, Target.position.z);
 
     public bool IsActive { get; set; }
     public bool IsTargetMoving { get; set; }
@@ -56,7 +58,7 @@ public class FollowCam : MonoBehaviour, IManageable
         }
         else if (IsTargetMoving)
         {
-            Vector3 directionToTarget = Target.position - m_IntermediaryPosition;
+            Vector3 directionToTarget = PivotPoint - m_IntermediaryPosition;
             float desiredAngle = Mathf.Atan2(directionToTarget.z, directionToTarget.x) * Mathf.Rad2Deg + 180f;
             if (desiredAngle < 0) desiredAngle += 360f;
             m_PivotAngle = Mathf.MoveTowardsAngle(m_PivotAngle, desiredAngle, m_RotationSpeed * Time.deltaTime);
@@ -106,9 +108,20 @@ public class FollowCam : MonoBehaviour, IManageable
 
     public void Wake()
     {
-        m_PivotRadius = (PivotPoint - transform.position).magnitude;
-        m_PivotAngle = -Mathf.Acos(transform.position.x / m_PivotRadius) * Mathf.Rad2Deg;
-        m_HeightOffset = transform.position.y;
+        m_HeightOffset = m_HeightOffset <= m_MinHeight ? m_StartHeight : m_HeightOffset;
+        if (m_IntermediaryPosition.magnitude == 0)
+        {
+            var startPosition = PivotPoint - (Target.forward * m_StartRadius);
+            m_Transform.position = startPosition;
+            m_IntermediaryPosition = startPosition;
+        }
+
+        var currentDir = PivotPoint - m_Transform.position;
+        
+        m_PivotRadius = currentDir.magnitude;
+        m_PivotAngle = Mathf.Atan2(currentDir.z, currentDir.x) * Mathf.Rad2Deg + 180f;
+        if (m_PivotAngle < 0) m_PivotAngle += 360f;
+
         m_Player.RotateCamera += OnRotateCamera;
         m_Player.ZoomCamera += OnZoomCamera;
         m_Player.SetMoving += OnSetMoving;
