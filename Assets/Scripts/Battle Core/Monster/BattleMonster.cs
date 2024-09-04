@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+[RequireComponent(typeof(Collider))]
 public class BattleMonster : MonoBehaviour
 {
     [Header("Name")]
@@ -59,9 +60,10 @@ public class BattleMonster : MonoBehaviour
 
     public BattleAction[] Actions => m_BattleActions;
     public ElementType Type => m_Type;
-    public string Name => m_MonsterName;
+    public string DisplayName => m_MonsterName;
 
     [NonSerialized] public int Id;
+    [NonSerialized] public Collider Collider;
 
     // ToDo Add Effort Values
 
@@ -77,6 +79,7 @@ public class BattleMonster : MonoBehaviour
     private void Awake()
     {
         Id = IdHelper.GetNextID();
+        Collider = GetComponent<Collider>();
     }
 
     private void OnEnable()

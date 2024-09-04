@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour, IManageable
 {
     [SerializeField] string[] m_InspectionTags;
 
-    CanvasController m_CanvasManager;
     BattleMonster m_BattleMonster;
     InputActions m_InputActions;
     Navigator m_Navigator;
@@ -34,7 +33,6 @@ public class PlayerController : MonoBehaviour, IManageable
     private void OnEnable()
     {
         m_Camera = Camera.main;
-        m_CanvasManager = FindObjectOfType<CanvasController>();
         m_Navigator = GetComponent<Navigator>();
         m_BattleMonster = GetComponent<BattleMonster>();
 
@@ -73,7 +71,7 @@ public class PlayerController : MonoBehaviour, IManageable
         m_Navigator.SetPath(m_Hit.point);
 
         if (!m_InspectionTags.Contains(m_Hit.collider.gameObject.tag)) return;
-        m_CanvasManager.RefreshICTimer(m_Hit.collider);
+        CanvasController.Instance.RefreshICTimer(m_Hit.collider);
     }
 
     public void OnScroll(InputAction.CallbackContext context)
@@ -97,8 +95,6 @@ public class PlayerController : MonoBehaviour, IManageable
     {
         if (!IsActive) return;
         if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out m_Hit)) return;
-
-        
 
         if (m_Hit.collider.gameObject.CompareTag("Enemy"))
         {

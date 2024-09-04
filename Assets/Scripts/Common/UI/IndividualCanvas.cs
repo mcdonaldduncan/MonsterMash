@@ -8,16 +8,14 @@ using UnityEngine.UI;
 public class IndividualCanvas : MonoBehaviour
 {
     [SerializeField] Image m_Health;
+    [SerializeField] TextMeshProUGUI m_NameText;
     [Header("Health Colors - Place in ascending order")]
     [SerializeField] Color32[] m_Colors;
-
-    CanvasController m_CanvasController;
 
     StatDisplay[] m_StatDisplays;
 
     private void Start()
     {
-        m_CanvasController = FindObjectOfType<CanvasController>();
         m_StatDisplays = GetComponentsInChildren<StatDisplay>(true);
 
         foreach (var statDisplay in m_StatDisplays)
@@ -25,18 +23,15 @@ public class IndividualCanvas : MonoBehaviour
             statDisplay.Initialize();
         }
 
-        if (m_CanvasController != null)
-        {
-            m_CanvasController.SetDisplayMonster += OnSetDisplayMonster;
-            m_CanvasController.RefreshHealth += ScaleHealth;
-        }
+        CanvasController.Instance.SetDisplayMonster += OnSetDisplayMonster;
+        CanvasController.Instance.RefreshDisplay += OnRefreshDisplay;
 
         gameObject.SetActive(false);
     }
 
     public void OnSetDisplayMonster(BattleMonster monster)
     {
-        ScaleHealth(monster);
+        m_NameText.text = monster.DisplayName;
 
         foreach (var statDisplay in m_StatDisplays)
         {
@@ -44,7 +39,19 @@ public class IndividualCanvas : MonoBehaviour
         }
     }
 
-    public void ScaleHealth(BattleMonster monster)
+    public void OnRefreshDisplay(BattleMonster monster)
+    {
+        ScaleHealth(monster);
+
+        m_NameText.transform.parent.gameObject.SetActive(!(TransitionController.Instance.GetState() == GameState.BATTLEACTUAL));
+
+        foreach (var statDisplay in m_StatDisplays)
+        {
+            statDisplay.gameObject.SetActive(!(TransitionController.Instance.GetState() == GameState.BATTLEACTUAL));
+        }
+    }
+
+    private void ScaleHealth(BattleMonster monster)
     {
         float currentHealth = monster.GetStat(StatType.HEALTH);
         float initialHealth = monster.GetStat(StatType.HEALTH, TypeModifier.INITIAL);

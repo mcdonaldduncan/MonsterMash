@@ -88,6 +88,10 @@ public class TransitionController : Singleton<TransitionController>
         }
     }
 
+    public GameState GetState()
+    {
+        return GameState;
+    }
 }
 
 

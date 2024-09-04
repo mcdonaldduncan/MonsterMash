@@ -20,5 +20,8 @@ public abstract class BattleAction : ScriptableObject, IAction
     public ResourceType ResourceType => m_ResourceType;
     public ElementType Type => m_ActionType;
 
-    public virtual void InvokeAction(BattleMonster invoker, BattleMonster target) { }
+    public virtual void InvokeAction(BattleMonster invoker, BattleMonster target) 
+    {
+        CanvasController.Instance.RefreshICTimer(target.Collider);
+    }
 }

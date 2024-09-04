@@ -5,13 +5,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CanvasController : MonoBehaviour
+public class CanvasController : Singleton<CanvasController>
 {
     [SerializeField] GameObject m_ActionPanel;
     [SerializeField] GameObject m_RunButton;
     [SerializeField] GameObject m_IndividualCanvas;
-
-    [SerializeField] TextMeshProUGUI m_ICName;
 
     [SerializeField] Image m_FadeImage;
 
@@ -33,9 +31,9 @@ public class CanvasController : MonoBehaviour
     float m_FadeAlpha;
     float m_ICTimerStart;
 
-    public delegate void CanvasControlDelegate(BattleMonster monster);
-    public event CanvasControlDelegate SetDisplayMonster;
-    public event CanvasControlDelegate RefreshHealth;
+    public delegate void IndividualCanvasControlDelegate(BattleMonster monster);
+    public event IndividualCanvasControlDelegate SetDisplayMonster;
+    public event IndividualCanvasControlDelegate RefreshDisplay;
 
     bool ShouldICDisable => Time.time > m_ICTimerStart + m_ICTimerDuration;
 
@@ -176,12 +174,10 @@ public class CanvasController : MonoBehaviour
             m_CurrentMonster = battleMonster;
             m_IndividualCanvas.transform.SetParent(m_CurrentMonster.transform, false);
             
-            m_ICName.text = m_CurrentMonster.Name;
-
             SetDisplayMonster?.Invoke(m_CurrentMonster);
         }
 
-        RefreshHealth?.Invoke(m_CurrentMonster); // come up with something better than this, kinda defeats the purpose of above efficiency
+        RefreshDisplay?.Invoke(m_CurrentMonster); // come up with something better than this, kinda defeats the purpose of above efficiency
 
         m_ICTimerStart = Time.time;
 

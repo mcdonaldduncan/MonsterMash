@@ -15,5 +15,6 @@ public class BasicAttack : BattleAction
         // ToDo: Still need to decide how to handle negation from defenses
         
         target.ModifyStat(StatType.HEALTH, -Mathf.RoundToInt(damageTotal));
+        base.InvokeAction(invoker, target);
     }
 }
