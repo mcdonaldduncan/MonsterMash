@@ -64,6 +64,6 @@ public class IndividualCanvas : MonoBehaviour
 
         var relativeHealth = currentHealth / (initialHealth / m_Colors.Length);
 
-        m_Health.color = m_Colors[Math.Max(Mathf.FloorToInt(relativeHealth) - 1, 0)];
+        m_Health.color = m_Colors[Math.Max(Mathf.CeilToInt(relativeHealth) - 1, 0)];
     }
 }

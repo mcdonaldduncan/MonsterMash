@@ -2328,7 +2328,6 @@ MonoBehaviour:
   m_MaxHeight: 10
   m_MinHeight: 0
   m_StartHeight: 2
-  m_PivotAngle: 0
 --- !u!1001 &377637757
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7506,7 +7505,6 @@ MonoBehaviour:
   m_ActionPanel: {fileID: 293226854}
   m_RunButton: {fileID: 1653083516}
   m_IndividualCanvas: {fileID: 99746999}
-  m_ICName: {fileID: 2019470018}
   m_FadeImage: {fileID: 1337890646}
   m_FadeRate: 0.5
   m_CutDuration: 0.5
@@ -8194,7 +8192,7 @@ PrefabInstance:
     - target: {fileID: 5366632779147598302, guid: aa32d964ef4496549b4779c42dc7900f,
         type: 3}
       propertyPath: m_TagString
-      value: Enemy
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa32d964ef4496549b4779c42dc7900f, type: 3}
@@ -10373,13 +10371,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Health: {fileID: 2049358137}
+  m_NameText: {fileID: 2019470018}
   m_Colors:
   - serializedVersion: 2
     rgba: 4278191615
   - serializedVersion: 2
+    rgba: 4278210559
+  - serializedVersion: 2
     rgba: 4278242047
   - serializedVersion: 2
-    rgba: 4278255578
+    rgba: 4278255602
+  - serializedVersion: 2
+    rgba: 4278255533
   - serializedVersion: 2
     rgba: 4278255443
 --- !u!1 &7685040717252500326
