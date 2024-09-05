@@ -135,6 +135,8 @@ public class BattleController : Singleton<BattleController>
 
     private BattleAction BestMove(BattleMonster monster)
     {
+        // Note for future me: Assign all available actions a probability based on efficacy + other considerations (low health heal, status, stat boosts, etc)
+        // 
         if (m_DefaultAction == null)
         {
             m_DefaultAction = ScriptableObject.CreateInstance<BasicAttack>();

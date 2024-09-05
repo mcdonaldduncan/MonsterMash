@@ -6005,12 +6005,13 @@ MonoBehaviour:
   m_BaseDefense: 10
   m_BaseSpAttack: 15
   m_BaseSpDefense: 10
-  m_BaseSkill: 10
+  m_BaseSkill: 15
   m_BaseMana: 10
   m_BaseStamina: 10
   m_BaseManaRegen: 1
   m_BaseStaminaRegen: 1
-  m_BattleActions: []
+  m_BattleActions:
+  - {fileID: 11400000, guid: 0594c7d698bd19e41855676b2b44382d, type: 2}
 --- !u!1001 &1041201936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8963,7 +8964,8 @@ MonoBehaviour:
   m_BaseStamina: 10
   m_BaseManaRegen: 1
   m_BaseStaminaRegen: 1
-  m_BattleActions: []
+  m_BattleActions:
+  - {fileID: 11400000, guid: 3339a1b403f239d4ca211428d09402ba, type: 2}
 --- !u!4 &1827205604 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 902391672072293958, guid: aed784eb3c89acd428e01d84bd07f503,
