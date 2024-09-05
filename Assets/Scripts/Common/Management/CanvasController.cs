@@ -76,6 +76,14 @@ public class CanvasController : Singleton<CanvasController>
         }
     }
 
+    public void SetPlayerActionState(bool state)
+    {
+        foreach (var button in m_ActionButtons)
+        {
+            button.interactable = state;
+        }
+    }
+
     private void OnBattle()
     {
         if (m_FadeCoroutine != null) StopCoroutine(m_FadeCoroutine);
