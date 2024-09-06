@@ -25,7 +25,13 @@ public class TypeLookup
 
     public static float GetEfficacy(ElementType attackType, ElementType defensetype)
     {
-        return Lookup[(attackType, defensetype)];
+        if (!Lookup.TryGetValue((attackType, defensetype), out var value))
+        {
+            Utility.LogError($"Type comparison not found for {attackType}, {defensetype}");
+            return 0;
+        }
+
+        return value;
     }
 
 }
