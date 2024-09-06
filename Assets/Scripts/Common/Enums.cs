@@ -53,7 +53,5 @@ public enum BattleState
 {
     PLAYER,
     TRANSITION,
-    ENEMY,
-    DEFEAT,
-    VICTORY
+    ENEMY
 }

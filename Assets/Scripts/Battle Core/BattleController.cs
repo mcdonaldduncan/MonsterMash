@@ -79,16 +79,20 @@ public class BattleController : Singleton<BattleController>
 
     private void OnExplorationActual()
     {
-        if (Enemy == null) return; // only if health is valid once end battle logic is in
+        if (Enemy == null || Enemy.GetStat(StatType.HEALTH) <= 0) return;
         Enemy.GetComponent<AINavigationController>().SetActive(true);
     }
 
     public void NotifyController(BattleMonster monster)
     {
-        // Check for victory/defeat
-
         if (monster == Player && m_State != BattleState.PLAYER) return;
         if (monster == Enemy && m_State != BattleState.ENEMY) return;
+
+        if (Player.GetStat(StatType.HEALTH) <= 0 || Enemy.GetStat(StatType.HEALTH) <= 0) // all enemies for eventual doubles/more
+        {
+            EndBattle();
+            return;
+        }
 
         SetState(BattleState.TRANSITION);
     }
@@ -98,24 +102,6 @@ public class BattleController : Singleton<BattleController>
         yield return m_TransitionWFS;
 
         SetState(targetState);
-
-        switch (m_State)
-        {
-            case BattleState.PLAYER:
-                CanvasController.Instance.SetPlayerActionState(true);
-                break;
-            case BattleState.ENEMY:
-                SimulateEnemyTurn();
-                break;
-            case BattleState.DEFEAT:
-                Defeat();
-                break;
-            case BattleState.VICTORY:
-                Victory();
-                break;
-            default:
-                break;
-        }
     }
 
     private void SetState(BattleState value)
@@ -125,27 +111,22 @@ public class BattleController : Singleton<BattleController>
             StartCoroutine(TransitionRoutine(m_State == BattleState.PLAYER ? BattleState.ENEMY : BattleState.PLAYER));
         }
 
-        if (value != BattleState.PLAYER)
-        {
-            CanvasController.Instance.SetPlayerActionState(false);
-        }
-
         m_State = value;
+
+        CanvasController.Instance.SetPlayerActionState(m_State == BattleState.PLAYER); // need to make this disable flee as well
+        if (m_State == BattleState.ENEMY) SimulateEnemyTurn();
     }
 
     private BattleAction BestMove(BattleMonster monster)
     {
         // Note for future me: Assign all available actions a probability based on efficacy + other considerations (low health heal, status, stat boosts, etc)
-        // 
         if (m_DefaultAction == null)
         {
             m_DefaultAction = ScriptableObject.CreateInstance<BasicAttack>();
         }
 
-        // If the actions are null or empty, return default
         if (monster.Actions == null || monster.Actions.Length == 0) return m_DefaultAction;
 
-        // If the monster has a single move, return that move
         if (monster.Actions.Length == 1) return monster.Actions[0];
 
 
@@ -166,13 +147,34 @@ public class BattleController : Singleton<BattleController>
         action.InvokeAction(Enemy, Player);
     }
 
+    private void EndBattle()
+    {
+        if (Player.GetStat(StatType.HEALTH) > 0) Victory();
+        else Defeat();
+
+        TransitionController.Instance.Transition(GameState.EXPLORATION); // this should happen after all anims/text plays out in the future
+    }
+
     private void Victory()
     {
-
+        // Apply xp
+        // Animations / text
+        TransitionController.Instance.SubscribeToTransition(GameState.EXPLORATIONACTUAL, RemoveEnemy);
     }
 
     private void Defeat()
     {
+        // animations / text
+        // Send to? menu / new monster / home
 
     }
+
+    private void RemoveEnemy() //s
+    {
+        Enemy.gameObject.SetActive(false);
+        TransitionController.Instance.UnsubscribeFromTransition(GameState.EXPLORATIONACTUAL, RemoveEnemy);
+    }
+
+    // Bug: upon defeat, transtion starts and completes correctly but enemy simulates turn
+    // Repro: second battle after red, vs green snek - not tested for consistency
 }

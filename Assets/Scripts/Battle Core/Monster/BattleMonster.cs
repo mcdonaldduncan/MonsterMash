@@ -89,6 +89,8 @@ public class BattleMonster : MonoBehaviour
         InitializeModifiersAndAccesors();
     }
 
+    
+
     public void ModifyStat(StatType type, int delta)
     {
         if (StatModifiers.TryGetValue(type, out var modifyAction))

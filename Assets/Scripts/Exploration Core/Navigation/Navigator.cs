@@ -48,6 +48,11 @@ public class Navigator : MonoBehaviour
         m_TriggerID = m_DestinationTrigger.GetInstanceID();
     }
 
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
     public void MoveToLocation(Vector3 location, bool combatMove = false)
     {
         if (OnCombatMove != combatMove) OnCombatMove = combatMove;
