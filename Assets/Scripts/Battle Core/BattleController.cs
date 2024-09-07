@@ -61,7 +61,7 @@ public class BattleController : Singleton<BattleController>
     private void OnBattle()
     {
         if (Enemy == null) return;
-
+        m_State = BattleState.PLAYER;
         Enemy.GetComponent<AINavigationController>().SetActive(false); // we only turn off the navigation for the current enemy
     }
 
@@ -90,10 +90,12 @@ public class BattleController : Singleton<BattleController>
 
         if (Player.GetStat(StatType.HEALTH) <= 0 || Enemy.GetStat(StatType.HEALTH) <= 0) // all enemies for eventual doubles/more
         {
+            Utility.Log($"Battle End Call");
             EndBattle();
             return;
         }
 
+        Utility.Log($"Controller notified, transitioning");
         SetState(BattleState.TRANSITION);
     }
 
@@ -101,11 +103,14 @@ public class BattleController : Singleton<BattleController>
     {
         yield return m_TransitionWFS;
 
+        Utility.Log($"Transition routine setting state to {targetState}");
         SetState(targetState);
     }
 
     private void SetState(BattleState value)
     {
+        Utility.Log($"SetState Called for {m_State} to {value}");
+
         if (value == BattleState.TRANSITION)
         {
             StartCoroutine(TransitionRoutine(m_State == BattleState.PLAYER ? BattleState.ENEMY : BattleState.PLAYER));
@@ -113,8 +118,8 @@ public class BattleController : Singleton<BattleController>
 
         m_State = value;
 
-        CanvasController.Instance.SetPlayerActionState(m_State == BattleState.PLAYER); // need to make this disable flee as well
-        if (m_State == BattleState.ENEMY) SimulateEnemyTurn();
+        CanvasController.Instance.SetPlayerActionState(value == BattleState.PLAYER); // need to make this disable flee as well
+        if (value == BattleState.ENEMY) SimulateEnemyTurn();
     }
 
     private BattleAction BestMove(BattleMonster monster)
@@ -144,6 +149,7 @@ public class BattleController : Singleton<BattleController>
 
         if (action == null) return;
 
+        Utility.Log("Simming enemy turn");
         action.InvokeAction(Enemy, Player);
     }
 
