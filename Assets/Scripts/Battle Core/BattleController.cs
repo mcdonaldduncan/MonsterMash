@@ -90,12 +90,10 @@ public class BattleController : Singleton<BattleController>
 
         if (Player.GetStat(StatType.HEALTH) <= 0 || Enemy.GetStat(StatType.HEALTH) <= 0) // all enemies for eventual doubles/more
         {
-            Utility.Log($"Battle End Call");
             EndBattle();
             return;
         }
 
-        Utility.Log($"Controller notified, transitioning");
         SetState(BattleState.TRANSITION);
     }
 
@@ -103,14 +101,11 @@ public class BattleController : Singleton<BattleController>
     {
         yield return m_TransitionWFS;
 
-        Utility.Log($"Transition routine setting state to {targetState}");
         SetState(targetState);
     }
 
     private void SetState(BattleState value)
     {
-        Utility.Log($"SetState Called for {m_State} to {value}");
-
         if (value == BattleState.TRANSITION)
         {
             StartCoroutine(TransitionRoutine(m_State == BattleState.PLAYER ? BattleState.ENEMY : BattleState.PLAYER));
@@ -124,7 +119,7 @@ public class BattleController : Singleton<BattleController>
 
     private BattleAction BestMove(BattleMonster monster)
     {
-        // Note for future me: Assign all available actions a probability based on efficacy + other considerations (low health heal, status, stat boosts, etc)
+        // Todo: Assign all available actions a probability based on efficacy + other considerations (low health heal, status, stat boosts, etc)
         if (m_DefaultAction == null)
         {
             m_DefaultAction = ScriptableObject.CreateInstance<BasicAttack>();
@@ -149,7 +144,6 @@ public class BattleController : Singleton<BattleController>
 
         if (action == null) return;
 
-        Utility.Log("Simming enemy turn");
         action.InvokeAction(Enemy, Player);
     }
 
@@ -157,7 +151,7 @@ public class BattleController : Singleton<BattleController>
     {
         if (Player.GetStat(StatType.HEALTH) > 0) Victory();
         else Defeat();
-
+        
         TransitionController.Instance.Transition(GameState.EXPLORATION); // this should happen after all anims/text plays out in the future
     }
 

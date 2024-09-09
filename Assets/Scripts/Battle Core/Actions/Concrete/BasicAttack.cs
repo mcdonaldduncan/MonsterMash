@@ -15,9 +15,6 @@ public class BasicAttack : BattleAction
         // ToDo: Still need to decide how to handle negation from defenses
         
         target.ModifyStat(StatType.HEALTH, -Mathf.RoundToInt(damageTotal));
-        Utility.Log($"{invoker.DisplayName} invoked action against {target.DisplayName}, dealing {Mathf.RoundToInt(damageTotal)} damage.");
-        Utility.Log($"{invoker.DisplayName} health: {invoker.GetStat(StatType.HEALTH)}");
-        Utility.Log($"{target.DisplayName} health: {target.GetStat(StatType.HEALTH)}");
         base.InvokeAction(invoker, target);
     }
 }

@@ -71,7 +71,8 @@ public class CanvasController : Singleton<CanvasController>
 
             var actionIndex = i;
 
-            m_ActionButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = actions[i].Name;
+            m_ActionButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = actions[i].Name; // todo: set these up with a script to hold text ref, starting to getcomponent too much
+            m_ActionButtons[i].onClick.RemoveAllListeners();
             m_ActionButtons[i].onClick.AddListener(delegate { actions[actionIndex].InvokeAction(player, target); });
         }
     }
