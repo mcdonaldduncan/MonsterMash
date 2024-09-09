@@ -22,6 +22,7 @@ public abstract class BattleAction : ScriptableObject, IAction
 
     public virtual void InvokeAction(BattleMonster invoker, BattleMonster target) 
     {
+        CanvasController.Instance.SetBattleLogText($"{invoker.DisplayName} used {Name} on {target.DisplayName}...");
         CanvasController.Instance.RefreshICTimer(target.Collider);
         BattleController.Instance.NotifyController(invoker);
     }

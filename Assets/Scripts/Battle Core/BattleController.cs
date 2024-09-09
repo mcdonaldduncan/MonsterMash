@@ -62,7 +62,8 @@ public class BattleController : Singleton<BattleController>
     {
         if (Enemy == null) return;
         m_State = BattleState.PLAYER;
-        Enemy.GetComponent<AINavigationController>().SetActive(false); // we only turn off the navigation for the current enemy
+        Enemy.GetComponent<AINavigationController>().SetActive(false); // we only turn off the navigation for the current enemy/s
+        CanvasController.Instance.SetBattleLogText(string.Empty);
     }
 
     private void OnBattleActual()
@@ -159,6 +160,7 @@ public class BattleController : Singleton<BattleController>
     {
         // Apply xp
         // Animations / text
+        CanvasController.Instance.SetBattleLogText("Victory!");
         TransitionController.Instance.SubscribeToTransition(GameState.EXPLORATIONACTUAL, RemoveEnemy);
     }
 
@@ -166,7 +168,7 @@ public class BattleController : Singleton<BattleController>
     {
         // animations / text
         // Send to? menu / new monster / home
-
+        CanvasController.Instance.SetBattleLogText("Defeat!");
     }
 
     private void RemoveEnemy() //s

@@ -7,8 +7,9 @@ using UnityEngine.UI;
 
 public class CanvasController : Singleton<CanvasController>
 {
+    [SerializeField] GameObject m_DisplayPanel;
     [SerializeField] GameObject m_ActionPanel;
-    [SerializeField] GameObject m_RunButton;
+    [SerializeField] GameObject m_RunGameObject;
     [SerializeField] GameObject m_IndividualCanvas;
 
     [SerializeField] Image m_FadeImage;
@@ -20,13 +21,15 @@ public class CanvasController : Singleton<CanvasController>
 
     BattleMonster m_CurrentMonster;
 
+    TypewriterDisplay m_BattleLog;
+
     Coroutine m_FadeCoroutine;
     Coroutine m_ICTimerCoroutine;
 
     Dictionary<Collider, BattleMonster> m_MonsterLookup;
 
+    Button m_FleeButton;
     Button[] m_ActionButtons;
-    readonly StatDisplay[] m_StatDisplays;
 
     float m_FadeAlpha;
     float m_ICTimerStart;
@@ -40,9 +43,13 @@ public class CanvasController : Singleton<CanvasController>
     private void OnEnable()
     {
         m_ActionButtons = m_ActionPanel.GetComponentsInChildren<Button>(true);
+        m_BattleLog = m_DisplayPanel.GetComponentInChildren<TypewriterDisplay>(true);
+
+        m_FleeButton = m_RunGameObject.GetComponent<Button>();
 
         m_ActionPanel.SetActive(false);
-        m_RunButton.SetActive(false);
+        m_RunGameObject.SetActive(false);
+        m_DisplayPanel.SetActive(false);
 
         SetupMonsterLookup();
 
@@ -83,6 +90,8 @@ public class CanvasController : Singleton<CanvasController>
         {
             button.interactable = state;
         }
+
+        m_FleeButton.interactable = state;
     }
 
     private void OnBattle()
@@ -100,7 +109,8 @@ public class CanvasController : Singleton<CanvasController>
     private void OnBattleActual()
     {
         m_ActionPanel.SetActive(true);
-        m_RunButton.SetActive(true);
+        m_RunGameObject.SetActive(true);
+        m_DisplayPanel.SetActive(true);
 
         SetupButtons(BattleController.Instance.Player, BattleController.Instance.Enemy);
 
@@ -110,7 +120,8 @@ public class CanvasController : Singleton<CanvasController>
     private void OnExplorationActual()
     {
         m_ActionPanel.SetActive(false);
-        m_RunButton.SetActive(false);
+        m_RunGameObject.SetActive(false);
+        m_DisplayPanel.SetActive(false);
 
         Invoke(nameof(InvokeableFade), m_CutDuration);
     }
@@ -205,5 +216,10 @@ public class CanvasController : Singleton<CanvasController>
 
         m_IndividualCanvas.SetActive(false);
         m_ICTimerCoroutine = null;
+    }
+
+    public void SetBattleLogText(string text)
+    {
+        m_BattleLog.SetText(text);
     }
 }
