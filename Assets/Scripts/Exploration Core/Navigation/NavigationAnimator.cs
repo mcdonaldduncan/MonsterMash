@@ -1,3 +1,4 @@
+using Assets.Scripts.Common;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -8,8 +9,6 @@ public class NavigationAnimator : MonoBehaviour
 {
     Animator Animator;
     Navigator Navigator;
-
-    const string IsMoving = "IsMoving";
 
     void Start()
     {
@@ -22,11 +21,11 @@ public class NavigationAnimator : MonoBehaviour
 
     public void OnStartMove()
     {
-        Animator.SetBool(IsMoving, true);
+        Animator.SetBool(Constants.IsMoving, true);
     }
 
     public void OnStopMove()
     {
-        Animator.SetBool(IsMoving, false);
+        Animator.SetBool(Constants.IsMoving, false);
     }
 }

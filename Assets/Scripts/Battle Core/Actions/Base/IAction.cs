@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,7 @@ public interface IAction
 
     public ElementType Type { get; }
 
-    public void InvokeAction(BattleMonster invoker, BattleMonster target);
+    public event Action<ResourceType> Perform;
 
+    public void InvokeAction(BattleMonster invoker, BattleMonster target);
 }

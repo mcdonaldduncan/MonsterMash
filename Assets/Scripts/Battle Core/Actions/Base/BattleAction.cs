@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public abstract class BattleAction : ScriptableObject, IAction
 {
     [SerializeField] string m_ActionName;
@@ -20,8 +19,12 @@ public abstract class BattleAction : ScriptableObject, IAction
     public ResourceType ResourceType => m_ResourceType;
     public ElementType Type => m_ActionType;
 
-    public virtual void InvokeAction(BattleMonster invoker, BattleMonster target) 
+    public event Action<ResourceType> Perform;
+
+    public virtual void InvokeAction(BattleMonster invoker, BattleMonster target)
     {
+        Perform?.Invoke(m_ResourceType);
+
         CanvasController.Instance.SetBattleLogText($"{invoker.DisplayName} used {Name} on {target.DisplayName}...");
         CanvasController.Instance.RefreshICTimer(target.Collider);
         BattleController.Instance.NotifyController(invoker);

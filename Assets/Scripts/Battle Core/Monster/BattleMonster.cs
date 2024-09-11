@@ -4,6 +4,10 @@ using UnityEngine;
 using System;
 
 [RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(Navigator))]
+[RequireComponent(typeof(NavigationAnimator))]
+[RequireComponent(typeof(BattleAnimator))]
+[RequireComponent(typeof(BattleVFXController))]
 public class BattleMonster : MonoBehaviour
 {
     [Header("Name")]
@@ -64,6 +68,7 @@ public class BattleMonster : MonoBehaviour
 
     [NonSerialized] public int Id;
     [NonSerialized] public Collider Collider;
+    [NonSerialized] public BattleAnimator BattleAnimator;
 
     // ToDo Add Effort Values
 
@@ -76,10 +81,13 @@ public class BattleMonster : MonoBehaviour
     Dictionary<ResourceType, Action<int>> ResourceModifiers;
     Dictionary<ResourceType, Func<int>> ResourceAccessors;
 
+    public event Action<StatType, bool> StatChanged;
+
     private void Awake()
     {
         Id = IdHelper.GetNextID();
         Collider = GetComponent<Collider>();
+        BattleAnimator = GetComponent<BattleAnimator>();
     }
 
     private void OnEnable()
@@ -87,15 +95,58 @@ public class BattleMonster : MonoBehaviour
         DetermineScaledValues();
         InitializeWorkingValues();
         InitializeModifiersAndAccesors();
+        InitializeUniqueActionInstances();
     }
 
-    
+    public void InitializeUniqueActionInstances()
+    {
+        var uniqueActions = new BattleAction[m_BattleActions.Length];
+
+        for (int i = 0; i < m_BattleActions.Length; i++)
+        {
+            uniqueActions[i] = Instantiate(m_BattleActions[i]);
+        }
+
+        m_BattleActions = uniqueActions;
+    }
+
+    /*
+     * using UnityEngine;
+
+public class BattleMonster : MonoBehaviour
+{
+    [SerializeField] BattleAction[] m_Actions;
+
+    private BattleAction[] uniqueActions;
+
+    void Start()
+    {
+        // Create a unique instance of each action for this monster
+        uniqueActions = new BattleAction[m_Actions.Length];
+
+        for (int i = 0; i < m_Actions.Length; i++)
+        {
+            uniqueActions[i] = Instantiate(m_Actions[i]);
+            uniqueActions[i].Perform += OnPerformAction;
+        }
+    }
+
+    private void OnPerformAction(ResourceType resourceType)
+    {
+        // Handle the action performance for this specific monster
+    }
+}
+
+     * 
+     */
 
     public void ModifyStat(StatType type, int delta)
     {
         if (StatModifiers.TryGetValue(type, out var modifyAction))
         {
+            var prev = GetStat(type);
             modifyAction(delta);
+            StatChanged?.Invoke(type, prev < GetStat(type));
         }
         else
         {

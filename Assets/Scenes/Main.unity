@@ -3223,6 +3223,8 @@ GameObject:
   - component: {fileID: 462779791}
   - component: {fileID: 462779786}
   - component: {fileID: 462779793}
+  - component: {fileID: 462779794}
+  - component: {fileID: 462779795}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -3420,6 +3422,30 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dbf5bd94397011643a2fa4cb461c4086, type: 2}
   - {fileID: 11400000, guid: 0594c7d698bd19e41855676b2b44382d, type: 2}
   - {fileID: 11400000, guid: afb3cec2ca008d54ca6d17aa358451e2, type: 2}
+--- !u!114 &462779794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462779780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: def746adc46c7624b8570718f548774a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &462779795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462779780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11d87f77b34e29343ad28338c1982a3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &475061919
 GameObject:
   m_ObjectHideFlags: 0
@@ -6019,6 +6045,8 @@ GameObject:
   - component: {fileID: 1023938180}
   - component: {fileID: 1023938179}
   - component: {fileID: 1023938182}
+  - component: {fileID: 1023938183}
+  - component: {fileID: 1023938184}
   m_Layer: 0
   m_Name: EnemyCreature
   m_TagString: Enemy
@@ -6162,6 +6190,30 @@ MonoBehaviour:
   m_BaseStaminaRegen: 1
   m_BattleActions:
   - {fileID: 11400000, guid: 0594c7d698bd19e41855676b2b44382d, type: 2}
+--- !u!114 &1023938183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1023938174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: def746adc46c7624b8570718f548774a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1023938184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1023938174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11d87f77b34e29343ad28338c1982a3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1041201936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9051,6 +9103,8 @@ GameObject:
   - component: {fileID: 1787450736}
   - component: {fileID: 1787450735}
   - component: {fileID: 1787450738}
+  - component: {fileID: 1787450739}
+  - component: {fileID: 1787450740}
   m_Layer: 0
   m_Name: EnemyCreature (1)
   m_TagString: Enemy
@@ -9194,6 +9248,30 @@ MonoBehaviour:
   m_BaseStaminaRegen: 1
   m_BattleActions:
   - {fileID: 11400000, guid: 3339a1b403f239d4ca211428d09402ba, type: 2}
+--- !u!114 &1787450739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787450730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: def746adc46c7624b8570718f548774a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1787450740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787450730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11d87f77b34e29343ad28338c1982a3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1827205604 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 902391672072293958, guid: aed784eb3c89acd428e01d84bd07f503,
