@@ -71,6 +71,15 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CaptureScreen"",
+                    ""type"": ""Button"",
+                    ""id"": ""0b54347a-b031-403e-8606-798626941b58"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -313,6 +322,17 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c366361d-24b9-4813-a372-386884424cf6"",
+                    ""path"": ""<Keyboard>/f12"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CaptureScreen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -905,6 +925,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
         m_Player_Scroll = m_Player.FindAction("Scroll", throwIfNotFound: true);
         m_Player_Submit = m_Player.FindAction("Submit", throwIfNotFound: true);
+        m_Player_CaptureScreen = m_Player.FindAction("CaptureScreen", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -981,6 +1002,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Select;
     private readonly InputAction m_Player_Scroll;
     private readonly InputAction m_Player_Submit;
+    private readonly InputAction m_Player_CaptureScreen;
     public struct PlayerActions
     {
         private @InputActions m_Wrapper;
@@ -990,6 +1012,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         public InputAction @Select => m_Wrapper.m_Player_Select;
         public InputAction @Scroll => m_Wrapper.m_Player_Scroll;
         public InputAction @Submit => m_Wrapper.m_Player_Submit;
+        public InputAction @CaptureScreen => m_Wrapper.m_Player_CaptureScreen;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1014,6 +1037,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @Submit.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSubmit;
                 @Submit.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSubmit;
                 @Submit.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSubmit;
+                @CaptureScreen.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCaptureScreen;
+                @CaptureScreen.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCaptureScreen;
+                @CaptureScreen.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCaptureScreen;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1033,6 +1059,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @Submit.started += instance.OnSubmit;
                 @Submit.performed += instance.OnSubmit;
                 @Submit.canceled += instance.OnSubmit;
+                @CaptureScreen.started += instance.OnCaptureScreen;
+                @CaptureScreen.performed += instance.OnCaptureScreen;
+                @CaptureScreen.canceled += instance.OnCaptureScreen;
             }
         }
     }
@@ -1194,6 +1223,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         void OnSelect(InputAction.CallbackContext context);
         void OnScroll(InputAction.CallbackContext context);
         void OnSubmit(InputAction.CallbackContext context);
+        void OnCaptureScreen(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

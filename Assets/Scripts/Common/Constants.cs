@@ -21,5 +21,13 @@ namespace Assets.Scripts.Common
         public const string Buff = "Buff";
         public const string DeBuff = "DeBuff";
         #endregion
+
+        #region ScreenCapture
+        public const string CapturePath = @"C:\Pictures\MonsterMash";
+        public const string Prefix = "Screenshot_";
+        public const string FileFormat = ".png";
+        public const string DateFormat = "mmddyyyymmssff";
+        public const string UI = "ui";
+        #endregion
     }
 }

@@ -3332,6 +3332,7 @@ MonoBehaviour:
   m_InspectionTags:
   - Enemy
   - Player
+  m_ScreenshotSamples: 2
 --- !u!114 &462779786
 MonoBehaviour:
   m_ObjectHideFlags: 0

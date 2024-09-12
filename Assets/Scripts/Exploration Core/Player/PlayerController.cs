@@ -1,5 +1,8 @@
+using Assets.Scripts.Common;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,6 +13,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour, IManageable
 {
     [SerializeField] string[] m_InspectionTags;
+    [SerializeField] int m_ScreenshotSamples;
 
     BattleMonster m_BattleMonster;
     InputActions m_InputActions;
@@ -17,7 +21,7 @@ public class PlayerController : MonoBehaviour, IManageable
 
     RaycastHit m_Hit;
     Camera m_Camera;
-    
+
     public bool IsActive { get; set; }
 
     public delegate void CameraControlDelegate(float increment);
@@ -47,6 +51,8 @@ public class PlayerController : MonoBehaviour, IManageable
         m_InputActions.Player.Scroll.performed += OnScroll;
 
         m_InputActions.Player.Submit.performed += OnSubmit;
+
+        m_InputActions.Player.CaptureScreen.performed += OnCaptureScreen;
     }
 
     private void Start()
@@ -61,6 +67,10 @@ public class PlayerController : MonoBehaviour, IManageable
         m_InputActions.Player.Move.canceled -= OnMove;
 
         m_InputActions.Player.Scroll.performed -= OnScroll;
+
+        m_InputActions.Player.Submit.performed -= OnSubmit;
+
+        m_InputActions.Player.CaptureScreen.performed -= OnCaptureScreen;
     }
 
     private void Update()
@@ -149,7 +159,7 @@ public class PlayerController : MonoBehaviour, IManageable
     {
         m_InputActions.Player.Select.performed -= OnSelect;
         Cursor.visible = true;
-        
+
         m_Navigator.Sleep();
     }
 
@@ -181,6 +191,50 @@ public class PlayerController : MonoBehaviour, IManageable
     private void OnSubmit(InputAction.CallbackContext context)
     {
         Submit?.Invoke();
+    }
+    #endregion
+
+    #region ScreenCapture
+    private void OnCaptureScreen(InputAction.CallbackContext context)
+    {
+        StartCoroutine(CaptureScreenCoroutine());
+    }
+
+    private IEnumerator CaptureScreenCoroutine()
+    {
+        if (!System.IO.Directory.Exists(Constants.CapturePath))
+            System.IO.Directory.CreateDirectory(Constants.CapturePath);
+
+        var screenshotName = Constants.Prefix
+            + System.DateTime.Now.ToString(Constants.DateFormat)
+            + Constants.FileFormat;
+
+        var uis = FindObjectsOfType<Canvas>();
+        var indexes = new int?[uis.Length];
+
+        for (int i = 0; i < uis.Length; i++)
+        {
+            if (!uis[i].gameObject.activeSelf) continue;
+
+            uis[i].gameObject.SetActive(false);
+            indexes[i] = i;
+        }
+
+        yield return new WaitForEndOfFrame();
+
+        ScreenCapture.CaptureScreenshot(Path.Combine(Constants.CapturePath, screenshotName), m_ScreenshotSamples);
+
+        for (int i = 0; i < m_ScreenshotSamples; i++)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        for (int i = 0; i < indexes.Length; i++)
+        {
+            if (indexes[i] is null) continue;
+
+            uis[i].gameObject.SetActive(true);
+        }
     }
     #endregion
 }
