@@ -114,9 +114,8 @@ public class BattleMonster : MonoBehaviour
     {
         if (StatModifiers.TryGetValue(type, out var modifyAction))
         {
-            var prev = GetStat(type);
             modifyAction(delta);
-            StatChanged?.Invoke(type, prev < GetStat(type));
+            StatChanged?.Invoke(type, delta > 0);
         }
         else
         {
