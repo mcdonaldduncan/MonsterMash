@@ -97,9 +97,8 @@ public class CommandConsole : MonoBehaviour
         if (!int.TryParse(parameters[1], out int monsterId)) throw new ArgumentException("Invalid monsterID");
         if (!int.TryParse(parameters[2], out int amount)) throw new ArgumentException("Invalid amount");
 
-        var monster = FindObjectsOfType<BattleMonster>().FirstOrDefault(x => x.Id == monsterId);
-
-        if (monster == null) throw new ArgumentException($"Monster with monsterId {monsterId} not found");
+        var monster = FindObjectsOfType<BattleMonster>().FirstOrDefault(x => x.Id == monsterId)
+            ?? throw new ArgumentException($"Monster with monsterId {monsterId} not found");
 
         monster.ModifyStat(type, amount);
 
