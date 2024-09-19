@@ -109,37 +109,7 @@ public class BattleMonster : MonoBehaviour
 
         m_BattleActions = uniqueActions;
     }
-
-    /*
-     * using UnityEngine;
-
-public class BattleMonster : MonoBehaviour
-{
-    [SerializeField] BattleAction[] m_Actions;
-
-    private BattleAction[] uniqueActions;
-
-    void Start()
-    {
-        // Create a unique instance of each action for this monster
-        uniqueActions = new BattleAction[m_Actions.Length];
-
-        for (int i = 0; i < m_Actions.Length; i++)
-        {
-            uniqueActions[i] = Instantiate(m_Actions[i]);
-            uniqueActions[i].Perform += OnPerformAction;
-        }
-    }
-
-    private void OnPerformAction(ResourceType resourceType)
-    {
-        // Handle the action performance for this specific monster
-    }
-}
-
-     * 
-     */
-
+    
     public void ModifyStat(StatType type, int delta)
     {
         if (StatModifiers.TryGetValue(type, out var modifyAction))
