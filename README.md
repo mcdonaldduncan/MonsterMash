@@ -4,9 +4,9 @@ Monster collection game. Simple demo included.
 
 [Play The Demo!](https://mcdonaldduncan.github.io/MonsterMash/WebGL/index.html)
 
-ToDo:
+## ToDo:
 
-(Development)
+### Development
 - Battle VFX
 - Status Effects and Healing Actions
 - Camera Collision Avoidance
@@ -19,7 +19,7 @@ ToDo:
 - Better Animation Control (Low priority, current animation works but looks unprofessional)
 - Dynamic Controls (WASD/Click movement, QE/MidDepression rotation)
 
-(Design)
+### Design
 - UI Design (Kinda bland atm) (Still need main menu)
 - Battle Feedback (Collection / Monster exp & leveling)
 - Home Level design (not procedural regardless) (maybe env customization at runtime)
@@ -29,7 +29,7 @@ ToDo:
 - Action Design and Balance
 - Type efficacy matrix
 
-(Art)
+### Art
 - Monster Color/Type Variations
 - Battle VFX
 - Additional Monsters
