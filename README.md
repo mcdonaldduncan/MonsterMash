@@ -23,7 +23,7 @@ Monster collection game. Simple demo included.
 - UI Design (Kinda bland atm) (Still need main menu)
 - Battle Feedback (Collection / Monster exp & leveling)
 - Home Level design (not procedural regardless) (maybe env customization at runtime)
-- Home Systems (Monster Interactions / Env Interaactions / Care / Customization)
+- Home Systems (Monster Interactions / Env Interactions / Care / Customization)
 - Level Design (If not procedural)
 - Chunk Design (If Procedural)
 - Action Design and Balance
