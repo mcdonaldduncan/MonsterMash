@@ -64,6 +64,7 @@ public class BattleController : Singleton<BattleController>
         m_State = BattleState.PLAYER;
         Enemy.GetComponent<AINavigationController>().SetActive(false); // we only turn off the navigation for the current enemy/s
         CanvasController.Instance.SetBattleLogText(string.Empty);
+        Player.ModifyStat(StatType.HEALTH, 10000); // temporary until defeat logic is done
     }
 
     private void OnBattleActual()
