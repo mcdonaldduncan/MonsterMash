@@ -177,7 +177,4 @@ public class BattleController : Singleton<BattleController>
         Enemy.gameObject.SetActive(false);
         TransitionController.Instance.UnsubscribeFromTransition(GameState.EXPLORATIONACTUAL, RemoveEnemy);
     }
-
-    // Bug: upon defeat, transtion starts and completes correctly but enemy simulates turn
-    // Repro: second battle after red, vs green snek - not tested for consistency
 }
