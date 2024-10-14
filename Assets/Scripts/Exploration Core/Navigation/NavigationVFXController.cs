@@ -14,6 +14,7 @@ public class NavigationVFXController : MonoBehaviour, IManageable
     [SerializeField] float PendingDisplayDelay;
 
     GameObject DestinationVFXInstance;
+    GameObject PendingVFXInstance;
 
     Navigator Navigator;
 
@@ -25,13 +26,15 @@ public class NavigationVFXController : MonoBehaviour, IManageable
     {
         Navigator = GetComponent<Navigator>();
 
+        PendingVFXInstance = PoolController.Instance.TakeFromPool(PendingVFX, Vector3.zero);
+
         SetActive(true);
         PrepareTransitions();
     }
 
     void SetIndicatorLocation(Vector3 location)
     {
-        PendingVFX.transform.position = location;
+        PendingVFXInstance.transform.position = location;
     }
 
     void MaintainBattleIndicator(Vector3 location)
@@ -66,7 +69,7 @@ public class NavigationVFXController : MonoBehaviour, IManageable
 
     void FlipPendingVFX()
     {
-        PendingVFX.SetActive(!PendingVFX.activeSelf);
+        PendingVFXInstance.SetActive(!PendingVFXInstance.activeSelf);
     }
 
     public void SetActive(bool active)
@@ -81,7 +84,7 @@ public class NavigationVFXController : MonoBehaviour, IManageable
 
     public void Wake()
     {
-        PendingVFX?.SetActive(true);
+        PendingVFXInstance?.SetActive(true);
 
         Navigator.PathProcessed += SpawnVFX;
         Navigator.StopMove += ReturnVFX;
@@ -91,7 +94,7 @@ public class NavigationVFXController : MonoBehaviour, IManageable
 
     public void Sleep()
     {
-        PendingVFX?.SetActive(false);
+        PendingVFXInstance?.SetActive(false);
     }
 
     public void PrepareTransitions()
